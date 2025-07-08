@@ -1,0 +1,1102 @@
+[
+  {
+    "ProductID": "P124",
+    "Name": "Product P124",
+    "Category": "Toys",
+    "Price": 430.88,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "4015mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P317",
+    "Name": "Product P317",
+    "Category": "Toys",
+    "Price": 872.44,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "1613mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P219",
+    "Name": "Product P219",
+    "Category": "Audio",
+    "Price": 282.63,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "2656mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P439",
+    "Name": "Product P439",
+    "Category": "Electronics",
+    "Price": 608.23,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "2384mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P270",
+    "Name": "Product P270",
+    "Category": "Sports",
+    "Price": 911.09,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "2961mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P502",
+    "Name": "Product P502",
+    "Category": "Toys",
+    "Price": 755.22,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "4049mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P372",
+    "Name": "Product P372",
+    "Category": "Toys",
+    "Price": 395.42,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "1124mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P341",
+    "Name": "Product P341",
+    "Category": "Toys",
+    "Price": 237.96,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "3041mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P403",
+    "Name": "Product P403",
+    "Category": "Electronics",
+    "Price": 408.87,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "4567mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P581",
+    "Name": "Product P581",
+    "Category": "Sports",
+    "Price": 729.71,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "3322mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P451",
+    "Name": "Product P451",
+    "Category": "Sports",
+    "Price": 233.25,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "1981mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P234",
+    "Name": "Product P234",
+    "Category": "Electronics",
+    "Price": 537.02,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "1163mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P248",
+    "Name": "Product P248",
+    "Category": "Sports",
+    "Price": 941.16,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "1880mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P533",
+    "Name": "Product P533",
+    "Category": "Home",
+    "Price": 433.82,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "2857mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P581",
+    "Name": "Product P581",
+    "Category": "Sports",
+    "Price": 113.67,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "3986mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P301",
+    "Name": "Product P301",
+    "Category": "Audio",
+    "Price": 177.83,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "3201mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P169",
+    "Name": "Product P169",
+    "Category": "Sports",
+    "Price": 99.82,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "4231mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P342",
+    "Name": "Product P342",
+    "Category": "Toys",
+    "Price": 247.64,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "1382mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P197",
+    "Name": "Product P197",
+    "Category": "Sports",
+    "Price": 235.41,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "1907mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P168",
+    "Name": "Product P168",
+    "Category": "Sports",
+    "Price": 309.63,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "2732mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P479",
+    "Name": "Product P479",
+    "Category": "Electronics",
+    "Price": 434.04,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "4938mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P191",
+    "Name": "Product P191",
+    "Category": "Sports",
+    "Price": 500.22,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "1233mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P418",
+    "Name": "Product P418",
+    "Category": "Home",
+    "Price": 260.89,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "3544mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P550",
+    "Name": "Product P550",
+    "Category": "Sports",
+    "Price": 324.71,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "1027mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P512",
+    "Name": "Product P512",
+    "Category": "Home",
+    "Price": 933.54,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "1201mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P120",
+    "Name": "Product P120",
+    "Category": "Home",
+    "Price": 289.03,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "1778mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P234",
+    "Name": "Product P234",
+    "Category": "Audio",
+    "Price": 59.38,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "4255mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P522",
+    "Name": "Product P522",
+    "Category": "Electronics",
+    "Price": 434.09,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "4251mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P449",
+    "Name": "Product P449",
+    "Category": "Sports",
+    "Price": 369.69,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "4724mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P594",
+    "Name": "Product P594",
+    "Category": "Audio",
+    "Price": 696.13,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "2421mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P316",
+    "Name": "Product P316",
+    "Category": "Audio",
+    "Price": 179.19,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "2089mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P323",
+    "Name": "Product P323",
+    "Category": "Electronics",
+    "Price": 796.99,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "3340mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P110",
+    "Name": "Product P110",
+    "Category": "Sports",
+    "Price": 258.15,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "1039mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P561",
+    "Name": "Product P561",
+    "Category": "Audio",
+    "Price": 410.27,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "1213mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P502",
+    "Name": "Product P502",
+    "Category": "Toys",
+    "Price": 459.07,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "4026mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P402",
+    "Name": "Product P402",
+    "Category": "Toys",
+    "Price": 341.95,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "3116mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P529",
+    "Name": "Product P529",
+    "Category": "Sports",
+    "Price": 586.27,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "4857mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P480",
+    "Name": "Product P480",
+    "Category": "Sports",
+    "Price": 54.22,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "3070mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P228",
+    "Name": "Product P228",
+    "Category": "Toys",
+    "Price": 624.06,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "3228mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P204",
+    "Name": "Product P204",
+    "Category": "Electronics",
+    "Price": 23.27,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "3037mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P485",
+    "Name": "Product P485",
+    "Category": "Home",
+    "Price": 189.86,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "3329mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P225",
+    "Name": "Product P225",
+    "Category": "Toys",
+    "Price": 245.32,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "2859mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P316",
+    "Name": "Product P316",
+    "Category": "Sports",
+    "Price": 31.58,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "2525mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P418",
+    "Name": "Product P418",
+    "Category": "Audio",
+    "Price": 670.49,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "2713mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P143",
+    "Name": "Product P143",
+    "Category": "Sports",
+    "Price": 707.56,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "2863mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P201",
+    "Name": "Product P201",
+    "Category": "Home",
+    "Price": 334.03,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "3339mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P417",
+    "Name": "Product P417",
+    "Category": "Electronics",
+    "Price": 261.59,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "1458mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P214",
+    "Name": "Product P214",
+    "Category": "Electronics",
+    "Price": 926.48,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "2518mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P572",
+    "Name": "Product P572",
+    "Category": "Home",
+    "Price": 833.11,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "4371mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P223",
+    "Name": "Product P223",
+    "Category": "Toys",
+    "Price": 280.66,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "3359mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P470",
+    "Name": "Product P470",
+    "Category": "Sports",
+    "Price": 160.19,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "4811mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P514",
+    "Name": "Product P514",
+    "Category": "Electronics",
+    "Price": 713.12,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "3630mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P208",
+    "Name": "Product P208",
+    "Category": "Toys",
+    "Price": 603.14,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "3416mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P140",
+    "Name": "Product P140",
+    "Category": "Toys",
+    "Price": 917.24,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "3486mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P321",
+    "Name": "Product P321",
+    "Category": "Audio",
+    "Price": 277.65,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "3434mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P314",
+    "Name": "Product P314",
+    "Category": "Toys",
+    "Price": 458.67,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "4003mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P405",
+    "Name": "Product P405",
+    "Category": "Electronics",
+    "Price": 392.94,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "1861mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P168",
+    "Name": "Product P168",
+    "Category": "Audio",
+    "Price": 618.03,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "1158mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P130",
+    "Name": "Product P130",
+    "Category": "Sports",
+    "Price": 242.93,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "3920mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P241",
+    "Name": "Product P241",
+    "Category": "Toys",
+    "Price": 47.58,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "4192mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P548",
+    "Name": "Product P548",
+    "Category": "Toys",
+    "Price": 91.69,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "3978mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P174",
+    "Name": "Product P174",
+    "Category": "Audio",
+    "Price": 487.51,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "3440mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P237",
+    "Name": "Product P237",
+    "Category": "Electronics",
+    "Price": 843.83,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "4375mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P237",
+    "Name": "Product P237",
+    "Category": "Electronics",
+    "Price": 375.05,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "2020mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P417",
+    "Name": "Product P417",
+    "Category": "Audio",
+    "Price": 383.6,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "2729mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P379",
+    "Name": "Product P379",
+    "Category": "Toys",
+    "Price": 502.34,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "4805mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P155",
+    "Name": "Product P155",
+    "Category": "Sports",
+    "Price": 430.71,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "3495mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P289",
+    "Name": "Product P289",
+    "Category": "Toys",
+    "Price": 330.85,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "4482mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P122",
+    "Name": "Product P122",
+    "Category": "Sports",
+    "Price": 422.28,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "4780mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P510",
+    "Name": "Product P510",
+    "Category": "Home",
+    "Price": 726.85,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "3191mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P397",
+    "Name": "Product P397",
+    "Category": "Home",
+    "Price": 884.29,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "2135mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P463",
+    "Name": "Product P463",
+    "Category": "Electronics",
+    "Price": 23.83,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "3543mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P255",
+    "Name": "Product P255",
+    "Category": "Sports",
+    "Price": 980.58,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "3460mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P374",
+    "Name": "Product P374",
+    "Category": "Electronics",
+    "Price": 110.27,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "1902mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P543",
+    "Name": "Product P543",
+    "Category": "Toys",
+    "Price": 484.0,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "1849mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P282",
+    "Name": "Product P282",
+    "Category": "Home",
+    "Price": 177.84,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "2326mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P104",
+    "Name": "Product P104",
+    "Category": "Toys",
+    "Price": 741.16,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "2052mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P579",
+    "Name": "Product P579",
+    "Category": "Audio",
+    "Price": 540.7,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "1454mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P574",
+    "Name": "Product P574",
+    "Category": "Electronics",
+    "Price": 52.58,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "2634mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P447",
+    "Name": "Product P447",
+    "Category": "Electronics",
+    "Price": 558.58,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "3237mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P295",
+    "Name": "Product P295",
+    "Category": "Toys",
+    "Price": 224.85,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "3793mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P141",
+    "Name": "Product P141",
+    "Category": "Home",
+    "Price": 341.67,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "1985mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P168",
+    "Name": "Product P168",
+    "Category": "Home",
+    "Price": 666.59,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "2170mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P326",
+    "Name": "Product P326",
+    "Category": "Home",
+    "Price": 366.33,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "2241mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P250",
+    "Name": "Product P250",
+    "Category": "Sports",
+    "Price": 90.47,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "4938mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P116",
+    "Name": "Product P116",
+    "Category": "Sports",
+    "Price": 274.91,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "4895mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P109",
+    "Name": "Product P109",
+    "Category": "Audio",
+    "Price": 466.78,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "3021mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P403",
+    "Name": "Product P403",
+    "Category": "Electronics",
+    "Price": 504.65,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "3530mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P530",
+    "Name": "Product P530",
+    "Category": "Sports",
+    "Price": 883.31,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "3335mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P282",
+    "Name": "Product P282",
+    "Category": "Sports",
+    "Price": 600.26,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "1272mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P225",
+    "Name": "Product P225",
+    "Category": "Toys",
+    "Price": 755.23,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "2229mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P432",
+    "Name": "Product P432",
+    "Category": "Sports",
+    "Price": 617.97,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "4603mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P476",
+    "Name": "Product P476",
+    "Category": "Sports",
+    "Price": 542.57,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "4795mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P188",
+    "Name": "Product P188",
+    "Category": "Sports",
+    "Price": 99.2,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "1812mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P499",
+    "Name": "Product P499",
+    "Category": "Electronics",
+    "Price": 710.93,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "4293mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P276",
+    "Name": "Product P276",
+    "Category": "Home",
+    "Price": 207.29,
+    "Specifications": {
+      "Color": "Black",
+      "Battery": "3390mAh",
+      "Warranty": "6 months"
+    }
+  },
+  {
+    "ProductID": "P484",
+    "Name": "Product P484",
+    "Category": "Home",
+    "Price": 868.3,
+    "Specifications": {
+      "Color": "Blue",
+      "Battery": "4770mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P385",
+    "Name": "Product P385",
+    "Category": "Audio",
+    "Price": 663.14,
+    "Specifications": {
+      "Color": "Green",
+      "Battery": "3268mAh",
+      "Warranty": "2 years"
+    }
+  },
+  {
+    "ProductID": "P374",
+    "Name": "Product P374",
+    "Category": "Audio",
+    "Price": 953.07,
+    "Specifications": {
+      "Color": "White",
+      "Battery": "1417mAh",
+      "Warranty": "1 year"
+    }
+  },
+  {
+    "ProductID": "P165",
+    "Name": "Product P165",
+    "Category": "Toys",
+    "Price": 91.02,
+    "Specifications": {
+      "Color": "Red",
+      "Battery": "4315mAh",
+      "Warranty": "6 months"
+    }
+  }
+]
