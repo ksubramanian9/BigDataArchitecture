@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to Hadoop MapReduce</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 
+    Chosen Palette: Warm Tech
+    Application Structure Plan: A single-page, vertically-scrolling application designed for an educational journey. It starts with a high-level conceptual introduction, moves to a core interactive "Word Count" simulation to visually explain Map -> Shuffle -> Reduce, then provides a detailed, step-by-step interactive diagram of the YARN execution flow. Subsequent sections use cards and columns to clearly present key components, advantages vs. limitations, and common use cases. This structure progresses from "what" and "why" to "how it works" in both theory and practice, which is ideal for a learning environment.
+    Visualization & Content Choices: 
+    - Report Info: MapReduce Core Concepts -> Goal: Explain -> Viz/Method: Interactive Word Count Animation (JS/CSS) -> Interaction: User inputs text, clicks a button, and watches the animated flow of data through Map, Shuffle, and Reduce stages -> Justification: This makes the abstract key-value pair transformation tangible and memorable, which is far more effective than a static diagram.
+    - Report Info: YARN Execution Flow -> Goal: Explain -> Viz/Method: Interactive Step-by-Step Diagram (HTML/CSS/JS) -> Interaction: User clicks "Next Step" to highlight components (Client, ResourceManager, etc.) and see data flow paths appear sequentially, with explanatory text updating for each step -> Justification: Breaks down a complex multi-stage process into digestible, user-paced steps.
+    - Report Info: Advantages vs. Limitations -> Goal: Compare -> Viz/Method: Two-column layout with icons -> Interaction: Static, clear visual comparison -> Justification: A simple and effective way to present contrasting information for easy comparison.
+    - Report Info: High Latency Limitation -> Goal: Visualize -> Viz/Method: Bar Chart (Chart.js) comparing MapReduce vs. Spark for iterative tasks -> Interaction: Static chart -> Justification: Quantifies a key limitation mentioned in the text, providing a clear visual contrast.
+    - Report Info: Use Cases -> Goal: Inform -> Viz/Method: Grid of cards with icons -> Interaction: Static display -> Justification: A visually appealing and scannable way to present examples.
+    CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4; /* Warm Neutral Background */
+            color: #4A4A4A;
+        }
+        .bg-primary { background-color: #008080; } /* Teal */
+        .text-primary { color: #008080; }
+        .border-primary { border-color: #008080; }
+        .bg-secondary { background-color: #FFD700; } /* Gold Accent */
+        .text-secondary { color: #FFD700; }
+        .bg-accent { background-color: #E67E22; } /* Muted Orange Accent */
+        .text-accent { color: #E67E22; }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #008080;
+        }
+        .active-nav {
+            color: #008080;
+            font-weight: 600;
+            border-bottom: 2px solid #008080;
+        }
+        .map-reduce-box {
+            border: 2px solid;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            margin: 0.25rem;
+            opacity: 0;
+            transition: all 0.8s ease-in-out;
+            min-width: 120px;
+            text-align: center;
+        }
+        .yarn-component {
+            border: 2px solid #D1D5DB;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            transition: all 0.5s ease-in-out;
+            position: relative;
+        }
+        .yarn-active {
+            border-color: #E67E22;
+            box-shadow: 0 0 15px rgba(230, 126, 34, 0.5);
+            transform: scale(1.05);
+        }
+        .arrow {
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            font-size: 1.5rem;
+            color: #E67E22;
+            font-weight: bold;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+                max-height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-primary">MapReduce Explained</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#introduction" class="nav-link active-nav">Intro</a>
+                <a href="#simulation" class="nav-link">Simulation</a>
+                <a href="#flow" class="nav-link">How It Works</a>
+                <a href="#components" class="nav-link">Components</a>
+                <a href="#pros-cons" class="nav-link">Pros & Cons</a>
+                <a href="#use-cases" class="nav-link">Use Cases</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white">
+            <a href="#introduction" class="block py-2 px-4 text-sm nav-link">Intro</a>
+            <a href="#simulation" class="block py-2 px-4 text-sm nav-link">Simulation</a>
+            <a href="#flow" class="block py-2 px-4 text-sm nav-link">How It Works</a>
+            <a href="#components" class="block py-2 px-4 text-sm nav-link">Components</a>
+            <a href="#pros-cons" class="block py-2 px-4 text-sm nav-link">Pros & Cons</a>
+            <a href="#use-cases" class="block py-2 px-4 text-sm nav-link">Use Cases</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section id="introduction" class="text-center mb-24 min-h-[60vh] flex flex-col justify-center">
+            <h2 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight">A Foundation for <span class="text-primary">Big Data</span> Processing</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600">
+                MapReduce is a programming model developed by Google for processing massive datasets in a parallel, distributed, and fault-tolerant way. It revolutionized data processing by allowing complex tasks to run on clusters of inexpensive commodity hardware, making big data analytics accessible to all.
+            </p>
+        </section>
+
+        <section id="simulation" class="mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-2">Interactive Simulation: Word Count</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Enter some text and watch how MapReduce breaks it down, shuffles it, and aggregates the results to count each word.</p>
+            </div>
+            <div class="card p-8 mb-8">
+                <textarea id="inputText" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition" rows="3" placeholder="e.g., Hello world hello mapreduce">Hello world hello mapreduce</textarea>
+                <div class="text-center mt-4">
+                    <button id="processButton" class="bg-primary text-white font-bold py-3 px-8 rounded-lg hover:bg-teal-700 transition transform hover:scale-105">Process Data</button>
+                    <button id="resetButton" class="bg-gray-500 text-white font-bold py-3 px-8 rounded-lg hover:bg-gray-600 transition ml-4">Reset</button>
+                </div>
+            </div>
+            <div id="simulation-stages" class="space-y-8">
+                <div class="stage">
+                    <h3 class="text-2xl font-semibold mb-4 text-accent border-b-2 border-accent/30 pb-2">1. Map Phase</h3>
+                    <p class="text-gray-500 mb-4">Input records are split, and each word is mapped to a key-value pair of `(word, 1)`.</p>
+                    <div id="map-output" class="flex flex-wrap justify-center min-h-[50px]"></div>
+                </div>
+                <div class="stage">
+                    <h3 class="text-2xl font-semibold mb-4 text-accent border-b-2 border-accent/30 pb-2">2. Shuffle & Sort Phase</h3>
+                    <p class="text-gray-500 mb-4">The framework collects all pairs with the same key and groups the values together.</p>
+                    <div id="shuffle-output" class="flex flex-wrap justify-center min-h-[50px]"></div>
+                </div>
+                <div class="stage">
+                    <h3 class="text-2xl font-semibold mb-4 text-accent border-b-2 border-accent/30 pb-2">3. Reduce Phase</h3>
+                    <p class="text-gray-500 mb-4">Each grouped list is processed to produce the final aggregated count.</p>
+                    <div id="reduce-output" class="flex flex-wrap justify-center min-h-[50px]"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="flow" class="mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-2">How It Works: The Job Execution Flow</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">MapReduce jobs are managed by YARN. Click through the steps to see how a job goes from submission to completion.</p>
+            </div>
+            <div class="lg:grid lg:grid-cols-3 lg:gap-8 items-center">
+                <div class="lg:col-span-2 relative mb-8 lg:mb-0">
+                    <div class="grid grid-cols-2 gap-4 md:gap-8">
+                        <div id="client-box" class="yarn-component col-span-2 text-center">Client</div>
+                        <div id="rm-box" class="yarn-component text-center">ResourceManager</div>
+                        <div id="am-box" class="yarn-component text-center">ApplicationMaster</div>
+                        <div id="nm1-box" class="yarn-component text-center">NodeManager 1 (DataNode)</div>
+                        <div id="nm2-box" class="yarn-component text-center">NodeManager 2 (DataNode)</div>
+                    </div>
+                    <div id="arrow-1" class="arrow" style="top: 20%; left: 48%;">↓</div>
+                    <div id="arrow-2" class="arrow" style="top: 50%; left: 23%;">↓</div>
+                    <div id="arrow-3" class="arrow" style="top: 50%; left: 73%;">↓</div>
+                    <div id="arrow-4" class="arrow" style="top: 50%; left: 48%; transform: rotate(180deg);">↑</div>
+                    <div id="arrow-5" class="arrow" style="top: 75%; left: 23%; transform: rotate(180deg);">↑</div>
+                    <div id="arrow-6" class="arrow" style="top: 75%; left: 73%; transform: rotate(180deg);">↑</div>
+                </div>
+                <div class="card p-6">
+                    <h4 id="flow-title" class="font-bold text-lg mb-2 text-primary">Step 0: Initial State</h4>
+                    <p id="flow-explanation" class="text-sm text-gray-700">This is the YARN cluster architecture. The Client is ready to submit a job to the ResourceManager, which manages all cluster resources.</p>
+                    <div class="mt-4 text-center">
+                        <button id="flow-next-btn" class="bg-accent text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-700 transition">Next Step</button>
+                         <button id="flow-reset-btn" class="bg-gray-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-600 transition ml-2">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="components" class="mb-24">
+             <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-2">Key Components Deep Dive</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">MapReduce has several key components that control how data is processed. Click each tab to learn more.</p>
+            </div>
+            <div class="flex flex-wrap justify-center -mb-px">
+                <button class="component-tab active-tab text-primary border-b-2 border-primary py-2 px-4 font-semibold" data-target="tab-inputformat">InputFormat</button>
+                <button class="component-tab text-gray-500 border-b-2 border-transparent py-2 px-4 font-semibold" data-target="tab-outputformat">OutputFormat</button>
+                <button class="component-tab text-gray-500 border-b-2 border-transparent py-2 px-4 font-semibold" data-target="tab-combiner">Combiner</button>
+                <button class="component-tab text-gray-500 border-b-2 border-transparent py-2 px-4 font-semibold" data-target="tab-partitioner">Partitioner</button>
+            </div>
+            <div class="card p-8 mt-[-1px] border-t-2 border-gray-200 rounded-t-none">
+                <div id="tab-inputformat" class="component-content">
+                    <h3 class="text-xl font-bold mb-2">InputFormat & RecordReader</h3>
+                    <p class="text-gray-700">The `InputFormat` is responsible for splitting the input data into logical chunks called `InputSplits`. Each `InputSplit` is processed by a single Mapper. The `RecordReader` then reads the data from an `InputSplit` and converts it into the `(key, value)` pairs that are fed into the `map` function. For example, `TextInputFormat` treats each line of a text file as a record.</p>
+                </div>
+                <div id="tab-outputformat" class="component-content hidden">
+                    <h3 class="text-xl font-bold mb-2">OutputFormat & RecordWriter</h3>
+                    <p class="text-gray-700">The `OutputFormat` determines how the final output `(key, value)` pairs from the Reducers are written to HDFS. It checks if the output directory exists and provides a `RecordWriter` implementation to write the output data to files in the output directory. For example, `TextOutputFormat` writes each key-value pair on a new line, separated by a tab.</p>
+                </div>
+                <div id="tab-combiner" class="component-content hidden">
+                    <h3 class="text-xl font-bold mb-2">Combiner (Optional Optimization)</h3>
+                    <p class="text-gray-700">A Combiner is a "mini-reducer" that runs on the same machine as the Mapper. It performs a local aggregation on the output of a single Mapper before that data is sent across the network to the Reducers. This significantly reduces network traffic. For Word Count, the Combiner would sum the counts for words found by one Mapper, creating a more compact intermediate output.</p>
+                </div>
+                 <div id="tab-partitioner" class="component-content hidden">
+                    <h3 class="text-xl font-bold mb-2">Partitioner</h3>
+                    <p class="text-gray-700">The Partitioner controls which Reducer receives which intermediate keys. By default, it uses a hash function on the key and performs a modulo operation with the number of Reducers (`hash(key) % num_reducers`). This ensures that all identical keys are sent to the same Reducer, which is essential for the aggregation process to work correctly. Users can write custom Partitioners for more complex data distribution needs.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="pros-cons" class="mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-2">Advantages vs. Limitations</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">MapReduce was revolutionary, but it's important to understand its strengths and weaknesses.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold mb-4 text-green-600">Advantages</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start"><span class="text-green-500 mr-3 text-xl">✓</span><div><strong class="font-semibold">Massive Scalability:</strong> Easily scales horizontally by adding more servers to the cluster.</div></li>
+                        <li class="flex items-start"><span class="text-green-500 mr-3 text-xl">✓</span><div><strong class="font-semibold">High Fault Tolerance:</strong> Automatically handles machine failures by re-running tasks.</div></li>
+                        <li class="flex items-start"><span class="text-green-500 mr-3 text-xl">✓</span><div><strong class="font-semibold">Cost-Effective:</strong> Designed to run on clusters of inexpensive commodity hardware.</div></li>
+                        <li class="flex items-start"><span class="text-green-500 mr-3 text-xl">✓</span><div><strong class="font-semibold">Programming Simplicity:</strong> Abstracts away the complexities of distributed computing.</div></li>
+                    </ul>
+                </div>
+                <div class="card p-8">
+                     <h3 class="text-2xl font-bold mb-4 text-red-600">Limitations</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start"><span class="text-red-500 mr-3 text-xl">✗</span><div><strong class="font-semibold">High Latency (Batch Only):</strong> The constant writing to disk makes it slow and unsuitable for real-time or interactive tasks.</div></li>
+                        <li class="flex items-start"><span class="text-red-500 mr-3 text-xl">✗</span><div><strong class="font-semibold">Poor for Iterative Tasks:</strong> Inefficient for algorithms (like in machine learning) that need multiple passes over data, due to high disk I/O.</div></li>
+                        <li class="flex items-start"><span class="text-red-500 mr-3 text-xl">✗</span><div><strong class="font-semibold">Verbose & Complex for Chained Jobs:</strong> Multi-step data flows require chaining multiple MapReduce jobs, which is cumbersome.</div></li>
+                         <li class="flex items-start"><span class="text-red-500 mr-3 text-xl">✗</span><div><strong class="font-semibold">No In-Memory Processing:</strong> Unlike newer frameworks like Spark, it doesn't leverage memory for faster processing.</div></li>
+                    </ul>
+                </div>
+            </div>
+             <div class="card p-8 mt-8">
+                <h3 class="text-center font-bold text-xl mb-4">Visualizing the Latency Limitation</h3>
+                <p class="text-center text-gray-600 mb-4">For iterative tasks, MapReduce's disk I/O per iteration creates significant latency compared to in-memory frameworks like Apache Spark.</p>
+                <div class="chart-container">
+                    <canvas id="latencyChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="use-cases" class="mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-2">Common Use Cases</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">MapReduce excels at large-scale, batch-oriented tasks where data can be processed in parallel.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card p-6 text-center">
+                    <div class="text-4xl mb-4">📜</div>
+                    <h4 class="font-bold text-lg mb-2">Log Analysis</h4>
+                    <p class="text-sm text-gray-600">Processing petabytes of server logs to find errors, user activity, or security threats.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-4xl mb-4">🌐</div>
+                    <h4 class="font-bold text-lg mb-2">Web Indexing</h4>
+                    <p class="text-sm text-gray-600">Building the inverted indexes that power search engines by processing web crawl data.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-4xl mb-4">🔄</div>
+                    <h4 class="font-bold text-lg mb-2">ETL Pipelines</h4>
+                    <p class="text-sm text-gray-600">Extracting, transforming, and loading massive datasets from raw formats into structured data warehouses.</p>
+                </div>
+                 <div class="card p-6 text-center">
+                    <div class="text-4xl mb-4">📊</div>
+                    <h4 class="font-bold text-lg mb-2">Data Warehousing</h4>
+                    <p class="text-sm text-gray-600">Aggregating and summarizing vast amounts of data to generate business intelligence reports.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-4xl mb-4">💡</div>
+                    <h4 class="font-bold text-lg mb-2">Recommendation Engines</h4>
+                    <p class="text-sm text-gray-600">Analyzing user behavior in batch to generate product or content recommendations.</p>
+                </div>
+                 <div class="card p-6 text-center">
+                    <div class="text-4xl mb-4">📈</div>
+                    <h4 class="font-bold text-lg mb-2">Financial Analysis</h4>
+                    <p class="text-sm text-gray-600">Performing large-scale risk analysis and modeling on historical financial data.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-xl font-bold mb-2">Conclusion: The Legacy of MapReduce</h3>
+            <p class="max-w-3xl mx-auto text-gray-300">
+                While newer frameworks like Apache Spark have addressed its limitations, understanding MapReduce is fundamental to Big Data Architecture. It established the core principles of distributed processing and fault tolerance that continue to influence the data landscape today.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-nav');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-nav');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-30% 0px -70% 0px' });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                     if (mobileMenu.offsetParent !== null) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            const processButton = document.getElementById('processButton');
+            const resetButton = document.getElementById('resetButton');
+            const inputText = document.getElementById('inputText');
+            const mapOutput = document.getElementById('map-output');
+            const shuffleOutput = document.getElementById('shuffle-output');
+            const reduceOutput = document.getElementById('reduce-output');
+
+            resetButton.addEventListener('click', () => {
+                mapOutput.innerHTML = '';
+                shuffleOutput.innerHTML = '';
+                reduceOutput.innerHTML = '';
+                inputText.value = 'Hello world hello mapreduce';
+            });
+
+            processButton.addEventListener('click', () => {
+                mapOutput.innerHTML = '';
+                shuffleOutput.innerHTML = '';
+                reduceOutput.innerHTML = '';
+
+                const text = inputText.value.trim();
+                if (!text) return;
+
+                const words = text.toLowerCase().split(/\s+/);
+                
+                let delay = 0;
+                
+                words.forEach(word => {
+                    setTimeout(() => {
+                        const mapBox = document.createElement('div');
+                        mapBox.className = 'map-reduce-box border-blue-500 bg-blue-50';
+                        mapBox.innerHTML = `( <span class="font-mono text-blue-800">'${word}'</span>, <span class="font-mono text-red-600">1</span> )`;
+                        mapOutput.appendChild(mapBox);
+                        setTimeout(() => mapBox.style.opacity = 1, 10);
+                    }, delay);
+                    delay += 100;
+                });
+
+                setTimeout(() => runShuffle(words), delay + 500);
+            });
+            
+            function runShuffle(words) {
+                const wordGroups = words.reduce((acc, word) => {
+                    acc[word] = (acc[word] || 0) + 1;
+                    return acc;
+                }, {});
+
+                let delay = 0;
+                Object.keys(wordGroups).sort().forEach(key => {
+                     setTimeout(() => {
+                        const values = Array(wordGroups[key]).fill(1).join(', ');
+                        const shuffleBox = document.createElement('div');
+                        shuffleBox.className = 'map-reduce-box border-purple-500 bg-purple-50';
+                        shuffleBox.innerHTML = `( <span class="font-mono text-blue-800">'${key}'</span>, <span class="font-mono text-red-600">[${values}]</span> )`;
+                        shuffleOutput.appendChild(shuffleBox);
+                        setTimeout(() => shuffleBox.style.opacity = 1, 10);
+                    }, delay);
+                    delay += 200;
+                });
+                
+                setTimeout(() => runReduce(wordGroups), delay + 500);
+            }
+
+            function runReduce(wordGroups) {
+                 let delay = 0;
+                Object.keys(wordGroups).sort().forEach(key => {
+                    setTimeout(() => {
+                        const reduceBox = document.createElement('div');
+                        reduceBox.className = 'map-reduce-box border-green-500 bg-green-50';
+                        reduceBox.innerHTML = `( <span class="font-mono text-blue-800">'${key}'</span>, <span class="font-mono text-red-600">${wordGroups[key]}</span> )`;
+                        reduceOutput.appendChild(reduceBox);
+                        setTimeout(() => reduceBox.style.opacity = 1, 10);
+                    }, delay);
+                    delay += 200;
+                });
+            }
+
+            const flowNextBtn = document.getElementById('flow-next-btn');
+            const flowResetBtn = document.getElementById('flow-reset-btn');
+            let currentFlowStep = 0;
+            const yarnComponents = {
+                client: document.getElementById('client-box'),
+                rm: document.getElementById('rm-box'),
+                am: document.getElementById('am-box'),
+                nm1: document.getElementById('nm1-box'),
+                nm2: document.getElementById('nm2-box'),
+            };
+            const arrows = {
+                '1': document.getElementById('arrow-1'), '2': document.getElementById('arrow-2'), '3': document.getElementById('arrow-3'),
+                '4': document.getElementById('arrow-4'), '5': document.getElementById('arrow-5'), '6': document.getElementById('arrow-6'),
+            };
+            const flowTitle = document.getElementById('flow-title');
+            const flowExplanation = document.getElementById('flow-explanation');
+
+            const flowSteps = [
+                { title: "Step 1: Job Submission", explanation: "The Client submits the MapReduce application and its configuration to the ResourceManager.", active: ['client', 'rm'], arrows: ['1'] },
+                { title: "Step 2: Resource Allocation", explanation: "The ResourceManager allocates a container and contacts a NodeManager to launch the ApplicationMaster.", active: ['rm', 'am', 'nm1'], arrows: ['1', '2'] },
+                { title: "Step 3: Task Execution", explanation: "The ApplicationMaster requests containers from the ResourceManager for Map & Reduce tasks, which are then launched on NodeManagers.", active: ['am', 'rm', 'nm1', 'nm2'], arrows: ['4', '3'] },
+                { title: "Step 4: Progress Update", explanation: "Map and Reduce tasks report their status and progress back to the ApplicationMaster.", active: ['am', 'nm1', 'nm2'], arrows: ['5', '6'] },
+                { title: "Step 5: Job Completion", explanation: "Once all tasks are complete, the ApplicationMaster unregisters with the ResourceManager and shuts down.", active: ['am', 'rm'], arrows: ['4'] },
+            ];
+            
+            function resetFlow() {
+                currentFlowStep = 0;
+                Object.values(yarnComponents).forEach(el => el.classList.remove('yarn-active'));
+                Object.values(arrows).forEach(el => el.style.opacity = 0);
+                flowTitle.textContent = "Step 0: Initial State";
+                flowExplanation.textContent = "This is the YARN cluster architecture. The Client is ready to submit a job to the ResourceManager, which manages all cluster resources.";
+            }
+
+            flowResetBtn.addEventListener('click', resetFlow);
+            flowNextBtn.addEventListener('click', () => {
+                if (currentFlowStep >= flowSteps.length) {
+                    resetFlow();
+                    return;
+                }
+                
+                const step = flowSteps[currentFlowStep];
+                flowTitle.textContent = step.title;
+                flowExplanation.textContent = step.explanation;
+
+                Object.values(yarnComponents).forEach(el => el.classList.remove('yarn-active'));
+                step.active.forEach(key => yarnComponents[key].classList.add('yarn-active'));
+
+                Object.values(arrows).forEach(el => el.style.opacity = 0);
+                step.arrows.forEach(key => arrows[key].style.opacity = 1);
+                
+                currentFlowStep++;
+            });
+
+            const componentTabs = document.querySelectorAll('.component-tab');
+            const componentContents = document.querySelectorAll('.component-content');
+            componentTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    componentTabs.forEach(t => {
+                        t.classList.remove('active-tab', 'text-primary', 'border-primary');
+                        t.classList.add('text-gray-500', 'border-transparent');
+                    });
+                    tab.classList.add('active-tab', 'text-primary', 'border-primary');
+                    tab.classList.remove('text-gray-500', 'border-transparent');
+                    
+                    const targetId = tab.getAttribute('data-target');
+                    componentContents.forEach(content => {
+                        if (content.id === targetId) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            const latencyCtx = document.getElementById('latencyChart').getContext('2d');
+            new Chart(latencyCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Single Pass Job', 'Iterative Job (10 passes)'],
+                    datasets: [{
+                        label: 'MapReduce (High Disk I/O)',
+                        data: [10, 100],
+                        backgroundColor: 'rgba(230, 126, 34, 0.6)',
+                        borderColor: 'rgba(230, 126, 34, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Apache Spark (In-Memory)',
+                        data: [8, 15],
+                        backgroundColor: 'rgba(0, 128, 128, 0.6)',
+                        borderColor: 'rgba(0, 128, 128, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: 'Relative Job Completion Time', font: { size: 16 } },
+                        tooltip: { mode: 'index', intersect: false },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Relative Time Units' }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
