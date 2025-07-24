@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Interactive World of NoSQL Databases</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: "Slate & Amber" - A modern, professional palette using neutral grays from Tailwind's slate color family, with a warm amber for accents and calls-to-action. This creates a calm, readable interface that feels both sophisticated and approachable. -->
+    <!-- Application Structure Plan: The SPA is designed as a narrative journey for the user, starting broad and progressively deepening. The structure is thematic, not linear like the report: 1. Hero (Introduction), 2. Core Concepts (What & Why), 3. Database Types (The How), 4. Applications (The Where), 5. Market & Future (What's Next), 6. Products (The Who). This flow guides the user from foundational knowledge to practical application and future outlook, using interactive elements like toggles, tabs, and dynamic charts to make complex information digestible and engaging. This structure was chosen to transform a dense report into an exploratory learning experience. -->
+    <!-- Visualization & Content Choices: 1. RDBMS vs. NoSQL: Goal(Compare) -> Interactive comparison table with toggleable details. Justification: Allows for a direct, side-by-side feature comparison that is more engaging than a static table. Method(HTML/CSS/JS). 2. Database Types: Goal(Organize/Compare) -> Tabbed interface with a dynamic Radar Chart. Justification: Tabs neatly organize the four types, while the radar chart provides a powerful visual comparison of their strengths (e.g., scalability, flexibility). Interaction: Clicking a tab updates the text and highlights the corresponding dataset on the chart. Library(Chart.js). 3. Market Growth: Goal(Change) -> Line Chart. Justification: Clearly visualizes the projected financial growth trend over time. Library(Chart.js). 4. Use Cases: Goal(Inform/Organize) -> Filterable grid of cards. Justification: Allows users to easily explore real-world applications based on industry, making the information relevant to their interests. Method(HTML/CSS/JS). -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #334155; /* slate-700 */
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #f59e0b; /* amber-500 */
+            border-bottom-color: #f59e0b; /* amber-500 */
+        }
+        .tab-button {
+            transition: all 0.3s;
+        }
+        .tab-button.active {
+            background-color: #f59e0b; /* amber-500 */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-slate-800">NoSQL Explained</h1>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#concepts" class="nav-link font-medium pb-1">Concepts</a>
+                <a href="#types" class="nav-link font-medium pb-1">Types</a>
+                <a href="#applications" class="nav-link font-medium pb-1">Applications</a>
+                <a href="#future" class="nav-link font-medium pb-1">Future</a>
+                <a href="#products" class="nav-link font-medium pb-1">Products</a>
+            </div>
+            <div class="md:hidden">
+                <select id="mobile-nav" class="bg-slate-100 border border-slate-300 rounded-md p-2 text-slate-700">
+                    <option value="#hero">Home</option>
+                    <option value="#concepts">Concepts</option>
+                    <option value="#types">Types</option>
+                    <option value="#applications">Applications</option>
+                    <option value="#future">Future</option>
+                    <option value="#products">Products</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12">
+        <section id="hero" class="text-center py-16">
+            <h2 class="text-4xl md:text-6xl font-extrabold text-slate-800 mb-4">The World Beyond Relational</h2>
+            <p class="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
+                Explore the dynamic landscape of NoSQL databases. This interactive guide translates complex data concepts into a clear, explorable journey, revealing how NoSQL powers today's most demanding applications.
+            </p>
+        </section>
+
+        <section id="concepts" class="py-16">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-slate-800">Core Concepts</h3>
+                <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">NoSQL emerged to address the limitations of traditional databases in our modern data-driven world. This section breaks down the fundamental differences and the key advantages that make NoSQL a transformative technology.</p>
+            </div>
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <h4 class="text-2xl font-bold text-center mb-8">NoSQL vs. Relational (RDBMS)</h4>
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[600px] text-left">
+                        <thead>
+                            <tr class="border-b-2 border-slate-200">
+                                <th class="p-4 font-semibold text-slate-800">Feature</th>
+                                <th class="p-4 font-semibold text-slate-800">Relational (SQL)</th>
+                                <th class="p-4 font-semibold text-slate-800">NoSQL</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comparison-table-body" class="text-slate-600">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="types" class="py-16 bg-slate-100 -mx-6 px-6">
+            <div class="container mx-auto">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-800">The Four Faces of NoSQL</h3>
+                     <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">NoSQL isn't a single product but a diverse family of databases, each optimized for specific tasks. Use the tabs below to explore the main types and see how their strengths compare on the chart. Clicking a tab will highlight the corresponding database type.</p>
+                </div>
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="md:w-1/2">
+                        <div class="flex flex-wrap gap-2 mb-4" id="db-type-tabs">
+                        </div>
+                        <div id="db-type-content" class="bg-white p-6 rounded-lg shadow">
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 flex items-center justify-center">
+                        <div class="chart-container">
+                            <canvas id="dbTypesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="applications" class="py-16">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-slate-800">NoSQL in the Wild</h3>
+                 <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">From powering your social media feed to managing massive IoT networks, NoSQL is the engine behind many services you use daily. Filter the cards below to see how different industries leverage NoSQL's power.</p>
+            </div>
+            <div class="flex justify-center mb-8 space-x-2" id="use-case-filters">
+            </div>
+            <div id="use-case-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
+        </section>
+
+        <section id="future" class="py-16 bg-slate-100 -mx-6 px-6">
+            <div class="container mx-auto">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-800">Market Growth & Future Trends</h3>
+                    <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">The NoSQL market is expanding rapidly, driven by the demands of AI, IoT, and cloud computing. This section visualizes the projected market growth and highlights the key trends shaping the future of data management.</p>
+                </div>
+                <div class="flex flex-col lg:flex-row items-center gap-8">
+                    <div class="lg:w-1/2 w-full">
+                        <div class="bg-white p-6 rounded-xl shadow-lg">
+                            <h4 class="text-xl font-bold mb-4 text-slate-800">Projected Market Growth (in Billion USD)</h4>
+                            <div class="chart-container h-64 md:h-80">
+                                <canvas id="marketGrowthChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 w-full space-y-4">
+                        <div class="bg-white p-6 rounded-xl shadow-lg card">
+                            <h5 class="font-bold text-lg text-amber-600">Integration with AI/ML</h5>
+                            <p class="text-slate-600">NoSQL's ability to handle unstructured data is crucial for training complex AI models and powering real-time recommendation engines.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-lg card">
+                            <h5 class="font-bold text-lg text-amber-600">Synergy with IoT & Edge Computing</h5>
+                            <p class="text-slate-600">Provides the scalability needed to manage massive data streams from IoT devices and process data at the edge for lower latency.</p>
+                        </div>
+                         <div class="bg-white p-6 rounded-xl shadow-lg card">
+                            <h5 class="font-bold text-lg text-amber-600">Cloud-Native Evolution</h5>
+                            <p class="text-slate-600">Fully managed cloud services (DBaaS) are making NoSQL more accessible, abstracting away infrastructure complexity and enabling seamless scaling.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="products" class="py-16">
+            <div class="text-center mb-12">
+                 <h3 class="text-3xl md:text-4xl font-bold text-slate-800">Popular NoSQL Products</h3>
+                 <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">The NoSQL ecosystem is vast and varied. This section provides a quick reference to some of the leading databases, highlighting their data model and ideal use cases. Use the search to quickly find a product.</p>
+            </div>
+            <div class="mb-8 max-w-md mx-auto">
+                <input type="text" id="product-search" placeholder="Search products (e.g., MongoDB, Redis)..." class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition">
+            </div>
+            <div class="overflow-x-auto bg-white rounded-xl shadow-lg">
+                <table class="w-full min-w-[700px]">
+                    <thead>
+                        <tr class="bg-slate-100">
+                            <th class="p-4 text-left font-semibold text-slate-800">Product</th>
+                            <th class="p-4 text-left font-semibold text-slate-800">Data Model</th>
+                            <th class="p-4 text-left font-semibold text-slate-800">Best For</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-table-body">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-slate-300 py-8">
+        <div class="container mx-auto text-center">
+            <p>Interactive NoSQL Guide | Powered by Data & Code</p>
+            <p class="text-sm text-slate-400 mt-2">Content derived from the "Deep Research on NoSQL Databases" report.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const data = {
+                comparison: [
+                    { feature: 'Data Structure', sql: 'Structured tables (rows/columns)', nosql: 'Diverse models (Document, Key-Value, etc.)' },
+                    { feature: 'Schema', sql: 'Predefined and rigid', nosql: 'Flexible or schema-less' },
+                    { feature: 'Scalability', sql: 'Vertical (scale-up)', nosql: 'Horizontal (scale-out)' },
+                    { feature: 'Consistency', sql: 'Strict ACID properties', nosql: 'Often BASE (eventual consistency)' },
+                    { feature: 'Query Language', sql: 'Standardized SQL', nosql: 'Varies by database (e.g., N1QL, CQL)' },
+                    { feature: 'Use Cases', sql: 'Transactional systems, banking', nosql: 'Big Data, IoT, real-time apps' }
+                ],
+                dbTypes: [
+                    { 
+                        name: 'Key-Value', 
+                        description: 'Stores data as a simple collection of key-value pairs. Extremely fast for simple lookups.',
+                        icon: '🔑',
+                        strengths: { 'Speed': 9, 'Scalability': 8, 'Flexibility': 7, 'Query Complexity': 2, 'Relationship Handling': 3 }
+                    },
+                    { 
+                        name: 'Document', 
+                        description: 'Stores data in flexible, JSON-like documents. Great for semi-structured data and content management.',
+                        icon: '📄',
+                        strengths: { 'Speed': 7, 'Scalability': 8, 'Flexibility': 9, 'Query Complexity': 6, 'Relationship Handling': 5 }
+                    },
+                    { 
+                        name: 'Wide-Column', 
+                        description: 'Stores data in columns instead of rows. Optimized for analytical queries on massive datasets.',
+                        icon: '📊',
+                        strengths: { 'Speed': 6, 'Scalability': 10, 'Flexibility': 6, 'Query Complexity': 5, 'Relationship Handling': 4 }
+                    },
+                    { 
+                        name: 'Graph', 
+                        description: 'Stores data as nodes and edges. Built specifically for understanding complex relationships.',
+                        icon: '🔗',
+                        strengths: { 'Speed': 5, 'Scalability': 7, 'Flexibility': 8, 'Query Complexity': 8, 'Relationship Handling': 10 }
+                    }
+                ],
+                useCases: [
+                    { title: 'Personalized Recommendations', industry: 'E-commerce', icon: '🛒' },
+                    { title: 'Real-time Inventory', industry: 'E-commerce', icon: '📦' },
+                    { title: 'Social Media Feeds', industry: 'Social', icon: '💬' },
+                    { title: 'Friendship/Connection Graphs', industry: 'Social', icon: '👥' },
+                    { title: 'IoT Sensor Data', industry: 'IoT', icon: '🌡️' },
+                    { title: 'Real-time Analytics', industry: 'IoT', icon: '📈' },
+                    { title: 'Gaming Leaderboards', industry: 'Gaming', icon: '🎮' },
+                    { title: 'Player Profile Management', industry: 'Gaming', icon: '🕹️' },
+                    { title: 'Fraud Detection', industry: 'Finance', icon: '🛡️' },
+                    { title: 'Content Management Systems', industry: 'General', icon: '📝' }
+                ],
+                marketGrowth: {
+                    labels: ['2022', '2024', '2026', '2028', '2030', '2032'],
+                    data: [7.3, 15.5, 28.0, 45.0, 65.0, 86.3]
+                },
+                products: [
+                    { name: 'MongoDB', model: 'Document', bestFor: 'Web apps, CMS, API development' },
+                    { name: 'Redis', model: 'In-memory Key-Value', bestFor: 'Caching, session storage, real-time analytics' },
+                    { name: 'Apache Cassandra', model: 'Wide-Column', bestFor: 'IoT, social media, high write scalability' },
+                    { name: 'Couchbase', model: 'Document, Key-Value', bestFor: 'Interactive apps, offline-first apps' },
+                    { name: 'Amazon DynamoDB', model: 'Key-Value, Document', bestFor: 'Serverless apps, mobile backends' },
+                    { name: 'Neo4j', model: 'Graph', bestFor: 'Fraud detection, recommendation engines' },
+                    { name: 'HBase', model: 'Wide-Column', bestFor: 'Big Data analytics (Hadoop ecosystem)' },
+                    { name: 'Azure Cosmos DB', model: 'Multi-Model', bestFor: 'Globally distributed, low-latency apps' },
+                    { name: 'Firebase Firestore', model: 'Document', bestFor: 'Real-time web & mobile apps' }
+                ]
+            };
+
+            function populateComparisonTable() {
+                const tableBody = document.getElementById('comparison-table-body');
+                tableBody.innerHTML = data.comparison.map(row => `
+                    <tr class="border-b border-slate-200 last:border-b-0">
+                        <td class="p-4 font-medium text-slate-700">${row.feature}</td>
+                        <td class="p-4">${row.sql}</td>
+                        <td class="p-4">${row.nosql}</td>
+                    </tr>
+                `).join('');
+            }
+
+            let dbTypesChart;
+            function setupDbTypesSection() {
+                const tabsContainer = document.getElementById('db-type-tabs');
+                const contentContainer = document.getElementById('db-type-content');
+                
+                tabsContainer.innerHTML = data.dbTypes.map((type, index) => `
+                    <button class="tab-button px-4 py-2 rounded-lg font-medium text-slate-600 bg-slate-200 ${index === 0 ? 'active' : ''}" data-index="${index}">
+                        ${type.icon} ${type.name}
+                    </button>
+                `).join('');
+
+                function updateContent(index) {
+                    const type = data.dbTypes[index];
+                    contentContainer.innerHTML = `
+                        <h4 class="text-2xl font-bold mb-2 text-slate-800">${type.icon} ${type.name}</h4>
+                        <p class="text-slate-600">${type.description}</p>
+                    `;
+                    
+                    tabsContainer.querySelectorAll('.tab-button').forEach((btn, i) => {
+                        btn.classList.toggle('active', parseInt(btn.dataset.index) === index);
+                    });
+
+                    if (dbTypesChart) {
+                        dbTypesChart.data.datasets.forEach((dataset, i) => {
+                            dataset.borderWidth = (i === index) ? 4 : 1.5;
+                            dataset.borderColor = (i === index) ? '#f59e0b' : 'rgba(100, 116, 139, 0.5)';
+                            dataset.pointBackgroundColor = (i === index) ? '#f59e0b' : 'rgba(100, 116, 139, 0.5)';
+                        });
+                        dbTypesChart.update();
+                    }
+                }
+
+                tabsContainer.addEventListener('click', (e) => {
+                    if (e.target.matches('.tab-button')) {
+                        const index = parseInt(e.target.dataset.index);
+                        updateContent(index);
+                    }
+                });
+
+                const ctx = document.getElementById('dbTypesChart').getContext('2d');
+                const chartData = {
+                    labels: Object.keys(data.dbTypes[0].strengths),
+                    datasets: data.dbTypes.map((type, index) => ({
+                        label: type.name,
+                        data: Object.values(type.strengths),
+                        fill: true,
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        borderColor: index === 0 ? '#f59e0b' : 'rgba(100, 116, 139, 0.5)',
+                        pointBackgroundColor: index === 0 ? '#f59e0b' : 'rgba(100, 116, 139, 0.5)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#f59e0b',
+                        borderWidth: index === 0 ? 4 : 1.5
+                    }))
+                };
+                
+                dbTypesChart = new Chart(ctx, {
+                    type: 'radar',
+                    data: chartData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                             tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.r !== null) {
+                                            label += context.parsed.r;
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            r: {
+                                angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                                grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                                pointLabels: { font: { size: 12 }, color: '#475569' },
+                                ticks: {
+                                    backdropColor: 'transparent',
+                                    stepSize: 2,
+                                    color: '#64748b'
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 10
+                            }
+                        }
+                    }
+                });
+                updateContent(0);
+            }
+
+            function setupUseCases() {
+                const filtersContainer = document.getElementById('use-case-filters');
+                const gridContainer = document.getElementById('use-case-grid');
+                const industries = ['All', ...new Set(data.useCases.map(uc => uc.industry))];
+
+                filtersContainer.innerHTML = industries.map(industry => `
+                    <button class="tab-button px-4 py-2 rounded-full font-medium text-sm ${industry === 'All' ? 'active' : 'bg-slate-200 text-slate-600'}" data-industry="${industry}">
+                        ${industry}
+                    </button>
+                `).join('');
+
+                function renderGrid(filter = 'All') {
+                    const filteredCases = filter === 'All' ? data.useCases : data.useCases.filter(uc => uc.industry === filter);
+                    gridContainer.innerHTML = filteredCases.map(uc => `
+                        <div class="bg-white p-6 rounded-xl shadow-md card flex items-center space-x-4">
+                            <div class="text-4xl">${uc.icon}</div>
+                            <div>
+                                <h5 class="font-bold text-slate-800">${uc.title}</h5>
+                                <span class="text-sm text-amber-600 font-medium">${uc.industry}</span>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+
+                filtersContainer.addEventListener('click', (e) => {
+                    if (e.target.matches('.tab-button')) {
+                        const industry = e.target.dataset.industry;
+                        filtersContainer.querySelectorAll('.tab-button').forEach(btn => {
+                            btn.classList.toggle('active', btn.dataset.industry === industry);
+                            if(btn.dataset.industry !== industry) {
+                                btn.classList.add('bg-slate-200', 'text-slate-600');
+                            } else {
+                                btn.classList.remove('bg-slate-200', 'text-slate-600');
+                            }
+                        });
+                        renderGrid(industry);
+                    }
+                });
+
+                renderGrid();
+            }
+
+            function createMarketGrowthChart() {
+                const ctx = document.getElementById('marketGrowthChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.marketGrowth.labels,
+                        datasets: [{
+                            label: 'Market Size (Billion USD)',
+                            data: data.marketGrowth.data,
+                            fill: true,
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            tension: 0.4,
+                            pointBackgroundColor: '#f59e0b',
+                            pointBorderColor: '#fff',
+                            pointHoverRadius: 7,
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#f59e0b',
+                            pointHoverBorderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.05)'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+
+            function setupProductsTable() {
+                const searchInput = document.getElementById('product-search');
+                const tableBody = document.getElementById('products-table-body');
+                
+                function renderTable(filter = '') {
+                    const lowercasedFilter = filter.toLowerCase();
+                    const filteredProducts = data.products.filter(p => 
+                        p.name.toLowerCase().includes(lowercasedFilter) ||
+                        p.model.toLowerCase().includes(lowercasedFilter) ||
+                        p.bestFor.toLowerCase().includes(lowercasedFilter)
+                    );
+                    
+                    if (filteredProducts.length > 0) {
+                        tableBody.innerHTML = filteredProducts.map(p => `
+                            <tr class="border-b border-slate-100 last:border-b-0 hover:bg-slate-50 transition-colors">
+                                <td class="p-4 font-medium text-slate-800">${p.name}</td>
+                                <td class="p-4 text-slate-600">${p.model}</td>
+                                <td class="p-4 text-slate-600">${p.bestFor}</td>
+                            </tr>
+                        `).join('');
+                    } else {
+                        tableBody.innerHTML = `<tr><td colspan="3" class="text-center p-8 text-slate-500">No products found.</td></tr>`;
+                    }
+                }
+
+                searchInput.addEventListener('input', (e) => {
+                    renderTable(e.target.value);
+                });
+
+                renderTable();
+            }
+            
+            function setupMobileNav() {
+                const mobileNav = document.getElementById('mobile-nav');
+                mobileNav.addEventListener('change', (e) => {
+                    window.location.hash = e.target.value;
+                });
+            }
+
+            populateComparisonTable();
+            setupDbTypesSection();
+            setupUseCases();
+            createMarketGrowthChart();
+            setupProductsTable();
+            setupMobileNav();
+        });
+    </script>
+</body>
+</html>
