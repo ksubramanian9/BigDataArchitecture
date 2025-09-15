@@ -1,0 +1,133 @@
+{
+  "seed": 48,
+  "entity_count": 200000,
+  "time_window": {
+    "start": "2025-01-01T06:00:00",
+    "end": "2025-02-28T23:59:59"
+  },
+  "output": {
+    "format": "csv"
+  },
+  "schema": {
+    "fields": [
+      {
+        "name": "event_id",
+        "type": "uuid"
+      },
+      {
+        "name": "event_time",
+        "type": "datetime",
+        "format": "iso",
+        "mode": "seasonality",
+        "profile": {
+          "hour_of_day": {
+            "8": 1.5,
+            "9": 1.5,
+            "18": 1.5,
+            "19": 1.5,
+            "_default": 1.0
+          },
+          "day_of_week": {
+            "5": 0.8,
+            "6": 0.7,
+            "_default": 1.0
+          }
+        }
+      },
+      {
+        "name": "city",
+        "type": "category",
+        "choices": [
+          {
+            "value": "Bengaluru",
+            "weight": 3
+          },
+          {
+            "value": "Chennai",
+            "weight": 2
+          },
+          {
+            "value": "Mumbai",
+            "weight": 2
+          },
+          {
+            "value": "Delhi",
+            "weight": 2
+          },
+          {
+            "value": "Hyderabad",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "sensor_type",
+        "type": "category",
+        "choices": [
+          {
+            "value": "air_quality",
+            "weight": 4
+          },
+          {
+            "value": "traffic",
+            "weight": 3
+          },
+          {
+            "value": "noise",
+            "weight": 2
+          },
+          {
+            "value": "water",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "geo",
+        "type": "geo",
+        "bbox": [
+          12.8,
+          77.45,
+          13.1,
+          77.8
+        ],
+        "as_object": true
+      },
+      {
+        "name": "pm25",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 3.0,
+        "stddev": 0.6
+      },
+      {
+        "name": "noise_db",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 65,
+        "stddev": 10
+      },
+      {
+        "name": "traffic_flow",
+        "type": "int",
+        "min": 0,
+        "max": 5000,
+        "skew": 1.1
+      },
+      {
+        "name": "incident_flag",
+        "type": "bool",
+        "p_true": 0.02
+      },
+      {
+        "name": "key",
+        "type": "derived_concat",
+        "parts": [
+          "sensor_type",
+          "city"
+        ],
+        "sep": "|"
+      }
+    ]
+  }
+}

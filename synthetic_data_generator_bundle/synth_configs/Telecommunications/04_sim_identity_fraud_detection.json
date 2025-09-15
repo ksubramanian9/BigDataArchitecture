@@ -1,0 +1,122 @@
+{
+  "seed": 46,
+  "entity_count": 200000,
+  "time_window": {
+    "start": "2025-01-01T06:00:00",
+    "end": "2025-02-28T23:59:59"
+  },
+  "output": {
+    "format": "csv"
+  },
+  "schema": {
+    "fields": [
+      {
+        "name": "event_id",
+        "type": "uuid"
+      },
+      {
+        "name": "event_time",
+        "type": "datetime",
+        "format": "iso",
+        "mode": "seasonality",
+        "profile": {
+          "hour_of_day": {
+            "8": 1.5,
+            "9": 1.5,
+            "18": 1.5,
+            "19": 1.5,
+            "_default": 1.0
+          },
+          "day_of_week": {
+            "5": 0.8,
+            "6": 0.7,
+            "_default": 1.0
+          }
+        }
+      },
+      {
+        "name": "city",
+        "type": "category",
+        "choices": [
+          {
+            "value": "Bengaluru",
+            "weight": 3
+          },
+          {
+            "value": "Chennai",
+            "weight": 2
+          },
+          {
+            "value": "Mumbai",
+            "weight": 2
+          },
+          {
+            "value": "Delhi",
+            "weight": 2
+          },
+          {
+            "value": "Hyderabad",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "plan",
+        "type": "category",
+        "choices": [
+          {
+            "value": "Prepaid",
+            "weight": 7
+          },
+          {
+            "value": "Postpaid",
+            "weight": 3
+          }
+        ]
+      },
+      {
+        "name": "subscriber_id",
+        "type": "string",
+        "pattern": "S{00000000-99999999}"
+      },
+      {
+        "name": "usage_mb",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 0.0,
+        "stddev": 1.2
+      },
+      {
+        "name": "voice_minutes",
+        "type": "int",
+        "min": 0,
+        "max": 2000,
+        "skew": 1.2
+      },
+      {
+        "name": "call_drop",
+        "type": "bool",
+        "p_true": 0.03
+      },
+      {
+        "name": "sim_swap_flag",
+        "type": "bool",
+        "p_true": 0.003
+      },
+      {
+        "name": "churn_label",
+        "type": "bool",
+        "p_true": 0.06
+      },
+      {
+        "name": "key",
+        "type": "derived_concat",
+        "parts": [
+          "plan",
+          "subscriber_id"
+        ],
+        "sep": "|"
+      }
+    ]
+  }
+}
