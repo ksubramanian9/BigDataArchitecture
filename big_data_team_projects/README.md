@@ -312,8 +312,9 @@
 
   59       Government & Public   Disaster response & relief analytics
            Policy                
-
+           
   60       Government & Public   Citizen feedback/social sentiment
            Policy                analysis on policies
+           
   -----------------------------------------------------------------------
   
