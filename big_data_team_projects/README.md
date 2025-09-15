@@ -1,70 +1,319 @@
-# Synthetic Data Generator Configs
+# Big Data Project Framework -- Multi-Domain Scenarios
 
-This folder contains **60 ready-made JSON configs** for the `generator_template.py` (no external deps).
+**1. Project Theme**
 
-## How to use
-```bash
-python generator_template.py --config /path/to/config.json --out ./data.csv --n 500000 --format csv --seed 123 --gzip
-```
+**"Big Data Applications Across Key Industries"**
 
-## Index
-- **Agriculture** — Crop yield prediction using soil and weather data → `Agriculture/01_crop_yield_prediction_using_soil_and_weather_data.json`
-- **Agriculture** — Precision farming with IoT sensor streams → `Agriculture/02_precision_farming_with_iot_sensor_streams.json`
-- **Agriculture** — Market price trend analysis for major crops → `Agriculture/03_market_price_trend_analysis_for_major_crops.json`
-- **Agriculture** — Pest/disease outbreak detection via image/IoT feeds → `Agriculture/04_pest_disease_outbreak_detection_via_image_iot_feeds.json`
-- **Agriculture** — Irrigation optimization using weather and soil moisture → `Agriculture/05_irrigation_optimization_using_weather_and_soil_moisture.json`
-- **Agriculture** — Farm-to-market supply chain analytics → `Agriculture/06_farm_to_market_supply_chain_analytics.json`
-- **Healthcare** — Patient readmission risk prediction → `Healthcare/01_patient_readmission_risk_prediction.json`
-- **Healthcare** — Real-time epidemic spread monitoring → `Healthcare/02_real_time_epidemic_spread_monitoring.json`
-- **Healthcare** — Hospital resource utilization analytics → `Healthcare/03_hospital_resource_utilization_analytics.json`
-- **Healthcare** — Medical image metadata lake & analysis → `Healthcare/04_medical_image_metadata_lake_analysis.json`
-- **Healthcare** — Wearables IoT patient vitals monitoring → `Healthcare/05_wearables_iot_patient_vitals_monitoring.json`
-- **Healthcare** — Drug effectiveness and adverse reaction detection → `Healthcare/06_drug_effectiveness_and_adverse_reaction_detection.json`
-- **Finance_Banking** — Card transaction fraud detection → `Finance_Banking/01_card_transaction_fraud_detection.json`
-- **Finance_Banking** — Customer segmentation and offers → `Finance_Banking/02_customer_segmentation_and_offers.json`
-- **Finance_Banking** — Credit scoring with alternate data → `Finance_Banking/03_credit_scoring_with_alternate_data.json`
-- **Finance_Banking** — Real-time transaction anomaly detection → `Finance_Banking/04_real_time_transaction_anomaly_detection.json`
-- **Finance_Banking** — Market sentiment vs price movement → `Finance_Banking/05_market_sentiment_vs_price_movement.json`
-- **Finance_Banking** — ATM cash demand forecasting → `Finance_Banking/06_atm_cash_demand_forecasting.json`
-- **Retail_ECommerce** — Product recommendation events → `Retail_ECommerce/01_product_recommendation_events.json`
-- **Retail_ECommerce** — Shopping basket analysis → `Retail_ECommerce/02_shopping_basket_analysis.json`
-- **Retail_ECommerce** — Dynamic pricing optimization → `Retail_ECommerce/03_dynamic_pricing_optimization.json`
-- **Retail_ECommerce** — Customer churn prediction → `Retail_ECommerce/04_customer_churn_prediction.json`
-- **Retail_ECommerce** — Review sentiment analysis → `Retail_ECommerce/05_review_sentiment_analysis.json`
-- **Retail_ECommerce** — Supply chain and logistics analytics → `Retail_ECommerce/06_supply_chain_and_logistics_analytics.json`
-- **Transportation** — Route optimization for buses → `Transportation/01_route_optimization_for_buses.json`
-- **Transportation** — Delay/breakdown detection → `Transportation/02_delay_breakdown_detection.json`
-- **Transportation** — Ride demand forecasting → `Transportation/03_ride_demand_forecasting.json`
-- **Transportation** — Traffic congestion prediction → `Transportation/04_traffic_congestion_prediction.json`
-- **Transportation** — Ticketing revenue leakage analysis → `Transportation/05_ticketing_revenue_leakage_analysis.json`
-- **Transportation** — Multi-modal integration analytics → `Transportation/06_multi_modal_integration_analytics.json`
-- **Energy_Utilities** — Smart grid load forecasting → `Energy_Utilities/01_smart_grid_load_forecasting.json`
-- **Energy_Utilities** — Predictive maintenance of transformers → `Energy_Utilities/02_predictive_maintenance_of_transformers.json`
-- **Energy_Utilities** — Energy theft anomaly detection → `Energy_Utilities/03_energy_theft_anomaly_detection.json`
-- **Energy_Utilities** — Solar/wind generation forecasting → `Energy_Utilities/04_solar_wind_generation_forecasting.json`
-- **Energy_Utilities** — Household consumption patterns → `Energy_Utilities/05_household_consumption_patterns.json`
-- **Energy_Utilities** — Dynamic electricity pricing → `Energy_Utilities/06_dynamic_electricity_pricing.json`
-- **Telecommunications** — Call drop analysis and network tuning → `Telecommunications/01_call_drop_analysis_and_network_tuning.json`
-- **Telecommunications** — Subscriber churn modeling → `Telecommunications/02_subscriber_churn_modeling.json`
-- **Telecommunications** — Usage behavior segmentation → `Telecommunications/03_usage_behavior_segmentation.json`
-- **Telecommunications** — SIM/identity fraud detection → `Telecommunications/04_sim_identity_fraud_detection.json`
-- **Telecommunications** — Real-time network anomaly detection → `Telecommunications/05_real_time_network_anomaly_detection.json`
-- **Telecommunications** — Call/data social graph analytics → `Telecommunications/06_call_data_social_graph_analytics.json`
-- **Education** — Student performance risk alerts → `Education/01_student_performance_risk_alerts.json`
-- **Education** — Adaptive learning recommendations → `Education/02_adaptive_learning_recommendations.json`
-- **Education** — MOOC clickstream engagement → `Education/03_mooc_clickstream_engagement.json`
-- **Education** — Skill gap analysis from course data → `Education/04_skill_gap_analysis_from_course_data.json`
-- **Education** — Placement/job market trend analytics → `Education/05_placement_job_market_trend_analytics.json`
-- **Education** — Admin resource allocation optimization → `Education/06_admin_resource_allocation_optimization.json`
-- **Social_Media** — Topic sentiment tracking → `Social_Media/01_topic_sentiment_tracking.json`
-- **Social_Media** — Fake news/rumor detection → `Social_Media/02_fake_news_rumor_detection.json`
-- **Social_Media** — Influencer network analytics → `Social_Media/03_influencer_network_analytics.json`
-- **Social_Media** — Video recommendation telemetry → `Social_Media/04_video_recommendation_telemetry.json`
-- **Social_Media** — Toxic comment moderation cues → `Social_Media/05_toxic_comment_moderation_cues.json`
-- **Social_Media** — User engagement and churn analytics → `Social_Media/06_user_engagement_and_churn_analytics.json`
-- **Government_PublicPolicy** — Smart city sensor analytics → `Government_PublicPolicy/01_smart_city_sensor_analytics.json`
-- **Government_PublicPolicy** — Crime hotspot prediction → `Government_PublicPolicy/02_crime_hotspot_prediction.json`
-- **Government_PublicPolicy** — Tax fraud detection in filings → `Government_PublicPolicy/03_tax_fraud_detection_in_filings.json`
-- **Government_PublicPolicy** — Public welfare scheme usage → `Government_PublicPolicy/04_public_welfare_scheme_usage.json`
-- **Government_PublicPolicy** — Disaster response analytics → `Government_PublicPolicy/05_disaster_response_analytics.json`
-- **Government_PublicPolicy** — Citizen feedback policy sentiment → `Government_PublicPolicy/06_citizen_feedback_policy_sentiment.json`
+-   Each team (3 students) selects **one scenario** from the curated
+    list (10 domains × 6 = 60 scenarios).
+
+-   All scenarios share a **common Big Data workflow**: data ingestion →
+    storage → processing → analytics → visualization.
+
+-   Domains ensure variety (agriculture, healthcare, finance, retail,
+    transport, energy, telecom, education, social media, government).
+
+**2. Project Structure**
+
+**Common Pipeline (for all teams)**
+
+1.  **Data Sources** -- Identify/download/generate open or synthetic
+    datasets.
+
+2.  **Data Ingestion** -- Use Flume/Kafka/Sqoop/custom loaders.
+
+3.  **Storage** -- Land data in HDFS (Bronze → Silver → Gold zones). Use
+    Hive/HBase as needed.
+
+4.  **Processing** -- Batch (MapReduce/Spark) + optional Streaming
+    (Spark Structured Streaming).
+
+5.  **Analytics** -- Implement KPIs & domain-specific metrics.
+
+6.  **Visualization** -- Dashboards using
+    Superset/Tableau/PowerBI/Zeppelin.
+
+**3. Domains & Scenarios**
+
+(1 per team; total 60 teams)
+
+1.  **Agriculture** -- Yield prediction, precision farming, market
+    trends, pest detection, irrigation optimization, farm supply chain.
+
+2.  **Healthcare** -- Risk prediction, epidemic spread, hospital
+    utilization, medical imaging, IoT monitoring, drug reactions.
+
+3.  **Finance & Banking** -- Fraud detection, segmentation, credit
+    scoring, anomaly detection, sentiment + stock, ATM demand.
+
+4.  **Retail & E-Commerce** -- Recommender systems, basket analysis,
+    pricing optimization, churn, review sentiment, logistics.
+
+5.  **Transportation** -- Route optimization, breakdown/delay detection,
+    demand forecasting, congestion prediction, revenue leakage,
+    multi-modal integration.
+
+6.  **Energy & Utilities** -- Load forecasting, predictive maintenance,
+    theft detection, renewable forecasting, consumption patterns,
+    dynamic pricing.
+
+7.  **Telecom** -- Call drop analysis, churn, segmentation, SIM fraud,
+    anomaly detection, social graph analysis.
+
+8.  **Education** -- Performance prediction, adaptive learning, MOOC
+    logs, skill gap, placement trends, resource allocation.
+
+9.  **Social Media** -- Sentiment analysis, fake news detection,
+    influencer analysis, video recommendations, toxic comment detection,
+    churn analytics.
+
+10. **Government** -- Smart city sensors, crime prediction, tax fraud,
+    welfare usage, disaster response, policy feedback sentiment.
+
+**4. Milestones & Timeline (2 Months)**
+
+  -----------------------------------------------------------------------------
+  **Week**   **Milestone**      **Expected Outcome**
+  ---------- ------------------ -----------------------------------------------
+  1--2       **Setup & Data     Teams set up Hadoop ecosystem (HDFS, Hive,
+             Acquisition**      Spark). Select scenario + finalize datasets
+                                (real + synthetic).
+
+  3--4       **Data Ingestion & Use Kafka/Flume/Sqoop/custom scripts. Load raw
+             Storage**          data → HDFS (Bronze). Organize Silver (cleaned)
+                                and Gold (aggregates).
+
+  5--6       **Processing &     Spark/MapReduce jobs to implement KPIs for
+             Analytics**        scenario. Store results in Hive/NoSQL.
+                                Optionally explore MLlib for
+                                forecasting/classification.
+
+  7          **Business Case    Deliver **one focused solution per team**
+             Implementation**   (fraud detection, churn prediction, anomaly
+                                detection, etc.).
+
+  8          **Visualization &  Build dashboards. Submit final presentation &
+             Final Report**     report. Demonstrate full pipeline.
+  -----------------------------------------------------------------------------
+
+**5. Deliverables**
+
+1.  **Technical**
+
+    -   Hadoop environment documentation.
+
+    -   Data ingestion scripts.
+
+    -   Hive/NoSQL schema.
+
+    -   Spark/MapReduce jobs.
+
+2.  **Business Outputs**
+
+    -   Domain-specific KPIs & insights.
+
+    -   Written recommendations for decision-makers.
+
+3.  **Visualization**
+
+    -   Dashboard showing results clearly.
+
+4.  **Final Report (15--20 pages)**
+
+    -   Problem statement, datasets, architecture diagram, processing
+        pipeline, results, challenges, recommendations.
+
+**6. Evaluation Rubric (100 Marks)**
+
+  -----------------------------------------------------------------------------
+  **Criteria**           **Weight**   **Details**
+  ---------------------- ------------ -----------------------------------------
+  **Technical Setup**    15           Correct Hadoop ecosystem setup.
+
+  **Data Ingestion &     15           Effective ingestion, proper partitioning
+  Storage**                           & schema.
+
+  **Processing &         25           Spark/MapReduce jobs, correctness of
+  Analytics**                         KPIs, scalability.
+
+  **Business Insights**  20           Quality, relevance, and clarity of domain
+                                      insights.
+
+  **Visualization &      10           Effective dashboards & presentation.
+  Storytelling**                      
+
+  **Documentation &      15           Report clarity, code organization,
+  Teamwork**                          reflection on teamwork.
+  -----------------------------------------------------------------------------
+
+**7. Benefits of This Framework**
+
+-   **Scalability**: 60 unique but comparable projects.
+
+-   **Uniformity**: All follow the same pipeline → easier evaluation.
+
+-   **Diversity**: Exposure to multiple real-world domains.
+
+-   **Balance**: Technical rigor + business insight.
+
+**Team Allocation -- Big Data Project**
+
+  -----------------------------------------------------------------------
+  Team \#  Domain                Scenario / Use Case
+  -------- --------------------- ----------------------------------------
+  1        Agriculture           Crop yield prediction using soil +
+                                 weather data
+
+  2        Agriculture           Precision farming with IoT sensor
+                                 streams
+
+  3        Agriculture           Market price trend analysis for major
+                                 crops
+
+  4        Agriculture           Detecting pest/disease outbreaks via
+                                 image/IoT feeds
+
+  5        Agriculture           Optimizing irrigation using weather +
+                                 soil data
+
+  6        Agriculture           Supply chain analysis from farm to
+                                 market
+
+  7        Healthcare            Patient risk prediction (e.g.,
+                                 readmission, chronic disease)
+
+  8        Healthcare            Real-time epidemic/disease spread
+                                 monitoring
+
+  9        Healthcare            Hospital resource utilization (beds,
+                                 ICU, equipment)
+
+  10       Healthcare            Medical image storage & large-scale
+                                 analytics
+
+  11       Healthcare            Wearables/IoT-driven patient monitoring
+                                 streams
+
+  12       Healthcare            Drug effectiveness and adverse reaction
+                                 detection
+
+  13       Finance & Banking     Fraud detection in transaction logs
+
+  14       Finance & Banking     Customer segmentation & personalized
+                                 product offers
+
+  15       Finance & Banking     Credit scoring with alternate data
+                                 sources
+
+  16       Finance & Banking     Real-time transaction anomaly detection
+
+  17       Finance & Banking     Stock market sentiment analysis
+                                 (social + price)
+
+  18       Finance & Banking     ATM/cash demand forecasting
+
+  19       Retail & E-Commerce   Product recommendation engines
+
+  20       Retail & E-Commerce   Shopping basket analysis (association
+                                 rules)
+
+  21       Retail & E-Commerce   Dynamic pricing optimization
+
+  22       Retail & E-Commerce   Customer churn prediction
+
+  23       Retail & E-Commerce   Sentiment analysis from customer reviews
+
+  24       Retail & E-Commerce   Supply chain/logistics optimization
+
+  25       Transportation        Route optimization for buses/trains
+
+  26       Transportation        Real-time vehicle breakdown/delay
+                                 detection
+
+  27       Transportation        Ride demand forecasting (cab/auto
+                                 services)
+
+  28       Transportation        Traffic congestion prediction from IoT
+                                 sensors
+
+  29       Transportation        Ticketing & revenue leakage analysis
+
+  30       Transportation        Integration of multi-modal transport
+                                 datasets
+
+  31       Energy & Utilities    Smart grid load forecasting
+
+  32       Energy & Utilities    Predictive maintenance of power
+                                 equipment
+
+  33       Energy & Utilities    Energy theft/anomaly detection
+
+  34       Energy & Utilities    Renewable energy generation forecasting
+                                 (solar/wind)
+
+  35       Energy & Utilities    Household consumption pattern analysis
+
+  36       Energy & Utilities    Dynamic pricing of electricity based on
+                                 demand
+
+  37       Telecommunications    Call drop analysis & network
+                                 optimization
+
+  38       Telecommunications    Predictive churn modeling for
+                                 subscribers
+
+  39       Telecommunications    Customer usage behavior segmentation
+
+  40       Telecommunications    Fraudulent SIM/usage pattern detection
+
+  41       Telecommunications    Real-time network anomaly detection
+
+  42       Telecommunications    Social graph analysis of call/data
+                                 records
+
+  43       Education             Student performance prediction & risk
+                                 alerts
+
+  44       Education             Adaptive learning recommendation engines
+
+  45       Education             MOOC log analysis for engagement
+
+  46       Education             Skill gap analytics from online learning
+                                 platforms
+
+  47       Education             Placement/job market trend analysis
+
+  48       Education             Administrative resource allocation
+                                 (labs, courses)
+
+  49       Social Media          Sentiment analysis of trending topics
+
+  50       Social Media          Fake news/rumor detection
+
+  51       Social Media          Influencer network graph analysis
+
+  52       Social Media          Video stream usage & recommendation
+
+  53       Social Media          Toxic comment detection in communities
+
+  54       Social Media          User engagement and churn analytics
+
+  55       Government & Public   Smart city sensor analytics (air
+           Policy                quality, traffic)
+
+  56       Government & Public   Crime hotspot prediction & policing
+           Policy                resource allocation
+
+  57       Government & Public   Tax fraud detection in filings
+           Policy                
+
+  58       Government & Public   Public welfare scheme usage analysis
+           Policy                
+
+  59       Government & Public   Disaster response & relief analytics
+           Policy                
+
+  60       Government & Public   Citizen feedback/social sentiment
+           Policy                analysis on policies
+  -----------------------------------------------------------------------
+  
