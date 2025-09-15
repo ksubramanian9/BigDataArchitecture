@@ -220,13 +220,13 @@ def open_out(path, gz):
 
 def write_csv_header(f, fields):
     headers = [fld["name"] for fld in fields]
-    f.write(",".join(headers) + "\\n")
+    f.write(",".join(headers) + "\n")
 
 def csv_escape(val):
     if val is None:
         return ""
     s = str(val)
-    if any(c in s for c in [",", "\"", "\\n"]):
+    if any(c in s for c in [",", "\"", "\n"]):
         s = "\"" + s.replace("\"", "\"\"") + "\""
     return s
 
@@ -238,11 +238,11 @@ def write_csv_row(f, row_vals):
             out.append(csv_escape(_json.dumps(v, ensure_ascii=False)))
         else:
             out.append(csv_escape(v))
-    f.write(",".join(out) + "\\n")
+    f.write(",".join(out) + "\n")
 
 def write_jsonl_row(f, obj):
     import json as _json
-    f.write(_json.dumps(obj, ensure_ascii=False) + "\\n")
+    f.write(_json.dumps(obj, ensure_ascii=False) + "\n")
 
 def main():
     args = parse_args()
