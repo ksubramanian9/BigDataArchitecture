@@ -1,0 +1,126 @@
+{
+  "seed": 903,
+  "entity_count": 200000,
+  "time_window": {
+    "start": "2025-03-01T00:00:00",
+    "end": "2025-04-30T23:59:59"
+  },
+  "output": {
+    "format": "csv"
+  },
+  "schema": {
+    "fields": [
+      {
+        "name": "event_id",
+        "type": "uuid"
+      },
+      {
+        "name": "event_time",
+        "type": "datetime",
+        "format": "iso",
+        "mode": "seasonality",
+        "profile": {
+          "hour_of_day": {
+            "10": 1.5,
+            "11": 1.5,
+            "20": 1.5,
+            "_default": 0.95
+          },
+          "day_of_week": {
+            "5": 0.85,
+            "6": 0.75,
+            "_default": 1.0
+          }
+        }
+      },
+      {
+        "name": "city",
+        "type": "category",
+        "choices": [
+          {
+            "value": "Bengaluru",
+            "weight": 3
+          },
+          {
+            "value": "Chennai",
+            "weight": 2
+          },
+          {
+            "value": "Mumbai",
+            "weight": 2
+          },
+          {
+            "value": "Delhi",
+            "weight": 2
+          },
+          {
+            "value": "Hyderabad",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "account_id",
+        "type": "string",
+        "pattern": "AC{00000000-99999999}"
+      },
+      {
+        "name": "counterparty_country",
+        "type": "category",
+        "choices": [
+          "IN",
+          "AE",
+          "SG",
+          "GB",
+          "US",
+          "DE"
+        ]
+      },
+      {
+        "name": "amount",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 0.0,
+        "stddev": 1.1
+      },
+      {
+        "name": "is_cross_border",
+        "type": "bool",
+        "p_true": 0.12
+      },
+      {
+        "name": "channel",
+        "type": "category",
+        "choices": [
+          "NEFT",
+          "RTGS",
+          "IMPS",
+          "UPI",
+          "SWIFT"
+        ]
+      },
+      {
+        "name": "aml_suspect",
+        "type": "bool",
+        "p_true": 0.02
+      },
+      {
+        "name": "burst_count_24h",
+        "type": "int",
+        "min": 1,
+        "max": 50,
+        "skew": 0.8
+      },
+      {
+        "name": "key",
+        "type": "derived_concat",
+        "parts": [
+          "account_id",
+          "counterparty_country",
+          "channel"
+        ],
+        "sep": "|"
+      }
+    ]
+  }
+}
