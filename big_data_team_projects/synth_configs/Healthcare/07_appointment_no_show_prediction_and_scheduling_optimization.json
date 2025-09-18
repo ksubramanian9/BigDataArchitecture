@@ -1,0 +1,133 @@
+{
+  "seed": 902,
+  "entity_count": 200000,
+  "time_window": {
+    "start": "2025-03-01T00:00:00",
+    "end": "2025-04-30T23:59:59"
+  },
+  "output": {
+    "format": "csv"
+  },
+  "schema": {
+    "fields": [
+      {
+        "name": "event_id",
+        "type": "uuid"
+      },
+      {
+        "name": "event_time",
+        "type": "datetime",
+        "format": "iso",
+        "mode": "seasonality",
+        "profile": {
+          "hour_of_day": {
+            "8": 1.5,
+            "9": 1.5,
+            "10": 1.5,
+            "17": 1.5,
+            "_default": 0.95
+          },
+          "day_of_week": {
+            "_default": 1.0
+          }
+        }
+      },
+      {
+        "name": "city",
+        "type": "category",
+        "choices": [
+          {
+            "value": "Bengaluru",
+            "weight": 3
+          },
+          {
+            "value": "Chennai",
+            "weight": 2
+          },
+          {
+            "value": "Mumbai",
+            "weight": 2
+          },
+          {
+            "value": "Delhi",
+            "weight": 2
+          },
+          {
+            "value": "Hyderabad",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "clinic",
+        "type": "category",
+        "choices": [
+          "GH_A",
+          "Metro_Care",
+          "CityMed",
+          "Sunrise"
+        ]
+      },
+      {
+        "name": "patient_id",
+        "type": "string",
+        "pattern": "PT{000000-999999}"
+      },
+      {
+        "name": "appointment_type",
+        "type": "category",
+        "choices": [
+          "consult",
+          "followup",
+          "diagnostics",
+          "therapy"
+        ]
+      },
+      {
+        "name": "day_slot",
+        "type": "category",
+        "choices": [
+          {
+            "value": "morning",
+            "weight": 4
+          },
+          {
+            "value": "afternoon",
+            "weight": 3
+          },
+          {
+            "value": "evening",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "name": "sms_reminder_sent",
+        "type": "bool",
+        "p_true": 0.7
+      },
+      {
+        "name": "no_show",
+        "type": "bool",
+        "p_true": 0.15
+      },
+      {
+        "name": "wait_minutes",
+        "type": "int",
+        "min": 0,
+        "max": 120,
+        "skew": 1.4
+      },
+      {
+        "name": "key",
+        "type": "derived_concat",
+        "parts": [
+          "clinic",
+          "patient_id",
+          "day_slot"
+        ],
+        "sep": "|"
+      }
+    ]
+  }
+}
