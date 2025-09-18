@@ -1,0 +1,104 @@
+{
+  "seed": 908,
+  "entity_count": 200000,
+  "time_window": {
+    "start": "2025-03-01T00:00:00",
+    "end": "2025-04-30T23:59:59"
+  },
+  "output": {
+    "format": "csv"
+  },
+  "schema": {
+    "fields": [
+      {
+        "name": "event_id",
+        "type": "uuid"
+      },
+      {
+        "name": "event_time",
+        "type": "datetime",
+        "format": "iso",
+        "mode": "seasonality",
+        "profile": {
+          "hour_of_day": {
+            "9": 1.5,
+            "10": 1.5,
+            "11": 1.5,
+            "15": 1.5,
+            "_default": 0.95
+          },
+          "day_of_week": {
+            "_default": 1.0
+          }
+        }
+      },
+      {
+        "name": "city",
+        "type": "category",
+        "choices": [
+          {
+            "value": "Bengaluru",
+            "weight": 3
+          },
+          {
+            "value": "Chennai",
+            "weight": 2
+          },
+          {
+            "value": "Mumbai",
+            "weight": 2
+          },
+          {
+            "value": "Delhi",
+            "weight": 2
+          },
+          {
+            "value": "Hyderabad",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "exam_id",
+        "type": "string",
+        "pattern": "EX{0000-9999}"
+      },
+      {
+        "name": "student_id",
+        "type": "string",
+        "pattern": "STU{000000-999999}"
+      },
+      {
+        "name": "tab_switch_detected",
+        "type": "bool",
+        "p_true": 0.12
+      },
+      {
+        "name": "eye_gaze_off_screen",
+        "type": "bool",
+        "p_true": 0.08
+      },
+      {
+        "name": "suspicious_events",
+        "type": "int",
+        "min": 0,
+        "max": 10,
+        "skew": 0.9
+      },
+      {
+        "name": "proctor_flag",
+        "type": "bool",
+        "p_true": 0.04
+      },
+      {
+        "name": "key",
+        "type": "derived_concat",
+        "parts": [
+          "exam_id",
+          "student_id"
+        ],
+        "sep": "|"
+      }
+    ]
+  }
+}
