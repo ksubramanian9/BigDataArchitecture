@@ -1,0 +1,103 @@
+{
+  "seed": 909,
+  "entity_count": 200000,
+  "time_window": {
+    "start": "2025-03-01T00:00:00",
+    "end": "2025-04-30T23:59:59"
+  },
+  "output": {
+    "format": "csv"
+  },
+  "schema": {
+    "fields": [
+      {
+        "name": "event_id",
+        "type": "uuid"
+      },
+      {
+        "name": "event_time",
+        "type": "datetime",
+        "format": "iso",
+        "mode": "seasonality",
+        "profile": {
+          "hour_of_day": {
+            "11": 1.5,
+            "12": 1.5,
+            "21": 1.5,
+            "22": 1.5,
+            "_default": 0.95
+          },
+          "day_of_week": {
+            "5": 0.85,
+            "6": 0.75,
+            "_default": 1.0
+          }
+        }
+      },
+      {
+        "name": "city",
+        "type": "category",
+        "choices": [
+          {
+            "value": "Bengaluru",
+            "weight": 3
+          },
+          {
+            "value": "Chennai",
+            "weight": 2
+          },
+          {
+            "value": "Mumbai",
+            "weight": 2
+          },
+          {
+            "value": "Delhi",
+            "weight": 2
+          },
+          {
+            "value": "Hyderabad",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "account_id",
+        "type": "string",
+        "pattern": "A{00000000-99999999}"
+      },
+      {
+        "name": "posts_last_hour",
+        "type": "int",
+        "min": 0,
+        "max": 120,
+        "skew": 0.6
+      },
+      {
+        "name": "unique_hashtags_last_hour",
+        "type": "int",
+        "min": 0,
+        "max": 40,
+        "skew": 0.8
+      },
+      {
+        "name": "suspicious_timing_pattern",
+        "type": "bool",
+        "p_true": 0.07
+      },
+      {
+        "name": "spam_bot_label",
+        "type": "bool",
+        "p_true": 0.015
+      },
+      {
+        "name": "key",
+        "type": "derived_concat",
+        "parts": [
+          "account_id",
+          "city"
+        ],
+        "sep": "|"
+      }
+    ]
+  }
+}
