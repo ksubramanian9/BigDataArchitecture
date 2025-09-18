@@ -1,0 +1,126 @@
+{
+  "seed": 901,
+  "entity_count": 200000,
+  "time_window": {
+    "start": "2025-03-01T00:00:00",
+    "end": "2025-04-30T23:59:59"
+  },
+  "output": {
+    "format": "csv"
+  },
+  "schema": {
+    "fields": [
+      {
+        "name": "event_id",
+        "type": "uuid"
+      },
+      {
+        "name": "event_time",
+        "type": "datetime",
+        "format": "iso",
+        "mode": "seasonality",
+        "profile": {
+          "hour_of_day": {
+            "6": 1.5,
+            "7": 1.5,
+            "18": 1.5,
+            "_default": 0.95
+          },
+          "day_of_week": {
+            "5": 0.85,
+            "6": 0.75,
+            "_default": 1.0
+          }
+        }
+      },
+      {
+        "name": "city",
+        "type": "category",
+        "choices": [
+          {
+            "value": "Bengaluru",
+            "weight": 3
+          },
+          {
+            "value": "Chennai",
+            "weight": 2
+          },
+          {
+            "value": "Mumbai",
+            "weight": 2
+          },
+          {
+            "value": "Delhi",
+            "weight": 2
+          },
+          {
+            "value": "Hyderabad",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "seed_variety",
+        "type": "category",
+        "choices": [
+          "VarA",
+          "VarB",
+          "VarC",
+          "VarD"
+        ]
+      },
+      {
+        "name": "crop",
+        "type": "category",
+        "choices": [
+          "Rice",
+          "Wheat",
+          "Maize",
+          "Millet"
+        ]
+      },
+      {
+        "name": "rain_mm",
+        "type": "float",
+        "distribution": "exponential",
+        "lambda": 0.06
+      },
+      {
+        "name": "soil_ph",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 6.4,
+        "stddev": 0.5
+      },
+      {
+        "name": "temp_c",
+        "type": "int",
+        "min": 10,
+        "max": 44,
+        "skew": 1.0
+      },
+      {
+        "name": "yield_kg",
+        "type": "int",
+        "min": 150,
+        "max": 9000,
+        "skew": 1.2
+      },
+      {
+        "name": "drought_flag",
+        "type": "bool",
+        "p_true": 0.04
+      },
+      {
+        "name": "key",
+        "type": "derived_concat",
+        "parts": [
+          "city",
+          "crop",
+          "seed_variety"
+        ],
+        "sep": "|"
+      }
+    ]
+  }
+}
