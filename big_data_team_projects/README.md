@@ -1,68 +1,63 @@
-# Big Data Project Framework – Multi-Domain Scenarios
+# Big Data Project Instructions and Scoring Framework
 
-## 1. Project Theme
+## 📘 Student Instruction Sheet
 
-**“Big Data Applications Across Key Industries”**
+### 1. Project Overview
+You will work in teams of 3 on one realistic Big Data scenario (allocated to you).  
+Your project will simulate an **end-to-end Big Data pipeline**:  
+**Ingestion → Storage → Processing → Analytics → Visualization → Business Insights**.  
 
-Each team (3 students) selects **one scenario** from a curated list (10 domains × 7 = 70 scenarios).
-All scenarios follow a common workflow:
-**Data ingestion → Storage → Processing → Analytics → Visualization**.
-
-Domains ensure variety (agriculture, healthcare, finance, retail, transport, energy, telecom, education, social media, government).
-
----
-
-## 2. Project Structure
-
-**Common Pipeline (for all teams):**
-
-* **Data Sources** – Identify/download/generate open or synthetic datasets.
-* **Data Ingestion** – Use Flume/Kafka/Sqoop/custom loaders.
-* **Storage** – Land data in HDFS (Bronze → Silver → Gold zones). Use Hive/HBase as needed.
-* **Processing** – Batch (MapReduce/Spark) + optional Streaming (Spark Structured Streaming).
-* **Analytics** – Implement KPIs & domain-specific metrics.
-* **Visualization** – Dashboards using Superset/Tableau/PowerBI/Zeppelin.
+Duration: **4 weeks** (compressed milestones).
 
 ---
 
-## 3. Milestones & Timeline (1 Week Each, 8 Weeks Total)
-
-| **Week** | **Milestone**                | **Expected Outcome**                                                                                       |
-| -------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| 1        | Setup & Data Acquisition     | Teams set up Hadoop ecosystem (HDFS, Hive, Spark). Select scenario + finalize datasets (real + synthetic). |
-| 2        | Data Ingestion               | Load raw data via Kafka/Flume/Sqoop into HDFS (Bronze).                                                    |
-| 3        | Data Storage                 | Organize Silver (cleaned) and Gold (aggregates) zones. Create Hive/NoSQL schemas.                          |
-| 4        | Batch Processing             | Spark/MapReduce jobs for core KPIs.                                                                        |
-| 5        | Streaming/Advanced Analytics | Implement streaming jobs (Spark Structured Streaming) or MLlib models.                                     |
-| 6        | Business Use Case            | Develop the domain-specific solution (fraud detection, churn prediction, anomaly detection, etc.).         |
-| 7        | Visualization                | Build dashboards in Superset/Tableau/Zeppelin.                                                             |
-| 8        | Final Report & Demo          | Submit report (15–20 pages), present solution, and demo full pipeline.                                     |
+### 2. Technical Requirements
+- **Tools / Frameworks**:  
+  • Hadoop ecosystem: HDFS, Hive, Spark (mandatory)  
+  • Kafka/Flume/Sqoop optional but encouraged  
+  • **Open-source visualization only**: Apache Superset, Redash, Grafana, Kibana, Zeppelin/Jupyter  
+- **Data**: Use provided synthetic data configs (or open datasets). Scale: 1–5 GB.  
+- **Environment**: Local (Docker/VM) or Cloud (Databricks, EMR, GCP).  
 
 ---
 
-## 4. Deliverables
+### 3. Execution Plan (Milestones)
 
-* **Technical:** Hadoop setup docs, ingestion scripts, Hive/NoSQL schema, Spark jobs.
-* **Business:** Domain-specific KPIs & insights, recommendations.
-* **Visualization:** Dashboards showing results clearly.
-* **Report:** 15–20 pages with problem, data, architecture, processing, insights, challenges.
-
----
-
-## 5. Evaluation Rubric (100 Marks)
-
-| **Criteria**                 | **Weight** |
-| ---------------------------- | ---------- |
-| Technical Setup              | 15         |
-| Data Ingestion & Storage     | 15         |
-| Processing & Analytics       | 25         |
-| Business Insights            | 20         |
-| Visualization & Storytelling | 10         |
-| Documentation & Teamwork     | 15         |
+| Week | Milestone              | Expected Outcome |
+|------|------------------------|------------------|
+| 1    | Setup & Data Acquisition | Install Hadoop ecosystem, finalize scenario, acquire/generate dataset |
+| 2    | Ingestion & Storage    | Implement ingestion pipeline, load into HDFS Bronze/Silver/Gold, define Hive schema |
+| 3    | Processing & Analytics | Develop Spark/MapReduce jobs for KPIs; optional MLlib/streaming |
+| 4    | Insights & Visualization | Build dashboards (Superset/Redash/Grafana/Kibana/Zeppelin), deliver insights, report & demo |
 
 ---
 
-## 6. Team Allocation – Big Data Project
+### 4. Expected Outcomes
+- End-to-end pipeline: ingestion → HDFS → Spark → Hive → dashboard  
+- 3–5 KPIs per domain scenario  
+- At least one actionable business recommendation  
+
+---
+
+### 5. Deliverables
+- **Technical**: Code repo (ingestion, Spark jobs, schema)  
+- **Business**: Dashboard + KPIs  
+- **Report**: 12–15 pages  
+- **Presentation**: Demo & slides (10 minutes)  
+
+---
+
+### 6. Factors Influencing Marks
+- Robust setup of Hadoop ecosystem  
+- Correct ingestion pipeline  
+- Logical Bronze/Silver/Gold storage design  
+- Efficiency and correctness of Spark jobs  
+- Clarity & relevance of KPIs  
+- Quality of dashboards (open-source)  
+- Report depth & teamwork  
+
+---
+## 7. Team Allocation – Big Data Project
 
 ### Agriculture
 
