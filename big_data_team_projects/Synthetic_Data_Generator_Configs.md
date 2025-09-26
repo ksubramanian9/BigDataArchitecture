@@ -4,7 +4,7 @@ This folder contains **60 ready-made JSON configs** for the `generator_template.
 
 ## How to use
 ```bash
-python generator_template.py --config /path/to/config.json --out ./data.csv --n 500000 --format csv --seed 123 --gzip
+python generator_template.py --config /path/to/config.json --out ./data.csv --n 500000 --format csv --seed 123
 ```
 
 ## Index
