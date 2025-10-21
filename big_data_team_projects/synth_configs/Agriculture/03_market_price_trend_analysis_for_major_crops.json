@@ -1,9 +1,9 @@
 {
-  "seed": 45,
-  "entity_count": 200000,
+  "seed": 503,
+  "entity_count": 120000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2024-04-01T00:00:00",
+    "end": "2025-03-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -11,160 +11,112 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
+        "name": "record_id",
         "type": "uuid"
       },
       {
-        "name": "event_time",
+        "name": "trade_date",
         "type": "datetime",
-        "format": "iso",
-        "mode": "seasonality",
-        "profile": {
-          "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
-          },
-          "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
-            "_default": 1.0
-          }
-        }
+        "format": "%Y-%m-%d"
       },
       {
-        "name": "city",
+        "name": "state",
         "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
+        "choices": ["Karnataka", "Tamil Nadu", "Maharashtra", "Punjab", "Gujarat"]
+      },
+      {
+        "name": "market_name",
+        "type": "category",
+        "conditional_on": "state",
+        "conditional_table": {
+          "Karnataka": ["Bengaluru_APMC", "Hubballi_APMC", "Mysuru_Market"],
+          "Tamil Nadu": ["Chennai_Koyambedu", "Madurai_Matuthavani", "Coimbatore_APMC"],
+          "Maharashtra": ["Mumbai_Vashi", "Pune_Marketyard", "Nagpur_Kalamna"],
+          "Punjab": ["Amritsar_Kaler", "Ludhiana_Grain", "Jalandhar_New"],
+          "Gujarat": ["Ahmedabad_Jamnadas", "Rajkot_Jilla", "Surat_Yard"],
+          "_default": ["Reference_Market"]
+        }
       },
       {
         "name": "crop",
         "type": "category",
+        "choices": ["Rice", "Wheat", "Maize", "Tur", "Soybean", "Cotton"]
+      },
+      {
+        "name": "crop_grade",
+        "type": "category",
+        "choices": ["FAQ", "A-Grade", "B-Grade", "Organic"]
+      },
+      {
+        "name": "market_type",
+        "type": "category",
+        "choices": ["APMC", "Cooperative", "Private", "Terminal"]
+      },
+      {
+        "name": "arrival_tonnes",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 2.4,
+        "stddev": 0.45
+      },
+      {
+        "name": "min_price_inr_per_qtl",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 1450.0,
+        "stddev": 320.0
+      },
+      {
+        "name": "max_price_inr_per_qtl",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 1850.0,
+        "stddev": 360.0
+      },
+      {
+        "name": "modal_price_inr_per_qtl",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 1650.0,
+        "stddev": 280.0
+      },
+      {
+        "name": "price_volatility_index",
+        "type": "float",
+        "distribution": "uniform",
+        "min": 0.5,
+        "max": 8.0
+      },
+      {
+        "name": "arrival_volatility_index",
+        "type": "float",
+        "distribution": "uniform",
+        "min": 0.2,
+        "max": 6.0
+      },
+      {
+        "name": "arrivals_trend_flag",
+        "type": "bool",
+        "p_true": 0.35
+      },
+      {
+        "name": "price_trend_flag",
+        "type": "bool",
+        "p_true": 0.4
+      },
+      {
+        "name": "season",
+        "type": "category",
         "choices": [
-          {
-            "value": "Rice",
-            "weight": 3
-          },
-          {
-            "value": "Wheat",
-            "weight": 2
-          },
-          {
-            "value": "Maize",
-            "weight": 1
-          },
-          {
-            "value": "Sugarcane",
-            "weight": 1
-          }
+          { "value": "Kharif", "weight": 4 },
+          { "value": "Rabi", "weight": 3 },
+          { "value": "Summer", "weight": 2 }
         ]
       },
       {
-        "name": "market",
-        "type": "category",
-        "conditional_on": "city",
-        "conditional_table": {
-          "Bengaluru": [
-            "Yeshwanthpur",
-            "KR_Market",
-            "APMC_Yard"
-          ],
-          "Chennai": [
-            "Koyambedu",
-            "Parry",
-            "Tambaram_Market"
-          ],
-          "Mumbai": [
-            "Vashi",
-            "Dadar",
-            "Byculla"
-          ],
-          "Delhi": [
-            "Azadpur",
-            "Okhla",
-            "Ghanta_Ghar"
-          ],
-          "Hyderabad": [
-            "Bowenpally",
-            "Gudimalkapur",
-            "Miryalaguda"
-          ],
-          "_default": [
-            "Central_Market"
-          ]
-        }
-      },
-      {
-        "name": "soil_moisture",
-        "type": "float",
-        "distribution": "uniform",
-        "min": 5.0,
-        "max": 45.0
-      },
-      {
-        "name": "soil_ph",
-        "type": "float",
-        "distribution": "normal",
-        "mean": 6.5,
-        "stddev": 0.6
-      },
-      {
-        "name": "rain_mm",
-        "type": "float",
-        "distribution": "exponential",
-        "lambda": 0.05
-      },
-      {
-        "name": "temp_c",
-        "type": "int",
-        "min": 12,
-        "max": 42,
-        "skew": 1.0
-      },
-      {
-        "name": "yield_kg",
-        "type": "int",
-        "min": 200,
-        "max": 8000,
-        "skew": 1.1,
-        "null_prob": 0.05
-      },
-      {
-        "name": "pest_flag",
-        "type": "bool",
-        "p_true": 0.03
-      },
-      {
-        "name": "key",
+        "name": "record_key",
         "type": "derived_concat",
-        "parts": [
-          "city",
-          "crop",
-          "market"
-        ],
+        "parts": ["trade_date", "market_name", "crop", "crop_grade"],
         "sep": "|"
       }
     ]

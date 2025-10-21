@@ -1,9 +1,9 @@
 {
-  "seed": 44,
-  "entity_count": 200000,
+  "seed": 442,
+  "entity_count": 240000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2025-01-01T05:00:00",
+    "end": "2025-03-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -21,150 +21,138 @@
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
+            "5": 1.3,
+            "6": 1.6,
+            "7": 1.5,
+            "17": 1.3,
+            "18": 1.4,
+            "_default": 0.9
           },
           "day_of_week": {
-            "5": 0.8,
             "6": 0.7,
+            "0": 0.8,
             "_default": 1.0
           }
         }
       },
       {
-        "name": "city",
+        "name": "farm_id",
+        "type": "string",
+        "pattern": "FARM-{0000-9999}"
+      },
+      {
+        "name": "zone",
+        "type": "category",
+        "choices": ["Zone-A", "Zone-B", "Zone-C", "Zone-D"]
+      },
+      {
+        "name": "sensor_id",
+        "type": "string",
+        "pattern": "SNSR-{000000-999999}"
+      },
+      {
+        "name": "sensor_type",
         "type": "category",
         "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
+          { "value": "soil_moisture", "weight": 4 },
+          { "value": "weather_station", "weight": 2 },
+          { "value": "leaf_wetness", "weight": 2 },
+          { "value": "nutrient_probe", "weight": 1 }
         ]
       },
       {
         "name": "crop",
         "type": "category",
-        "choices": [
-          {
-            "value": "Rice",
-            "weight": 3
-          },
-          {
-            "value": "Wheat",
-            "weight": 2
-          },
-          {
-            "value": "Maize",
-            "weight": 1
-          },
-          {
-            "value": "Sugarcane",
-            "weight": 1
-          }
-        ]
+        "choices": ["Rice", "Wheat", "Maize", "Sugarcane", "Cotton"]
       },
       {
-        "name": "market",
-        "type": "category",
-        "conditional_on": "city",
-        "conditional_table": {
-          "Bengaluru": [
-            "Yeshwanthpur",
-            "KR_Market",
-            "APMC_Yard"
-          ],
-          "Chennai": [
-            "Koyambedu",
-            "Parry",
-            "Tambaram_Market"
-          ],
-          "Mumbai": [
-            "Vashi",
-            "Dadar",
-            "Byculla"
-          ],
-          "Delhi": [
-            "Azadpur",
-            "Okhla",
-            "Ghanta_Ghar"
-          ],
-          "Hyderabad": [
-            "Bowenpally",
-            "Gudimalkapur",
-            "Miryalaguda"
-          ],
-          "_default": [
-            "Central_Market"
-          ]
-        }
-      },
-      {
-        "name": "soil_moisture",
+        "name": "soil_moisture_pct",
         "type": "float",
         "distribution": "uniform",
         "min": 5.0,
-        "max": 45.0
+        "max": 60.0,
+        "null_prob": 0.08
       },
       {
-        "name": "soil_ph",
+        "name": "soil_temp_c",
         "type": "float",
         "distribution": "normal",
-        "mean": 6.5,
-        "stddev": 0.6
-      },
-      {
-        "name": "rain_mm",
-        "type": "float",
-        "distribution": "exponential",
-        "lambda": 0.05
-      },
-      {
-        "name": "temp_c",
-        "type": "int",
-        "min": 12,
-        "max": 42,
-        "skew": 1.0
-      },
-      {
-        "name": "yield_kg",
-        "type": "int",
-        "min": 200,
-        "max": 8000,
-        "skew": 1.1,
+        "mean": 24.0,
+        "stddev": 4.5,
         "null_prob": 0.05
       },
       {
-        "name": "pest_flag",
-        "type": "bool",
-        "p_true": 0.03
+        "name": "leaf_wetness_pct",
+        "type": "float",
+        "distribution": "uniform",
+        "min": 0.0,
+        "max": 100.0,
+        "null_prob": 0.25
       },
       {
-        "name": "key",
+        "name": "nutrient_ppm",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 320.0,
+        "stddev": 75.0,
+        "null_prob": 0.18
+      },
+      {
+        "name": "ambient_temp_c",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 30.0,
+        "stddev": 5.0
+      },
+      {
+        "name": "humidity_pct",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 62.0,
+        "stddev": 10.0
+      },
+      {
+        "name": "battery_level_pct",
+        "type": "float",
+        "distribution": "uniform",
+        "min": 18.0,
+        "max": 100.0
+      },
+      {
+        "name": "signal_strength_dbm",
+        "type": "float",
+        "distribution": "normal",
+        "mean": -68.0,
+        "stddev": 6.0
+      },
+      {
+        "name": "anomaly_score",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": -2.2,
+        "stddev": 0.6
+      },
+      {
+        "name": "recommendation",
+        "type": "derived_map",
+        "from_field": "sensor_type",
+        "map": {
+          "soil_moisture": "adjust_irrigation",
+          "leaf_wetness": "spray_schedule",
+          "nutrient_probe": "fertilizer_topup",
+          "weather_station": "monitor_conditions"
+        },
+        "default": "monitor_conditions"
+      },
+      {
+        "name": "irrigation_alert",
+        "type": "bool",
+        "p_true": 0.14
+      },
+      {
+        "name": "event_key",
         "type": "derived_concat",
-        "parts": [
-          "city",
-          "crop",
-          "market"
-        ],
+        "parts": ["farm_id", "zone", "sensor_id"],
         "sep": "|"
       }
     ]

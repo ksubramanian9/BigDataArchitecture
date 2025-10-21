@@ -1,9 +1,9 @@
 {
-  "seed": 43,
-  "entity_count": 200000,
+  "seed": 431,
+  "entity_count": 180000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2024-06-01T00:00:00",
+    "end": "2024-12-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -11,160 +11,152 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
+        "name": "record_id",
         "type": "uuid"
       },
       {
-        "name": "event_time",
+        "name": "observation_date",
         "type": "datetime",
-        "format": "iso",
-        "mode": "seasonality",
-        "profile": {
-          "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
-          },
-          "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
-            "_default": 1.0
-          }
+        "format": "%Y-%m-%d"
+      },
+      {
+        "name": "state",
+        "type": "category",
+        "choices": [
+          { "value": "Karnataka", "weight": 3 },
+          { "value": "Tamil Nadu", "weight": 2 },
+          { "value": "Maharashtra", "weight": 2 },
+          { "value": "Punjab", "weight": 2 },
+          { "value": "Telangana", "weight": 1 }
+        ]
+      },
+      {
+        "name": "district",
+        "type": "category",
+        "conditional_on": "state",
+        "conditional_table": {
+          "Karnataka": ["Mandya", "Mysuru", "Raichur", "Belagavi"],
+          "Tamil Nadu": ["Thanjavur", "Erode", "Coimbatore", "Villupuram"],
+          "Maharashtra": ["Nashik", "Nagpur", "Kolhapur", "Aurangabad"],
+          "Punjab": ["Ludhiana", "Sangrur", "Amritsar", "Firozpur"],
+          "Telangana": ["Nalgonda", "Karimnagar", "Nizamabad", "Warangal"],
+          "_default": ["DemoDistrict"]
         }
       },
       {
-        "name": "city",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
+        "name": "farm_id",
+        "type": "string",
+        "pattern": "FARM-{0000-9999}"
+      },
+      {
+        "name": "agro_climatic_zone",
+        "type": "derived_map",
+        "from_field": "state",
+        "map": {
+          "Karnataka": "Southern Plateau",
+          "Tamil Nadu": "Eastern Coastal",
+          "Maharashtra": "Central Plateau",
+          "Punjab": "Trans-Gangetic",
+          "Telangana": "Deccan Plateau"
+        },
+        "default": "Unknown"
       },
       {
         "name": "crop",
         "type": "category",
         "choices": [
-          {
-            "value": "Rice",
-            "weight": 3
-          },
-          {
-            "value": "Wheat",
-            "weight": 2
-          },
-          {
-            "value": "Maize",
-            "weight": 1
-          },
-          {
-            "value": "Sugarcane",
-            "weight": 1
-          }
+          { "value": "Rice", "weight": 3 },
+          { "value": "Wheat", "weight": 2 },
+          { "value": "Maize", "weight": 2 },
+          { "value": "Sugarcane", "weight": 1 },
+          { "value": "Millet", "weight": 1 }
         ]
       },
       {
-        "name": "market",
-        "type": "category",
-        "conditional_on": "city",
-        "conditional_table": {
-          "Bengaluru": [
-            "Yeshwanthpur",
-            "KR_Market",
-            "APMC_Yard"
-          ],
-          "Chennai": [
-            "Koyambedu",
-            "Parry",
-            "Tambaram_Market"
-          ],
-          "Mumbai": [
-            "Vashi",
-            "Dadar",
-            "Byculla"
-          ],
-          "Delhi": [
-            "Azadpur",
-            "Okhla",
-            "Ghanta_Ghar"
-          ],
-          "Hyderabad": [
-            "Bowenpally",
-            "Gudimalkapur",
-            "Miryalaguda"
-          ],
-          "_default": [
-            "Central_Market"
-          ]
-        }
+        "name": "sowing_week",
+        "type": "int",
+        "min": 22,
+        "max": 32,
+        "skew": 1.1
       },
       {
-        "name": "soil_moisture",
+        "name": "harvest_week",
+        "type": "int",
+        "min": 40,
+        "max": 52,
+        "skew": 1.2
+      },
+      {
+        "name": "soil_moisture_pct",
         "type": "float",
         "distribution": "uniform",
-        "min": 5.0,
-        "max": 45.0
+        "min": 8.0,
+        "max": 48.0
       },
       {
         "name": "soil_ph",
         "type": "float",
         "distribution": "normal",
-        "mean": 6.5,
-        "stddev": 0.6
+        "mean": 6.6,
+        "stddev": 0.4
       },
       {
-        "name": "rain_mm",
+        "name": "rainfall_mm",
         "type": "float",
         "distribution": "exponential",
-        "lambda": 0.05
+        "lambda": 0.045
       },
       {
-        "name": "temp_c",
+        "name": "avg_temp_c",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 28.5,
+        "stddev": 3.5
+      },
+      {
+        "name": "humidity_pct",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 68.0,
+        "stddev": 8.0
+      },
+      {
+        "name": "ndvi_index",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.58,
+        "stddev": 0.12
+      },
+      {
+        "name": "fertilizer_kg_per_ha",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 140.0,
+        "stddev": 25.0
+      },
+      {
+        "name": "irrigation_events",
         "type": "int",
-        "min": 12,
-        "max": 42,
-        "skew": 1.0
+        "min": 0,
+        "max": 12,
+        "skew": 1.4
       },
       {
-        "name": "yield_kg",
-        "type": "int",
-        "min": 200,
-        "max": 8000,
-        "skew": 1.1,
-        "null_prob": 0.05
+        "name": "yield_kg_per_ha",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 5200.0,
+        "stddev": 900.0
       },
       {
-        "name": "pest_flag",
+        "name": "yield_flag_low",
         "type": "bool",
-        "p_true": 0.03
+        "p_true": 0.12
       },
       {
-        "name": "key",
+        "name": "record_key",
         "type": "derived_concat",
-        "parts": [
-          "city",
-          "crop",
-          "market"
-        ],
+        "parts": ["state", "district", "farm_id", "crop"],
         "sep": "|"
       }
     ]

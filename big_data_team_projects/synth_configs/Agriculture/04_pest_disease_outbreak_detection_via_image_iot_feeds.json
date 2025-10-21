@@ -1,9 +1,9 @@
 {
-  "seed": 46,
-  "entity_count": 200000,
+  "seed": 564,
+  "entity_count": 160000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2025-02-01T00:00:00",
+    "end": "2025-04-30T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -11,160 +11,126 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
+        "name": "detection_id",
         "type": "uuid"
       },
       {
-        "name": "event_time",
+        "name": "detection_time",
         "type": "datetime",
         "format": "iso",
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
+            "6": 1.4,
+            "7": 1.6,
+            "8": 1.3,
+            "16": 1.2,
+            "_default": 0.9
           },
           "day_of_week": {
             "5": 0.8,
-            "6": 0.7,
+            "6": 0.75,
             "_default": 1.0
           }
         }
       },
       {
-        "name": "city",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
+        "name": "farm_id",
+        "type": "string",
+        "pattern": "FARM-{0000-9999}"
+      },
+      {
+        "name": "block_id",
+        "type": "string",
+        "pattern": "BLK-{000-999}"
       },
       {
         "name": "crop",
         "type": "category",
+        "choices": ["Rice", "Wheat", "Cotton", "Chili", "Soybean"]
+      },
+      {
+        "name": "pest_or_disease",
+        "type": "category",
         "choices": [
-          {
-            "value": "Rice",
-            "weight": 3
-          },
-          {
-            "value": "Wheat",
-            "weight": 2
-          },
-          {
-            "value": "Maize",
-            "weight": 1
-          },
-          {
-            "value": "Sugarcane",
-            "weight": 1
-          }
+          "Brown_Planthopper",
+          "Fall_Armyworm",
+          "Leaf_Blight",
+          "Stem_Borer",
+          "Powdery_Mildew",
+          "Healthy"
         ]
       },
       {
-        "name": "market",
+        "name": "detection_method",
         "type": "category",
-        "conditional_on": "city",
-        "conditional_table": {
-          "Bengaluru": [
-            "Yeshwanthpur",
-            "KR_Market",
-            "APMC_Yard"
-          ],
-          "Chennai": [
-            "Koyambedu",
-            "Parry",
-            "Tambaram_Market"
-          ],
-          "Mumbai": [
-            "Vashi",
-            "Dadar",
-            "Byculla"
-          ],
-          "Delhi": [
-            "Azadpur",
-            "Okhla",
-            "Ghanta_Ghar"
-          ],
-          "Hyderabad": [
-            "Bowenpally",
-            "Gudimalkapur",
-            "Miryalaguda"
-          ],
-          "_default": [
-            "Central_Market"
-          ]
-        }
+        "choices": ["drone_imagery", "edge_camera", "leaf_scanner", "iot_trap"]
       },
       {
-        "name": "soil_moisture",
+        "name": "severity_score",
         "type": "float",
         "distribution": "uniform",
-        "min": 5.0,
-        "max": 45.0
+        "min": 0.0,
+        "max": 1.0
       },
       {
-        "name": "soil_ph",
+        "name": "confidence_pct",
         "type": "float",
         "distribution": "normal",
-        "mean": 6.5,
-        "stddev": 0.6
+        "mean": 82.0,
+        "stddev": 12.0
       },
       {
-        "name": "rain_mm",
+        "name": "leaf_wetness_pct",
         "type": "float",
-        "distribution": "exponential",
-        "lambda": 0.05
+        "distribution": "uniform",
+        "min": 0.0,
+        "max": 100.0
       },
       {
-        "name": "temp_c",
-        "type": "int",
-        "min": 12,
-        "max": 42,
-        "skew": 1.0
+        "name": "canopy_temp_c",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 29.0,
+        "stddev": 3.0
       },
       {
-        "name": "yield_kg",
-        "type": "int",
-        "min": 200,
-        "max": 8000,
-        "skew": 1.1,
-        "null_prob": 0.05
+        "name": "humidity_pct",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 70.0,
+        "stddev": 9.0
       },
       {
-        "name": "pest_flag",
+        "name": "anomaly_probability",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": -2.0,
+        "stddev": 0.5
+      },
+      {
+        "name": "alert_triggered",
         "type": "bool",
-        "p_true": 0.03
+        "p_true": 0.22
       },
       {
-        "name": "key",
+        "name": "remediation_hint",
+        "type": "derived_map",
+        "from_field": "pest_or_disease",
+        "map": {
+          "Brown_Planthopper": "spray_neonicotinoid",
+          "Fall_Armyworm": "pheromone_traps",
+          "Leaf_Blight": "fungicide_spray",
+          "Stem_Borer": "release_trichogramma",
+          "Powdery_Mildew": "sulphur_dust",
+          "Healthy": "no_action"
+        },
+        "default": "field_inspection"
+      },
+      {
+        "name": "detection_key",
         "type": "derived_concat",
-        "parts": [
-          "city",
-          "crop",
-          "market"
-        ],
+        "parts": ["farm_id", "block_id", "crop", "pest_or_disease"],
         "sep": "|"
       }
     ]
