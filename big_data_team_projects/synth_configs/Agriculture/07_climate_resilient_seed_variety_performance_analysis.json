@@ -1,9 +1,9 @@
 {
-  "seed": 901,
-  "entity_count": 200000,
+  "seed": 707,
+  "entity_count": 130000,
   "time_window": {
-    "start": "2025-03-01T00:00:00",
-    "end": "2025-04-30T23:59:59"
+    "start": "2024-07-01T00:00:00",
+    "end": "2025-03-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -11,114 +11,129 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
+        "name": "trial_record_id",
         "type": "uuid"
       },
       {
-        "name": "event_time",
+        "name": "observation_date",
         "type": "datetime",
-        "format": "iso",
-        "mode": "seasonality",
-        "profile": {
-          "hour_of_day": {
-            "6": 1.5,
-            "7": 1.5,
-            "18": 1.5,
-            "_default": 0.95
-          },
-          "day_of_week": {
-            "5": 0.85,
-            "6": 0.75,
-            "_default": 1.0
-          }
+        "format": "%Y-%m-%d"
+      },
+      {
+        "name": "state",
+        "type": "category",
+        "choices": ["Karnataka", "Tamil Nadu", "Maharashtra", "Odisha", "Bihar"]
+      },
+      {
+        "name": "district",
+        "type": "category",
+        "conditional_on": "state",
+        "conditional_table": {
+          "Karnataka": ["Hassan", "Davanagere", "Gadag"],
+          "Tamil Nadu": ["Tiruchirapalli", "Cuddalore", "Theni"],
+          "Maharashtra": ["Parbhani", "Jalgaon", "Wardha"],
+          "Odisha": ["Cuttack", "Sambalpur", "Balasore"],
+          "Bihar": ["Darbhanga", "Purnea", "Nalanda"],
+          "_default": ["TrialDistrict"]
         }
       },
       {
-        "name": "city",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
+        "name": "agro_climatic_zone",
+        "type": "derived_map",
+        "from_field": "state",
+        "map": {
+          "Karnataka": "Southern Plateau",
+          "Tamil Nadu": "East Coast Plains",
+          "Maharashtra": "Western Plateau",
+          "Odisha": "Eastern Ghat",
+          "Bihar": "Middle Gangetic"
+        },
+        "default": "Unknown"
       },
       {
         "name": "seed_variety",
         "type": "category",
-        "choices": [
-          "VarA",
-          "VarB",
-          "VarC",
-          "VarD"
-        ]
+        "choices": ["Var-A1", "Var-B3", "Var-C5", "Var-D2", "Var-E4"]
       },
       {
         "name": "crop",
         "type": "category",
-        "choices": [
-          "Rice",
-          "Wheat",
-          "Maize",
-          "Millet"
-        ]
+        "choices": ["Rice", "Wheat", "Millet", "Pulses"]
       },
       {
-        "name": "rain_mm",
-        "type": "float",
-        "distribution": "exponential",
-        "lambda": 0.06
+        "name": "replication_plot",
+        "type": "string",
+        "pattern": "REP-{00-99}"
       },
       {
-        "name": "soil_ph",
+        "name": "soil_type",
+        "type": "category",
+        "choices": ["loamy", "clay", "sandy_loam", "black_cotton"]
+      },
+      {
+        "name": "rainfall_mm",
         "type": "float",
         "distribution": "normal",
-        "mean": 6.4,
-        "stddev": 0.5
+        "mean": 1120.0,
+        "stddev": 260.0
       },
       {
-        "name": "temp_c",
+        "name": "avg_temp_c",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 30.0,
+        "stddev": 3.5
+      },
+      {
+        "name": "heatwave_days",
         "type": "int",
-        "min": 10,
-        "max": 44,
-        "skew": 1.0
+        "min": 0,
+        "max": 25,
+        "skew": 1.3
       },
       {
-        "name": "yield_kg",
-        "type": "int",
-        "min": 150,
-        "max": 9000,
-        "skew": 1.2
-      },
-      {
-        "name": "drought_flag",
+        "name": "drought_stress_flag",
         "type": "bool",
-        "p_true": 0.04
+        "p_true": 0.28
       },
       {
-        "name": "key",
+        "name": "disease_incidence_pct",
+        "type": "float",
+        "distribution": "uniform",
+        "min": 0.0,
+        "max": 35.0
+      },
+      {
+        "name": "yield_kg_per_ha",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 5100.0,
+        "stddev": 880.0
+      },
+      {
+        "name": "resilience_score",
+        "type": "float",
+        "distribution": "uniform",
+        "min": 0.4,
+        "max": 0.95
+      },
+      {
+        "name": "recommended_action",
+        "type": "derived_map",
+        "from_field": "seed_variety",
+        "map": {
+          "Var-A1": "scale", 
+          "Var-B3": "promote",
+          "Var-C5": "monitor",
+          "Var-D2": "monitor",
+          "Var-E4": "pilot"
+        },
+        "default": "monitor"
+      },
+      {
+        "name": "trial_key",
         "type": "derived_concat",
-        "parts": [
-          "city",
-          "crop",
-          "seed_variety"
-        ],
+        "parts": ["seed_variety", "state", "district", "replication_plot"],
         "sep": "|"
       }
     ]
