@@ -1,8 +1,8 @@
 {
-  "seed": 47,
-  "entity_count": 200000,
+  "seed": 89,
+  "entity_count": 90000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
+    "start": "2024-01-01T00:00:00",
     "end": "2025-02-28T23:59:59"
   },
   "output": {
@@ -11,88 +11,35 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
+        "name": "review_id",
         "type": "uuid"
       },
       {
-        "name": "event_time",
+        "name": "review_time",
         "type": "datetime",
         "format": "iso",
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
+            "7": 1.1,
+            "9": 1.2,
+            "21": 1.4,
+            "22": 1.3,
             "_default": 1.0
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "5": 1.2,
+            "6": 1.3,
+            "0": 1.1,
             "_default": 1.0
           }
         }
       },
       {
-        "name": "city",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "event_type",
-        "type": "category",
-        "choices": [
-          {
-            "value": "view",
-            "weight": 6
-          },
-          {
-            "value": "add_to_cart",
-            "weight": 2
-          },
-          {
-            "value": "purchase",
-            "weight": 1
-          },
-          {
-            "value": "wishlist",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "category",
-        "type": "category",
-        "choices": [
-          "Fashion",
-          "Grocery",
-          "Electronics",
-          "Home",
-          "Beauty",
-          "Books"
-        ]
+        "name": "order_id",
+        "type": "string",
+        "pattern": "O{00000000-99999999}",
+        "null_prob": 0.1
       },
       {
         "name": "user_id",
@@ -105,37 +52,132 @@
         "pattern": "P{000000-999999}"
       },
       {
-        "name": "price",
-        "type": "float",
-        "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.0
+        "name": "product_category",
+        "type": "category",
+        "choices": [
+          "Electronics",
+          "Fashion",
+          "Home",
+          "Grocery",
+          "Beauty",
+          "Books",
+          "Appliances"
+        ]
       },
       {
-        "name": "qty",
+        "name": "rating",
         "type": "int",
         "min": 1,
         "max": 5,
-        "skew": 1.5
+        "skew": 1.2
       },
       {
-        "name": "is_return",
+        "name": "review_title",
+        "type": "category",
+        "choices": [
+          "Great value for money",
+          "Average experience",
+          "Not as expected",
+          "Highly recommended",
+          "Would not buy again",
+          "Loved the quality",
+          "Decent product"
+        ]
+      },
+      {
+        "name": "review_text",
+        "type": "category",
+        "choices": [
+          "Packaging was neat and delivery arrived earlier than promised.",
+          "Product quality is good but sizing runs smaller than usual.",
+          "Received a defective item and had to initiate a return.",
+          "Installation was quick and the support team was responsive.",
+          "Meets expectations for the price point and features listed.",
+          "Battery backup is excellent and lasts the entire day.",
+          "Flavour was off and the seal looked tampered upon arrival.",
+          "Material feels premium but colour is slightly different from images."
+        ]
+      },
+      {
+        "name": "sentiment_label",
+        "type": "category",
+        "choices": [
+          {
+            "value": "positive",
+            "weight": 5
+          },
+          {
+            "value": "neutral",
+            "weight": 2
+          },
+          {
+            "value": "negative",
+            "weight": 3
+          }
+        ]
+      },
+      {
+        "name": "sentiment_score",
+        "type": "float",
+        "min": -1.0,
+        "max": 1.0,
+        "precision": 3
+      },
+      {
+        "name": "verified_purchase",
         "type": "bool",
-        "p_true": 0.05
+        "p_true": 0.76
       },
       {
-        "name": "is_prime_member",
-        "type": "bool",
-        "p_true": 0.35
+        "name": "language",
+        "type": "category",
+        "choices": [
+          {
+            "value": "en",
+            "weight": 6
+          },
+          {
+            "value": "hi",
+            "weight": 2
+          },
+          {
+            "value": "ta",
+            "weight": 1
+          },
+          {
+            "value": "te",
+            "weight": 1
+          }
+        ]
       },
       {
-        "name": "key",
-        "type": "derived_concat",
-        "parts": [
-          "user_id",
-          "product_id"
-        ],
-        "sep": "|"
+        "name": "helpful_votes",
+        "type": "int",
+        "min": 0,
+        "max": 250,
+        "skew": 1.7
+      },
+      {
+        "name": "seller_response_status",
+        "type": "category",
+        "choices": [
+          {
+            "value": "not_required",
+            "weight": 6
+          },
+          {
+            "value": "responded",
+            "weight": 2
+          },
+          {
+            "value": "pending",
+            "weight": 1
+          },
+          {
+            "value": "escalated",
+            "weight": 1
+          }
+        ]
       }
     ]
   }

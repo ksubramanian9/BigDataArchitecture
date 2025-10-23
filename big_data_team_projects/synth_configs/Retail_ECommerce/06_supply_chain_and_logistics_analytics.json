@@ -1,9 +1,9 @@
 {
-  "seed": 48,
-  "entity_count": 200000,
+  "seed": 95,
+  "entity_count": 160000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2024-10-01T00:00:00",
+    "end": "2025-03-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -11,131 +11,228 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
-        "type": "uuid"
+        "name": "shipment_id",
+        "type": "string",
+        "pattern": "SHP-{000000-999999}"
       },
       {
-        "name": "event_time",
+        "name": "order_id",
+        "type": "string",
+        "pattern": "O{00000000-99999999}"
+      },
+      {
+        "name": "sku",
+        "type": "string",
+        "pattern": "SKU-{000000-999999}"
+      },
+      {
+        "name": "warehouse",
+        "type": "category",
+        "choices": [
+          "BLR_FC01",
+          "BLR_FC02",
+          "MUM_FC01",
+          "DEL_FC01",
+          "HYD_FC01",
+          "CHE_FC01"
+        ]
+      },
+      {
+        "name": "warehouse_geo",
+        "type": "geo",
+        "precision": 4,
+        "bbox": [10.0, 72.5, 23.0, 88.5]
+      },
+      {
+        "name": "carrier",
+        "type": "category",
+        "choices": [
+          "Ekart",
+          "Delhivery",
+          "BlueDart",
+          "EcomExpress",
+          "Shadowfax"
+        ]
+      },
+      {
+        "name": "last_mile_partner",
+        "type": "category",
+        "choices": [
+          "InHouse",
+          "Shadowfax",
+          "Dunzo",
+          "Loadshare"
+        ]
+      },
+      {
+        "name": "route_type",
+        "type": "category",
+        "choices": [
+          "metro_same_state",
+          "metro_cross_state",
+          "tier2_direct",
+          "tier3_hub_spoke"
+        ]
+      },
+      {
+        "name": "promised_ship_date",
         "type": "datetime",
         "format": "iso",
-        "mode": "seasonality",
-        "profile": {
-          "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
-          },
-          "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
-            "_default": 1.0
-          }
-        }
+        "mode": "uniform"
       },
       {
-        "name": "city",
+        "name": "actual_ship_date",
+        "type": "datetime",
+        "format": "iso",
+        "mode": "uniform"
+      },
+      {
+        "name": "promised_delivery_date",
+        "type": "datetime",
+        "format": "iso",
+        "mode": "uniform"
+      },
+      {
+        "name": "actual_delivery_date",
+        "type": "datetime",
+        "format": "iso",
+        "mode": "uniform"
+      },
+      {
+        "name": "transit_hours",
+        "type": "int",
+        "min": 4,
+        "max": 240,
+        "skew": 1.2
+      },
+      {
+        "name": "delay_hours",
+        "type": "int",
+        "min": -24,
+        "max": 96,
+        "skew": 1.4
+      },
+      {
+        "name": "packages_count",
+        "type": "int",
+        "min": 1,
+        "max": 8,
+        "skew": 1.2
+      },
+      {
+        "name": "package_weight_kg",
+        "type": "float",
+        "min": 0.2,
+        "max": 35.0,
+        "precision": 2
+      },
+      {
+        "name": "temperature_control",
+        "type": "bool",
+        "p_true": 0.08
+      },
+      {
+        "name": "cold_chain_compliance",
         "type": "category",
         "choices": [
           {
-            "value": "Bengaluru",
-            "weight": 3
+            "value": "na",
+            "weight": 8
           },
           {
-            "value": "Chennai",
-            "weight": 2
+            "value": "compliant",
+            "weight": 1
           },
           {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
+            "value": "deviation",
             "weight": 1
           }
         ]
       },
       {
-        "name": "event_type",
+        "name": "transport_mode",
         "type": "category",
         "choices": [
           {
-            "value": "view",
+            "value": "road",
             "weight": 6
           },
           {
-            "value": "add_to_cart",
+            "value": "air",
             "weight": 2
           },
           {
-            "value": "purchase",
+            "value": "rail",
             "weight": 1
           },
           {
-            "value": "wishlist",
+            "value": "express_bike",
             "weight": 1
           }
         ]
       },
       {
-        "name": "category",
+        "name": "shipping_cost",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 2.7,
+        "stddev": 0.4
+      },
+      {
+        "name": "fuel_surcharge_pct",
+        "type": "float",
+        "min": 0.0,
+        "max": 0.2,
+        "precision": 3
+      },
+      {
+        "name": "delivery_status",
         "type": "category",
         "choices": [
-          "Fashion",
-          "Grocery",
-          "Electronics",
-          "Home",
-          "Beauty",
-          "Books"
+          {
+            "value": "delivered",
+            "weight": 6
+          },
+          {
+            "value": "in_transit",
+            "weight": 2
+          },
+          {
+            "value": "rto",
+            "weight": 1
+          },
+          {
+            "value": "cancelled",
+            "weight": 1
+          }
         ]
       },
       {
-        "name": "user_id",
-        "type": "string",
-        "pattern": "U{000000-999999}"
+        "name": "exception_code",
+        "type": "category",
+        "choices": [
+          {
+            "value": "none",
+            "weight": 7
+          },
+          {
+            "value": "weather_delay",
+            "weight": 1
+          },
+          {
+            "value": "address_issue",
+            "weight": 1
+          },
+          {
+            "value": "customer_not_available",
+            "weight": 1
+          }
+        ]
       },
       {
-        "name": "product_id",
-        "type": "string",
-        "pattern": "P{000000-999999}"
-      },
-      {
-        "name": "price",
-        "type": "float",
-        "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.0
-      },
-      {
-        "name": "qty",
-        "type": "int",
-        "min": 1,
-        "max": 5,
-        "skew": 1.5
-      },
-      {
-        "name": "is_return",
+        "name": "return_initiated",
         "type": "bool",
-        "p_true": 0.05
-      },
-      {
-        "name": "is_prime_member",
-        "type": "bool",
-        "p_true": 0.35
-      },
-      {
-        "name": "key",
-        "type": "derived_concat",
-        "parts": [
-          "user_id",
-          "product_id"
-        ],
-        "sep": "|"
+        "p_true": 0.06
       }
     ]
   }

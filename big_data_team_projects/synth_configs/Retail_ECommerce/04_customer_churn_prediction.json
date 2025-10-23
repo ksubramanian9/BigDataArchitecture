@@ -1,8 +1,8 @@
 {
-  "seed": 46,
-  "entity_count": 200000,
+  "seed": 77,
+  "entity_count": 180000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
+    "start": "2020-01-01T00:00:00",
     "end": "2025-02-28T23:59:59"
   },
   "output": {
@@ -11,131 +11,178 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
-        "type": "uuid"
+        "name": "customer_id",
+        "type": "string",
+        "pattern": "CUST-{000000-999999}"
       },
       {
-        "name": "event_time",
-        "type": "datetime",
-        "format": "iso",
-        "mode": "seasonality",
-        "profile": {
-          "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
+        "name": "loyalty_tier",
+        "type": "category",
+        "choices": [
+          {
+            "value": "silver",
+            "weight": 4
           },
-          "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
-            "_default": 1.0
+          {
+            "value": "gold",
+            "weight": 3
+          },
+          {
+            "value": "platinum",
+            "weight": 1
+          },
+          {
+            "value": "base",
+            "weight": 2
           }
-        }
+        ]
+      },
+      {
+        "name": "prime_member",
+        "type": "bool",
+        "p_true": 0.32
       },
       {
         "name": "city",
         "type": "category",
         "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
+          "Bengaluru",
+          "Chennai",
+          "Mumbai",
+          "Delhi",
+          "Hyderabad",
+          "Pune",
+          "Kolkata"
         ]
       },
       {
-        "name": "event_type",
+        "name": "signup_date",
+        "type": "datetime",
+        "format": "iso",
+        "mode": "uniform"
+      },
+      {
+        "name": "last_order_date",
+        "type": "datetime",
+        "format": "iso",
+        "mode": "uniform"
+      },
+      {
+        "name": "days_since_last_order",
+        "type": "int",
+        "min": 0,
+        "max": 720,
+        "skew": 1.1
+      },
+      {
+        "name": "orders_lifetime",
+        "type": "int",
+        "min": 1,
+        "max": 150,
+        "skew": 1.3
+      },
+      {
+        "name": "orders_last_12_months",
+        "type": "int",
+        "min": 0,
+        "max": 36,
+        "skew": 1.4
+      },
+      {
+        "name": "avg_order_value",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 3.7,
+        "stddev": 0.55
+      },
+      {
+        "name": "lifetime_value",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 5.0,
+        "stddev": 0.6
+      },
+      {
+        "name": "preferred_category",
+        "type": "category",
+        "choices": [
+          "Electronics",
+          "Fashion",
+          "Home",
+          "Grocery",
+          "Beauty",
+          "Books",
+          "Baby"
+        ]
+      },
+      {
+        "name": "subscription_status",
         "type": "category",
         "choices": [
           {
-            "value": "view",
+            "value": "active",
             "weight": 6
           },
           {
-            "value": "add_to_cart",
+            "value": "on_hold",
+            "weight": 1
+          },
+          {
+            "value": "paused",
+            "weight": 1
+          },
+          {
+            "value": "cancelled",
             "weight": 2
-          },
-          {
-            "value": "purchase",
-            "weight": 1
-          },
-          {
-            "value": "wishlist",
-            "weight": 1
           }
         ]
       },
       {
-        "name": "category",
-        "type": "category",
-        "choices": [
-          "Fashion",
-          "Grocery",
-          "Electronics",
-          "Home",
-          "Beauty",
-          "Books"
-        ]
-      },
-      {
-        "name": "user_id",
-        "type": "string",
-        "pattern": "U{000000-999999}"
-      },
-      {
-        "name": "product_id",
-        "type": "string",
-        "pattern": "P{000000-999999}"
-      },
-      {
-        "name": "price",
-        "type": "float",
-        "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.0
-      },
-      {
-        "name": "qty",
+        "name": "support_tickets_last_6_months",
         "type": "int",
-        "min": 1,
-        "max": 5,
+        "min": 0,
+        "max": 12,
+        "skew": 1.6
+      },
+      {
+        "name": "returns_last_12_months",
+        "type": "int",
+        "min": 0,
+        "max": 15,
         "skew": 1.5
       },
       {
-        "name": "is_return",
-        "type": "bool",
-        "p_true": 0.05
+        "name": "app_engagement_score",
+        "type": "float",
+        "min": 0.0,
+        "max": 1.0,
+        "precision": 3
       },
       {
-        "name": "is_prime_member",
-        "type": "bool",
-        "p_true": 0.35
+        "name": "email_click_rate",
+        "type": "float",
+        "min": 0.0,
+        "max": 0.8,
+        "precision": 3
       },
       {
-        "name": "key",
-        "type": "derived_concat",
-        "parts": [
-          "user_id",
-          "product_id"
-        ],
-        "sep": "|"
+        "name": "customer_satisfaction_score",
+        "type": "float",
+        "min": 1.0,
+        "max": 5.0,
+        "precision": 2
+      },
+      {
+        "name": "churn_risk_score",
+        "type": "float",
+        "min": 0.0,
+        "max": 1.0,
+        "precision": 3
+      },
+      {
+        "name": "churn_flag",
+        "type": "bool",
+        "p_true": 0.22
       }
     ]
   }
