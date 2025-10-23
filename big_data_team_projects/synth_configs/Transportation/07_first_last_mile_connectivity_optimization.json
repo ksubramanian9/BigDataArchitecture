@@ -21,11 +21,12 @@
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
+            "6": 1.2,
             "7": 1.5,
             "8": 1.5,
-            "9": 1.5,
+            "9": 1.4,
             "18": 1.5,
-            "19": 1.5,
+            "19": 1.4,
             "_default": 0.95
           },
           "day_of_week": {
@@ -62,14 +63,12 @@
         ]
       },
       {
-        "name": "mode",
+        "name": "core_mode",
         "type": "category",
         "choices": [
           "Bus",
           "Metro",
-          "Rail",
-          "Auto",
-          "Cab"
+          "Rail"
         ]
       },
       {
@@ -81,6 +80,28 @@
         "name": "dest_hub",
         "type": "string",
         "pattern": "H{000-999}"
+      },
+      {
+        "name": "first_mile_mode",
+        "type": "category",
+        "choices": [
+          "Walk",
+          "BikeShare",
+          "Auto",
+          "RideShare",
+          "Feeder_Bus"
+        ]
+      },
+      {
+        "name": "last_mile_mode",
+        "type": "category",
+        "choices": [
+          "Walk",
+          "BikeShare",
+          "Auto",
+          "RideShare",
+          "Feeder_Bus"
+        ]
       },
       {
         "name": "first_mile_minutes",
@@ -97,9 +118,49 @@
         "skew": 1.3
       },
       {
+        "name": "first_mile_distance_km",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": -0.1,
+        "stddev": 0.5
+      },
+      {
+        "name": "last_mile_distance_km",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": -0.1,
+        "stddev": 0.5
+      },
+      {
+        "name": "transfer_wait_minutes",
+        "type": "int",
+        "min": 1,
+        "max": 30,
+        "skew": 1.4
+      },
+      {
         "name": "feeder_service_used",
         "type": "bool",
-        "p_true": 0.35
+        "p_true": 0.45
+      },
+      {
+        "name": "accessibility_issue_flag",
+        "type": "bool",
+        "p_true": 0.08
+      },
+      {
+        "name": "customer_satisfaction_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 4.1,
+        "stddev": 0.7
+      },
+      {
+        "name": "total_trip_cost",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 1.5,
+        "stddev": 0.4
       },
       {
         "name": "geo",
@@ -116,7 +177,7 @@
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "mode",
+          "core_mode",
           "origin_hub",
           "dest_hub"
         ],

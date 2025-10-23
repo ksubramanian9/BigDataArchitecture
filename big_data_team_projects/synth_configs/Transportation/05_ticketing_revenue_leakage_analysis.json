@@ -1,9 +1,9 @@
 {
   "seed": 47,
-  "entity_count": 200000,
+  "entity_count": 150000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2025-01-01T00:00:00",
+    "end": "2025-03-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -21,15 +21,17 @@
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
+            "7": 1.2,
+            "8": 1.4,
+            "9": 1.3,
+            "17": 1.3,
             "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
+            "19": 1.4,
+            "_default": 0.9
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "0": 0.7,
+            "6": 0.85,
             "_default": 1.0
           }
         }
@@ -48,11 +50,11 @@
           },
           {
             "value": "Mumbai",
-            "weight": 2
+            "weight": 3
           },
           {
             "value": "Delhi",
-            "weight": 2
+            "weight": 3
           },
           {
             "value": "Hyderabad",
@@ -64,19 +66,15 @@
         "name": "mode",
         "type": "category",
         "choices": [
-          {
-            "value": "Bus",
-            "weight": 5
-          },
-          {
-            "value": "Metro",
-            "weight": 2
-          },
-          {
-            "value": "Rail",
-            "weight": 1
-          }
+          "Bus",
+          "Metro",
+          "Rail"
         ]
+      },
+      {
+        "name": "ticket_id",
+        "type": "string",
+        "pattern": "TKT{0000000-9999999}"
       },
       {
         "name": "route_id",
@@ -84,49 +82,135 @@
         "pattern": "R{000-999}"
       },
       {
-        "name": "vehicle_id",
+        "name": "station_id",
         "type": "string",
-        "pattern": "V{0000-9999}"
+        "pattern": "STN{0000-9999}"
       },
       {
-        "name": "stop_id",
+        "name": "ticket_type",
         "type": "category",
-        "conditional_on": "city",
-        "conditional_table": {
-          "Bengaluru": [
-            "Majestic",
-            "BTM",
-            "SilkBoard",
-            "Whitefield"
-          ],
-          "Chennai": [
-            "CMBT",
-            "T_Nagar",
-            "Tambaram",
-            "Velachery"
-          ],
-          "Mumbai": [
-            "Andheri",
-            "Dadar",
-            "Bandra",
-            "Ghatkopar"
-          ],
-          "Delhi": [
-            "AIIMS",
-            "Kashmere_Gate",
-            "RK_Ashram",
-            "Saket"
-          ],
-          "Hyderabad": [
-            "Ameerpet",
-            "LB_Nagar",
-            "Miyapur",
-            "Kukatpally"
-          ],
-          "_default": [
-            "Central"
-          ]
-        }
+        "choices": [
+          {
+            "value": "Single_Journey",
+            "weight": 6
+          },
+          {
+            "value": "Day_Pass",
+            "weight": 2
+          },
+          {
+            "value": "Monthly_Pass",
+            "weight": 1
+          },
+          {
+            "value": "Student_Pass",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "fare_amount",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 2.5,
+        "stddev": 0.35
+      },
+      {
+        "name": "payment_method",
+        "type": "category",
+        "choices": [
+          {
+            "value": "Smartcard",
+            "weight": 5
+          },
+          {
+            "value": "UPI",
+            "weight": 2
+          },
+          {
+            "value": "Cash",
+            "weight": 3
+          },
+          {
+            "value": "QR_Wallet",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "validator_id",
+        "type": "string",
+        "pattern": "VAL{0000-9999}"
+      },
+      {
+        "name": "inspection_status",
+        "type": "category",
+        "choices": [
+          {
+            "value": "Not_Checked",
+            "weight": 6
+          },
+          {
+            "value": "Inspected",
+            "weight": 3
+          },
+          {
+            "value": "Audit_Review",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "revenue_leak_flag",
+        "type": "bool",
+        "p_true": 0.06
+      },
+      {
+        "name": "leak_reason",
+        "type": "category",
+        "choices": [
+          "Invalid_Ticket",
+          "Counterfeit",
+          "Fare_Evasion",
+          "Payment_Reversal",
+          "Device_Tamper",
+          "None"
+        ]
+      },
+      {
+        "name": "estimated_leak_amount",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 1.4,
+        "stddev": 0.6
+      },
+      {
+        "name": "detected_by",
+        "type": "category",
+        "choices": [
+          "Automatic_Rule",
+          "Inspector",
+          "Reconciliation",
+          "Passenger_Complaint"
+        ]
+      },
+      {
+        "name": "resolution_status",
+        "type": "category",
+        "choices": [
+          {
+            "value": "Open",
+            "weight": 4
+          },
+          {
+            "value": "In_Progress",
+            "weight": 3
+          },
+          {
+            "value": "Resolved",
+            "weight": 3
+          }
+        ]
       },
       {
         "name": "geo",
@@ -140,29 +224,11 @@
         "as_object": true
       },
       {
-        "name": "delay_min",
-        "type": "int",
-        "min": 0,
-        "max": 90,
-        "skew": 1.8
-      },
-      {
-        "name": "breakdown",
-        "type": "bool",
-        "p_true": 0.01
-      },
-      {
-        "name": "ticket_revenue_leak",
-        "type": "bool",
-        "p_true": 0.02
-      },
-      {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "mode",
-          "route_id",
-          "stop_id"
+          "ticket_id",
+          "validator_id"
         ],
         "sep": "|"
       }

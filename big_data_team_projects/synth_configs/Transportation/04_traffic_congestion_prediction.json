@@ -2,8 +2,8 @@
   "seed": 46,
   "entity_count": 200000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2025-01-01T00:00:00",
+    "end": "2025-03-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -21,15 +21,17 @@
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
+            "7": 1.6,
+            "8": 1.8,
+            "9": 1.4,
+            "17": 1.7,
+            "18": 1.8,
+            "19": 1.4,
+            "_default": 0.7
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "0": 0.7,
+            "6": 0.8,
             "_default": 1.0
           }
         }
@@ -48,11 +50,11 @@
           },
           {
             "value": "Mumbai",
-            "weight": 2
+            "weight": 3
           },
           {
             "value": "Delhi",
-            "weight": 2
+            "weight": 3
           },
           {
             "value": "Hyderabad",
@@ -61,72 +63,144 @@
         ]
       },
       {
-        "name": "mode",
+        "name": "road_segment_id",
+        "type": "string",
+        "pattern": "SEG{0000-9999}"
+      },
+      {
+        "name": "corridor_type",
+        "type": "category",
+        "choices": [
+          "Arterial",
+          "Highway",
+          "Feeder",
+          "Ring_Road",
+          "CBD_Street"
+        ]
+      },
+      {
+        "name": "sensor_type",
+        "type": "category",
+        "choices": [
+          "Loop",
+          "Camera",
+          "GPS",
+          "Bluetooth",
+          "Crowdsourced"
+        ]
+      },
+      {
+        "name": "avg_speed_kmph",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 34,
+        "stddev": 12
+      },
+      {
+        "name": "free_flow_speed_kmph",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 52,
+        "stddev": 10
+      },
+      {
+        "name": "travel_time_minutes",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 0.9,
+        "stddev": 0.6
+      },
+      {
+        "name": "vehicle_count",
+        "type": "int",
+        "min": 10,
+        "max": 4000,
+        "skew": 1.3
+      },
+      {
+        "name": "lane_occupancy_pct",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 58,
+        "stddev": 20
+      },
+      {
+        "name": "congestion_level",
         "type": "category",
         "choices": [
           {
-            "value": "Bus",
-            "weight": 5
-          },
-          {
-            "value": "Metro",
+            "value": "Free_Flow",
             "weight": 2
           },
           {
-            "value": "Rail",
+            "value": "Moderate",
+            "weight": 5
+          },
+          {
+            "value": "Heavy",
+            "weight": 3
+          }
+        ]
+      },
+      {
+        "name": "incident_flag",
+        "type": "bool",
+        "p_true": 0.12
+      },
+      {
+        "name": "incident_category",
+        "type": "category",
+        "choices": [
+          "Accident",
+          "Breakdown",
+          "Roadwork",
+          "Event",
+          "Weather",
+          "None"
+        ]
+      },
+      {
+        "name": "weather_condition",
+        "type": "category",
+        "choices": [
+          {
+            "value": "Clear",
+            "weight": 5
+          },
+          {
+            "value": "Cloudy",
+            "weight": 3
+          },
+          {
+            "value": "Rain",
+            "weight": 2
+          },
+          {
+            "value": "Fog",
             "weight": 1
           }
         ]
       },
       {
-        "name": "route_id",
-        "type": "string",
-        "pattern": "R{000-999}"
+        "name": "visibility_km",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 4.5,
+        "stddev": 1.2
       },
       {
-        "name": "vehicle_id",
-        "type": "string",
-        "pattern": "V{0000-9999}"
+        "name": "queue_length_vehicles",
+        "type": "int",
+        "min": 0,
+        "max": 150,
+        "skew": 1.7
       },
       {
-        "name": "stop_id",
-        "type": "category",
-        "conditional_on": "city",
-        "conditional_table": {
-          "Bengaluru": [
-            "Majestic",
-            "BTM",
-            "SilkBoard",
-            "Whitefield"
-          ],
-          "Chennai": [
-            "CMBT",
-            "T_Nagar",
-            "Tambaram",
-            "Velachery"
-          ],
-          "Mumbai": [
-            "Andheri",
-            "Dadar",
-            "Bandra",
-            "Ghatkopar"
-          ],
-          "Delhi": [
-            "AIIMS",
-            "Kashmere_Gate",
-            "RK_Ashram",
-            "Saket"
-          ],
-          "Hyderabad": [
-            "Ameerpet",
-            "LB_Nagar",
-            "Miyapur",
-            "Kukatpally"
-          ],
-          "_default": [
-            "Central"
-          ]
-        }
+        "name": "travel_time_index",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 0.2,
+        "stddev": 0.35
       },
       {
         "name": "geo",
@@ -140,29 +214,11 @@
         "as_object": true
       },
       {
-        "name": "delay_min",
-        "type": "int",
-        "min": 0,
-        "max": 90,
-        "skew": 1.8
-      },
-      {
-        "name": "breakdown",
-        "type": "bool",
-        "p_true": 0.01
-      },
-      {
-        "name": "ticket_revenue_leak",
-        "type": "bool",
-        "p_true": 0.02
-      },
-      {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "mode",
-          "route_id",
-          "stop_id"
+          "road_segment_id",
+          "event_time"
         ],
         "sep": "|"
       }
