@@ -15,118 +15,145 @@
         "type": "uuid"
       },
       {
-        "name": "event_time",
+        "name": "ingestion_time",
         "type": "datetime",
-        "format": "iso",
-        "mode": "seasonality",
-        "profile": {
-          "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
-          },
-          "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
-            "_default": 1.0
-          }
-        }
+        "format": "iso"
       },
       {
-        "name": "city",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "event_type",
-        "type": "category",
-        "choices": [
-          {
-            "value": "post",
-            "weight": 2
-          },
-          {
-            "value": "comment",
-            "weight": 3
-          },
-          {
-            "value": "like",
-            "weight": 6
-          },
-          {
-            "value": "share",
-            "weight": 2
-          },
-          {
-            "value": "video_watch",
-            "weight": 4
-          }
-        ]
-      },
-      {
-        "name": "user_id",
+        "name": "content_id",
         "type": "string",
-        "pattern": "U{000000-999999}"
+        "pattern": "FN{000000-999999}"
       },
       {
-        "name": "toxic_flag",
-        "type": "bool",
-        "p_true": 0.02
-      },
-      {
-        "name": "video_watch_sec",
-        "type": "float",
-        "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.2
-      },
-      {
-        "name": "topic",
+        "name": "origin_platform",
         "type": "category",
         "choices": [
-          "sports",
-          "politics",
-          "tech",
-          "entertainment",
-          "education",
-          "health"
+          { "value": "social_network", "weight": 5 },
+          { "value": "messaging", "weight": 3 },
+          { "value": "video_sharing", "weight": 2 }
         ]
       },
       {
-        "name": "is_bot_suspect",
-        "type": "bool",
-        "p_true": 0.01
+        "name": "source_account_type",
+        "type": "category",
+        "choices": [
+          { "value": "individual", "weight": 5 },
+          { "value": "news_page", "weight": 2 },
+          { "value": "satire", "weight": 1 },
+          { "value": "bot_cluster", "weight": 1 }
+        ]
+      },
+      {
+        "name": "source_reliability_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.35,
+        "stddev": 0.18
+      },
+      {
+        "name": "fact_check_status",
+        "type": "category",
+        "choices": [
+          { "value": "not_reviewed", "weight": 5 },
+          { "value": "in_progress", "weight": 2 },
+          { "value": "debunked", "weight": 2 },
+          { "value": "partially_true", "weight": 1 }
+        ]
+      },
+      {
+        "name": "veracity_label",
+        "type": "category",
+        "choices": [
+          { "value": "misinformation", "weight": 4 },
+          { "value": "unverified", "weight": 3 },
+          { "value": "credible", "weight": 3 }
+        ]
+      },
+      {
+        "name": "misinformation_category",
+        "type": "category",
+        "choices": [
+          { "value": "political", "weight": 3 },
+          { "value": "health", "weight": 2 },
+          { "value": "finance", "weight": 1.5 },
+          { "value": "celebrity", "weight": 1.5 },
+          { "value": "other", "weight": 1 }
+        ]
+      },
+      {
+        "name": "share_count_24h",
+        "type": "int",
+        "min": 0,
+        "max": 100000,
+        "skew": 0.9
+      },
+      {
+        "name": "flag_count_24h",
+        "type": "int",
+        "min": 0,
+        "max": 5000,
+        "skew": 0.85
+      },
+      {
+        "name": "unique_viewers_24h",
+        "type": "int",
+        "min": 0,
+        "max": 200000,
+        "skew": 0.8
+      },
+      {
+        "name": "propagation_depth",
+        "type": "int",
+        "min": 1,
+        "max": 12,
+        "skew": 0.3
+      },
+      {
+        "name": "earliest_fact_check_time_delta_min",
+        "type": "int",
+        "min": 10,
+        "max": 1440,
+        "skew": 0.6
+      },
+      {
+        "name": "bot_amplification_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.4,
+        "stddev": 0.25
+      },
+      {
+        "name": "network_cluster_id",
+        "type": "string",
+        "pattern": "CL{0000-9999}"
+      },
+      {
+        "name": "geo_focus",
+        "type": "category",
+        "choices": [
+          { "value": "national", "weight": 4 },
+          { "value": "state", "weight": 3 },
+          { "value": "city", "weight": 2 },
+          { "value": "global", "weight": 1 }
+        ]
+      },
+      {
+        "name": "risk_priority",
+        "type": "category",
+        "choices": [
+          { "value": "critical", "weight": 2 },
+          { "value": "high", "weight": 3 },
+          { "value": "medium", "weight": 3 },
+          { "value": "low", "weight": 2 }
+        ]
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "user_id",
-          "event_type",
-          "topic"
+          "content_id",
+          "origin_platform",
+          "veracity_label"
         ],
         "sep": "|"
       }

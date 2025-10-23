@@ -66,6 +66,13 @@
         "pattern": "A{00000000-99999999}"
       },
       {
+        "name": "account_age_days",
+        "type": "int",
+        "min": 0,
+        "max": 3650,
+        "skew": 0.6
+      },
+      {
         "name": "posts_last_hour",
         "type": "int",
         "min": 0,
@@ -80,9 +87,61 @@
         "skew": 0.8
       },
       {
+        "name": "avg_interval_between_posts_sec",
+        "type": "int",
+        "min": 5,
+        "max": 7200,
+        "skew": 0.75
+      },
+      {
         "name": "suspicious_timing_pattern",
         "type": "bool",
         "p_true": 0.07
+      },
+      {
+        "name": "suspicious_link_ratio",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.42,
+        "stddev": 0.23
+      },
+      {
+        "name": "ip_reputation_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.28,
+        "stddev": 0.2
+      },
+      {
+        "name": "device_fingerprint_hash",
+        "type": "string",
+        "pattern": "DFP{000000-999999}"
+      },
+      {
+        "name": "connected_account_count",
+        "type": "int",
+        "min": 0,
+        "max": 25,
+        "skew": 0.85
+      },
+      {
+        "name": "follower_following_ratio",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": -0.1,
+        "stddev": 0.7
+      },
+      {
+        "name": "captcha_failure_count_7d",
+        "type": "int",
+        "min": 0,
+        "max": 10,
+        "skew": 0.9
+      },
+      {
+        "name": "is_cross_platform_linked",
+        "type": "bool",
+        "p_true": 0.18
       },
       {
         "name": "spam_bot_label",

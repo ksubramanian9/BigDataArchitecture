@@ -35,98 +35,134 @@
         }
       },
       {
-        "name": "city",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "event_type",
-        "type": "category",
-        "choices": [
-          {
-            "value": "post",
-            "weight": 2
-          },
-          {
-            "value": "comment",
-            "weight": 3
-          },
-          {
-            "value": "like",
-            "weight": 6
-          },
-          {
-            "value": "share",
-            "weight": 2
-          },
-          {
-            "value": "video_watch",
-            "weight": 4
-          }
-        ]
-      },
-      {
         "name": "user_id",
         "type": "string",
         "pattern": "U{000000-999999}"
       },
       {
-        "name": "toxic_flag",
-        "type": "bool",
-        "p_true": 0.02
+        "name": "content_id",
+        "type": "string",
+        "pattern": "POST{000000-999999}"
       },
       {
-        "name": "video_watch_sec",
-        "type": "float",
-        "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.2
+        "name": "content_type",
+        "type": "category",
+        "choices": [
+          { "value": "post", "weight": 4 },
+          { "value": "comment", "weight": 3 },
+          { "value": "video", "weight": 2 },
+          { "value": "livestream", "weight": 1 }
+        ]
+      },
+      {
+        "name": "language",
+        "type": "category",
+        "choices": [
+          { "value": "en", "weight": 6 },
+          { "value": "hi", "weight": 3 },
+          { "value": "ta", "weight": 1 },
+          { "value": "te", "weight": 1 },
+          { "value": "bn", "weight": 1 }
+        ]
+      },
+      {
+        "name": "city",
+        "type": "category",
+        "choices": [
+          { "value": "Bengaluru", "weight": 3 },
+          { "value": "Chennai", "weight": 2 },
+          { "value": "Mumbai", "weight": 2 },
+          { "value": "Delhi", "weight": 2 },
+          { "value": "Hyderabad", "weight": 1 }
+        ]
       },
       {
         "name": "topic",
         "type": "category",
         "choices": [
-          "sports",
-          "politics",
-          "tech",
-          "entertainment",
-          "education",
-          "health"
+          { "value": "sports", "weight": 2 },
+          { "value": "politics", "weight": 3 },
+          { "value": "tech", "weight": 2 },
+          { "value": "entertainment", "weight": 2 },
+          { "value": "education", "weight": 1 },
+          { "value": "health", "weight": 1 }
         ]
       },
       {
-        "name": "is_bot_suspect",
+        "name": "topic_confidence",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.78,
+        "stddev": 0.1
+      },
+      {
+        "name": "sentiment_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.1,
+        "stddev": 0.45
+      },
+      {
+        "name": "sentiment_label",
+        "type": "category",
+        "choices": [
+          { "value": "positive", "weight": 4 },
+          { "value": "neutral", "weight": 3 },
+          { "value": "negative", "weight": 3 }
+        ]
+      },
+      {
+        "name": "emotion_primary",
+        "type": "category",
+        "choices": [
+          { "value": "joy", "weight": 3 },
+          { "value": "trust", "weight": 2 },
+          { "value": "anger", "weight": 2 },
+          { "value": "anticipation", "weight": 1.5 },
+          { "value": "sadness", "weight": 1.5 },
+          { "value": "fear", "weight": 1 }
+        ]
+      },
+      {
+        "name": "subjectivity_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.55,
+        "stddev": 0.2
+      },
+      {
+        "name": "reaction_positive_count",
+        "type": "int",
+        "min": 0,
+        "max": 500,
+        "skew": 0.7
+      },
+      {
+        "name": "reaction_negative_count",
+        "type": "int",
+        "min": 0,
+        "max": 300,
+        "skew": 0.8
+      },
+      {
+        "name": "comment_velocity_per_min",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": -0.2,
+        "stddev": 0.9
+      },
+      {
+        "name": "is_trending_topic",
         "type": "bool",
-        "p_true": 0.01
+        "p_true": 0.12
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "user_id",
-          "event_type",
-          "topic"
+          "content_id",
+          "topic",
+          "sentiment_label"
         ],
         "sep": "|"
       }

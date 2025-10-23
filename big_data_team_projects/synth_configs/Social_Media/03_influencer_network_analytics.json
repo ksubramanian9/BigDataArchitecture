@@ -11,122 +11,124 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
+        "name": "snapshot_id",
         "type": "uuid"
       },
       {
-        "name": "event_time",
+        "name": "snapshot_time",
         "type": "datetime",
-        "format": "iso",
-        "mode": "seasonality",
-        "profile": {
-          "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
-          },
-          "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
-            "_default": 1.0
-          }
-        }
+        "format": "iso"
       },
       {
-        "name": "city",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "event_type",
-        "type": "category",
-        "choices": [
-          {
-            "value": "post",
-            "weight": 2
-          },
-          {
-            "value": "comment",
-            "weight": 3
-          },
-          {
-            "value": "like",
-            "weight": 6
-          },
-          {
-            "value": "share",
-            "weight": 2
-          },
-          {
-            "value": "video_watch",
-            "weight": 4
-          }
-        ]
-      },
-      {
-        "name": "user_id",
+        "name": "influencer_id",
         "type": "string",
-        "pattern": "U{000000-999999}"
+        "pattern": "INF{000000-999999}"
       },
       {
-        "name": "toxic_flag",
-        "type": "bool",
-        "p_true": 0.02
-      },
-      {
-        "name": "video_watch_sec",
-        "type": "float",
-        "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.2
-      },
-      {
-        "name": "topic",
+        "name": "platform",
         "type": "category",
         "choices": [
-          "sports",
-          "politics",
-          "tech",
-          "entertainment",
-          "education",
-          "health"
+          { "value": "instagram", "weight": 4 },
+          { "value": "youtube", "weight": 3 },
+          { "value": "tiktok", "weight": 2 },
+          { "value": "twitter", "weight": 1 }
         ]
       },
       {
-        "name": "is_bot_suspect",
+        "name": "primary_city",
+        "type": "category",
+        "choices": [
+          { "value": "Bengaluru", "weight": 3 },
+          { "value": "Mumbai", "weight": 3 },
+          { "value": "Delhi", "weight": 2 },
+          { "value": "Hyderabad", "weight": 1 },
+          { "value": "Chennai", "weight": 1 }
+        ]
+      },
+      {
+        "name": "follower_count",
+        "type": "int",
+        "min": 5000,
+        "max": 25000000,
+        "skew": 0.85
+      },
+      {
+        "name": "follower_growth_7d",
+        "type": "int",
+        "min": -2000,
+        "max": 50000,
+        "skew": 0.4
+      },
+      {
+        "name": "avg_engagement_rate",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.042,
+        "stddev": 0.015
+      },
+      {
+        "name": "true_reach_estimate",
+        "type": "int",
+        "min": 2000,
+        "max": 15000000,
+        "skew": 0.8
+      },
+      {
+        "name": "network_centrality_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.58,
+        "stddev": 0.2
+      },
+      {
+        "name": "collaboration_count_30d",
+        "type": "int",
+        "min": 0,
+        "max": 50,
+        "skew": 0.6
+      },
+      {
+        "name": "audience_overlap_cluster",
+        "type": "string",
+        "pattern": "AOC{000-999}"
+      },
+      {
+        "name": "sponsored_content_ratio",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.22,
+        "stddev": 0.12
+      },
+      {
+        "name": "top_content_format",
+        "type": "category",
+        "choices": [
+          { "value": "short_video", "weight": 3 },
+          { "value": "photo", "weight": 2 },
+          { "value": "live_stream", "weight": 1.5 },
+          { "value": "long_form_video", "weight": 1.5 },
+          { "value": "text_post", "weight": 1 }
+        ]
+      },
+      {
+        "name": "authenticity_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.74,
+        "stddev": 0.1
+      },
+      {
+        "name": "is_verified",
         "type": "bool",
-        "p_true": 0.01
+        "p_true": 0.32
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "user_id",
-          "event_type",
-          "topic"
+          "influencer_id",
+          "platform",
+          "audience_overlap_cluster"
         ],
         "sep": "|"
       }

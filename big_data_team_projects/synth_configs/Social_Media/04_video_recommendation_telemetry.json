@@ -11,7 +11,7 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
+        "name": "impression_id",
         "type": "uuid"
       },
       {
@@ -21,112 +21,148 @@
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
+            "8": 1.2,
+            "9": 1.4,
+            "20": 1.6,
+            "21": 1.4,
             "_default": 1.0
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "5": 1.2,
+            "6": 1.4,
             "_default": 1.0
           }
         }
       },
       {
-        "name": "city",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "event_type",
-        "type": "category",
-        "choices": [
-          {
-            "value": "post",
-            "weight": 2
-          },
-          {
-            "value": "comment",
-            "weight": 3
-          },
-          {
-            "value": "like",
-            "weight": 6
-          },
-          {
-            "value": "share",
-            "weight": 2
-          },
-          {
-            "value": "video_watch",
-            "weight": 4
-          }
-        ]
-      },
-      {
-        "name": "user_id",
+        "name": "viewer_id",
         "type": "string",
-        "pattern": "U{000000-999999}"
+        "pattern": "V{000000-999999}"
       },
       {
-        "name": "toxic_flag",
+        "name": "video_id",
+        "type": "string",
+        "pattern": "VID{000000-999999}"
+      },
+      {
+        "name": "recommendation_algorithm",
+        "type": "category",
+        "choices": [
+          { "value": "home_ranker", "weight": 4 },
+          { "value": "shorts_feed", "weight": 3 },
+          { "value": "trending", "weight": 2 },
+          { "value": "subscriptions", "weight": 1 }
+        ]
+      },
+      {
+        "name": "slot_position",
+        "type": "int",
+        "min": 1,
+        "max": 20,
+        "skew": 0.6
+      },
+      {
+        "name": "surface_type",
+        "type": "category",
+        "choices": [
+          { "value": "mobile_home", "weight": 4 },
+          { "value": "desktop_home", "weight": 2 },
+          { "value": "connected_tv", "weight": 1 },
+          { "value": "shorts", "weight": 3 }
+        ]
+      },
+      {
+        "name": "device_type",
+        "type": "category",
+        "choices": [
+          { "value": "android", "weight": 4 },
+          { "value": "ios", "weight": 3 },
+          { "value": "web", "weight": 2 },
+          { "value": "tv", "weight": 1 }
+        ]
+      },
+      {
+        "name": "network_type",
+        "type": "category",
+        "choices": [
+          { "value": "wifi", "weight": 5 },
+          { "value": "4g", "weight": 3 },
+          { "value": "5g", "weight": 1.5 },
+          { "value": "broadband", "weight": 0.5 }
+        ]
+      },
+      {
+        "name": "recommendation_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.63,
+        "stddev": 0.18
+      },
+      {
+        "name": "is_clicked",
         "type": "bool",
-        "p_true": 0.02
+        "p_true": 0.36
       },
       {
-        "name": "video_watch_sec",
+        "name": "watch_time_seconds",
         "type": "float",
         "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.2
+        "mean": 2.4,
+        "stddev": 0.8
       },
       {
-        "name": "topic",
+        "name": "completion_rate",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.46,
+        "stddev": 0.25
+      },
+      {
+        "name": "session_duration_seconds",
+        "type": "int",
+        "min": 60,
+        "max": 7200,
+        "skew": 0.7
+      },
+      {
+        "name": "autoplay_triggered",
+        "type": "bool",
+        "p_true": 0.28
+      },
+      {
+        "name": "dislike_flag",
+        "type": "bool",
+        "p_true": 0.07
+      },
+      {
+        "name": "playback_quality",
         "type": "category",
         "choices": [
-          "sports",
-          "politics",
-          "tech",
-          "entertainment",
-          "education",
-          "health"
+          { "value": "144p", "weight": 1 },
+          { "value": "360p", "weight": 3 },
+          { "value": "720p", "weight": 4 },
+          { "value": "1080p", "weight": 2 },
+          { "value": "4k", "weight": 0.5 }
         ]
       },
       {
-        "name": "is_bot_suspect",
-        "type": "bool",
-        "p_true": 0.01
+        "name": "recommendation_reason",
+        "type": "category",
+        "choices": [
+          { "value": "similar_to_recent_views", "weight": 3 },
+          { "value": "popular_in_region", "weight": 2 },
+          { "value": "from_subscriptions", "weight": 1.5 },
+          { "value": "new_creator", "weight": 1.5 },
+          { "value": "sponsored", "weight": 1 }
+        ]
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "user_id",
-          "event_type",
-          "topic"
+          "viewer_id",
+          "video_id",
+          "recommendation_algorithm"
         ],
         "sep": "|"
       }

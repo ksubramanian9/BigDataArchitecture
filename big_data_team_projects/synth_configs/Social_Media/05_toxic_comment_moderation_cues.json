@@ -11,80 +11,28 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
+        "name": "comment_id",
         "type": "uuid"
       },
       {
-        "name": "event_time",
+        "name": "comment_time",
         "type": "datetime",
         "format": "iso",
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
+            "0": 0.7,
+            "1": 0.6,
+            "22": 1.3,
+            "23": 1.4,
             "_default": 1.0
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "6": 1.2,
+            "0": 1.1,
             "_default": 1.0
           }
         }
-      },
-      {
-        "name": "city",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "event_type",
-        "type": "category",
-        "choices": [
-          {
-            "value": "post",
-            "weight": 2
-          },
-          {
-            "value": "comment",
-            "weight": 3
-          },
-          {
-            "value": "like",
-            "weight": 6
-          },
-          {
-            "value": "share",
-            "weight": 2
-          },
-          {
-            "value": "video_watch",
-            "weight": 4
-          }
-        ]
       },
       {
         "name": "user_id",
@@ -92,41 +40,128 @@
         "pattern": "U{000000-999999}"
       },
       {
-        "name": "toxic_flag",
-        "type": "bool",
-        "p_true": 0.02
+        "name": "community_id",
+        "type": "string",
+        "pattern": "COMM{0000-9999}"
       },
       {
-        "name": "video_watch_sec",
-        "type": "float",
-        "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.2
+        "name": "thread_id",
+        "type": "string",
+        "pattern": "THR{000000-999999}"
       },
       {
-        "name": "topic",
+        "name": "language",
         "type": "category",
         "choices": [
-          "sports",
-          "politics",
-          "tech",
-          "entertainment",
-          "education",
-          "health"
+          { "value": "en", "weight": 6 },
+          { "value": "hi", "weight": 3 },
+          { "value": "es", "weight": 1 },
+          { "value": "ta", "weight": 1 },
+          { "value": "ar", "weight": 0.5 }
         ]
       },
       {
-        "name": "is_bot_suspect",
-        "type": "bool",
-        "p_true": 0.01
+        "name": "comment_length_chars",
+        "type": "int",
+        "min": 3,
+        "max": 2000,
+        "skew": 0.6
+      },
+      {
+        "name": "toxicity_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.35,
+        "stddev": 0.22
+      },
+      {
+        "name": "toxicity_label",
+        "type": "category",
+        "choices": [
+          { "value": "clean", "weight": 6 },
+          { "value": "borderline", "weight": 2 },
+          { "value": "toxic", "weight": 2 }
+        ]
+      },
+      {
+        "name": "severe_toxicity_probability",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.18,
+        "stddev": 0.15
+      },
+      {
+        "name": "hate_speech_probability",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.12,
+        "stddev": 0.14
+      },
+      {
+        "name": "threat_probability",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.07,
+        "stddev": 0.1
+      },
+      {
+        "name": "profanity_density",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.2,
+        "stddev": 0.18
+      },
+      {
+        "name": "prior_reports_count",
+        "type": "int",
+        "min": 0,
+        "max": 25,
+        "skew": 0.7
+      },
+      {
+        "name": "report_source_type",
+        "type": "category",
+        "choices": [
+          { "value": "user_report", "weight": 4 },
+          { "value": "ai_flag", "weight": 3 },
+          { "value": "moderator_review", "weight": 2 },
+          { "value": "legal_request", "weight": 1 }
+        ]
+      },
+      {
+        "name": "user_toxic_history_rate",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.12,
+        "stddev": 0.1
+      },
+      {
+        "name": "moderation_action",
+        "type": "category",
+        "choices": [
+          { "value": "auto_hidden", "weight": 2 },
+          { "value": "pending_review", "weight": 4 },
+          { "value": "escalated", "weight": 1 },
+          { "value": "allowed", "weight": 3 }
+        ]
+      },
+      {
+        "name": "escalation_priority",
+        "type": "category",
+        "choices": [
+          { "value": "critical", "weight": 1.5 },
+          { "value": "high", "weight": 2.5 },
+          { "value": "medium", "weight": 3 },
+          { "value": "low", "weight": 3 }
+        ]
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
+          "comment_id",
           "user_id",
-          "event_type",
-          "topic"
+          "moderation_action"
         ],
         "sep": "|"
       }

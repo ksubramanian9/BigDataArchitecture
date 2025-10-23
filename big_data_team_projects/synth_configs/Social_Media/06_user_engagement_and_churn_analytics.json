@@ -11,122 +11,157 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
-        "type": "uuid"
-      },
-      {
-        "name": "event_time",
-        "type": "datetime",
-        "format": "iso",
-        "mode": "seasonality",
-        "profile": {
-          "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
-          },
-          "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
-            "_default": 1.0
-          }
-        }
-      },
-      {
-        "name": "city",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "event_type",
-        "type": "category",
-        "choices": [
-          {
-            "value": "post",
-            "weight": 2
-          },
-          {
-            "value": "comment",
-            "weight": 3
-          },
-          {
-            "value": "like",
-            "weight": 6
-          },
-          {
-            "value": "share",
-            "weight": 2
-          },
-          {
-            "value": "video_watch",
-            "weight": 4
-          }
-        ]
-      },
-      {
         "name": "user_id",
         "type": "string",
         "pattern": "U{000000-999999}"
       },
       {
-        "name": "toxic_flag",
-        "type": "bool",
-        "p_true": 0.02
+        "name": "snapshot_time",
+        "type": "datetime",
+        "format": "iso"
       },
       {
-        "name": "video_watch_sec",
-        "type": "float",
-        "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.2
-      },
-      {
-        "name": "topic",
+        "name": "region",
         "type": "category",
         "choices": [
-          "sports",
-          "politics",
-          "tech",
-          "entertainment",
-          "education",
-          "health"
+          { "value": "india", "weight": 5 },
+          { "value": "south_asia", "weight": 2 },
+          { "value": "north_america", "weight": 1.5 },
+          { "value": "europe", "weight": 1.5 }
         ]
       },
       {
-        "name": "is_bot_suspect",
+        "name": "city_tier",
+        "type": "category",
+        "choices": [
+          { "value": "metro", "weight": 4 },
+          { "value": "tier_1", "weight": 3 },
+          { "value": "tier_2", "weight": 2 },
+          { "value": "tier_3", "weight": 1 }
+        ]
+      },
+      {
+        "name": "account_age_days",
+        "type": "int",
+        "min": 1,
+        "max": 4000,
+        "skew": 0.5
+      },
+      {
+        "name": "days_since_last_session",
+        "type": "int",
+        "min": 0,
+        "max": 60,
+        "skew": 0.7
+      },
+      {
+        "name": "sessions_last_30d",
+        "type": "int",
+        "min": 0,
+        "max": 120,
+        "skew": 0.6
+      },
+      {
+        "name": "avg_session_duration_min",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 2.1,
+        "stddev": 0.6
+      },
+      {
+        "name": "feature_adoption_score",
+        "type": "int",
+        "min": 0,
+        "max": 100,
+        "skew": 0.4
+      },
+      {
+        "name": "subscription_status",
+        "type": "category",
+        "choices": [
+          { "value": "free", "weight": 5 },
+          { "value": "trial", "weight": 1.5 },
+          { "value": "premium_monthly", "weight": 2 },
+          { "value": "premium_annual", "weight": 1.5 }
+        ]
+      },
+      {
+        "name": "subscription_tenure_days",
+        "type": "int",
+        "min": 0,
+        "max": 1825,
+        "skew": 0.5
+      },
+      {
+        "name": "monthly_revenue",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 2.3,
+        "stddev": 0.7
+      },
+      {
+        "name": "ad_impressions_last_30d",
+        "type": "int",
+        "min": 0,
+        "max": 2000,
+        "skew": 0.8
+      },
+      {
+        "name": "push_opt_in",
         "type": "bool",
-        "p_true": 0.01
+        "p_true": 0.58
+      },
+      {
+        "name": "churn_risk_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.32,
+        "stddev": 0.18
+      },
+      {
+        "name": "churn_label",
+        "type": "category",
+        "choices": [
+          { "value": "retained", "weight": 7 },
+          { "value": "at_risk", "weight": 2 },
+          { "value": "churned", "weight": 1 }
+        ]
+      },
+      {
+        "name": "retention_segment",
+        "type": "category",
+        "choices": [
+          { "value": "power_user", "weight": 2 },
+          { "value": "steady", "weight": 3 },
+          { "value": "reemerging", "weight": 2 },
+          { "value": "slipping", "weight": 2 },
+          { "value": "dormant", "weight": 1 }
+        ]
+      },
+      {
+        "name": "support_tickets_90d",
+        "type": "int",
+        "min": 0,
+        "max": 12,
+        "skew": 0.8
+      },
+      {
+        "name": "referral_source",
+        "type": "category",
+        "choices": [
+          { "value": "organic", "weight": 4 },
+          { "value": "paid_marketing", "weight": 2 },
+          { "value": "friend_referral", "weight": 2 },
+          { "value": "partnership", "weight": 1 }
+        ]
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
           "user_id",
-          "event_type",
-          "topic"
+          "snapshot_time",
+          "churn_label"
         ],
         "sep": "|"
       }
