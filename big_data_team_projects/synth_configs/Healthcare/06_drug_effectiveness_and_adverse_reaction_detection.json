@@ -1,9 +1,9 @@
 {
-  "seed": 48,
-  "entity_count": 200000,
+  "seed": 91,
+  "entity_count": 160000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2024-07-01T00:00:00",
+    "end": "2025-06-30T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -11,8 +11,18 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
+        "name": "record_id",
         "type": "uuid"
+      },
+      {
+        "name": "patient_id",
+        "type": "string",
+        "pattern": "PT-{000000-999999}"
+      },
+      {
+        "name": "prescription_id",
+        "type": "string",
+        "pattern": "RX-{0000000-9999999}"
       },
       {
         "name": "event_time",
@@ -21,115 +31,158 @@
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
+            "7": 1.2,
+            "8": 1.3,
+            "9": 1.4,
+            "18": 1.3,
+            "19": 1.1,
+            "_default": 0.9
           },
           "day_of_week": {
-            "5": 0.8,
+            "5": 0.85,
             "6": 0.7,
             "_default": 1.0
           }
         }
       },
       {
-        "name": "city",
+        "name": "medication_name",
         "type": "category",
         "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
+          "Metformin",
+          "Atorvastatin",
+          "Lisinopril",
+          "Amoxicillin",
+          "Warfarin",
+          "Insulin_Glargine"
         ]
       },
       {
-        "name": "hospital",
+        "name": "medication_class",
         "type": "category",
         "choices": [
-          "Govt_GH",
-          "City_Med",
-          "Metro_Care",
-          "AIIMS_Unit"
+          "Antidiabetic",
+          "Antihyperlipidemic",
+          "Antihypertensive",
+          "Antibiotic",
+          "Anticoagulant"
         ]
       },
       {
-        "name": "department",
+        "name": "dosage_mg",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 65,
+        "stddev": 25
+      },
+      {
+        "name": "administration_route",
         "type": "category",
         "choices": [
-          "Cardiology",
-          "General",
-          "Ortho",
-          "Oncology",
-          "ICU"
+          "Oral",
+          "Intravenous",
+          "Subcutaneous",
+          "Intramuscular"
         ]
       },
       {
-        "name": "patient_age",
+        "name": "therapy_duration_days",
         "type": "int",
-        "min": 0,
-        "max": 100,
-        "skew": 1.1
-      },
-      {
-        "name": "is_emergency",
-        "type": "bool",
-        "p_true": 0.15
-      },
-      {
-        "name": "bed_occupancy",
-        "type": "int",
-        "min": 0,
-        "max": 500,
+        "min": 1,
+        "max": 365,
         "skew": 1.2
       },
       {
-        "name": "icu_required",
-        "type": "bool",
-        "p_true": 0.1
+        "name": "baseline_lab_marker",
+        "type": "category",
+        "choices": [
+          "HbA1c",
+          "LDL",
+          "INR",
+          "CRP",
+          "WBC"
+        ]
       },
       {
-        "name": "heart_rate",
+        "name": "lab_value_change",
         "type": "float",
         "distribution": "normal",
-        "mean": 78,
-        "stddev": 12
+        "mean": -0.8,
+        "stddev": 1.4
       },
       {
-        "name": "spo2",
+        "name": "treatment_response_score",
         "type": "float",
         "distribution": "normal",
-        "mean": 97,
-        "stddev": 2
+        "mean": 0.55,
+        "stddev": 0.2
       },
       {
-        "name": "adverse_reaction",
+        "name": "side_effect_severity",
+        "type": "category",
+        "choices": [
+          { "value": "None", "weight": 3.5 },
+          { "value": "Mild", "weight": 2.5 },
+          { "value": "Moderate", "weight": 1.1 },
+          { "value": "Severe", "weight": 0.25 }
+        ]
+      },
+      {
+        "name": "adverse_event_reported",
         "type": "bool",
-        "p_true": 0.02
+        "p_true": 0.12
+      },
+      {
+        "name": "adverse_event_code",
+        "type": "category",
+        "choices": [
+          "Rash",
+          "GI_Distress",
+          "Hypoglycemia",
+          "Bleeding",
+          "Liver_Enzymes_Up",
+          "No_Event"
+        ]
+      },
+      {
+        "name": "medication_adherence",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.8,
+        "stddev": 0.12
+      },
+      {
+        "name": "pill_count_variance",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 2.5,
+        "stddev": 1.5
+      },
+      {
+        "name": "has_drug_interaction",
+        "type": "bool",
+        "p_true": 0.18
+      },
+      {
+        "name": "clinical_outcome",
+        "type": "category",
+        "choices": [
+          { "value": "Improved", "weight": 2.8 },
+          { "value": "Stable", "weight": 2.0 },
+          { "value": "Deteriorated", "weight": 0.6 }
+        ]
+      },
+      {
+        "name": "readmission_within_90_days",
+        "type": "bool",
+        "p_true": 0.11
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "hospital",
-          "department"
+          "patient_id",
+          "prescription_id"
         ],
         "sep": "|"
       }

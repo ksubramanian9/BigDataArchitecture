@@ -1,9 +1,9 @@
 {
-  "seed": 44,
-  "entity_count": 200000,
+  "seed": 101,
+  "entity_count": 150000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2024-10-01T00:00:00",
+    "end": "2025-03-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -11,74 +11,58 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
-        "type": "uuid"
+        "name": "case_id",
+        "type": "string",
+        "pattern": "CASE-{0000000-9999999}"
       },
       {
-        "name": "event_time",
+        "name": "report_time",
         "type": "datetime",
         "format": "iso",
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
+            "6": 0.6,
+            "7": 0.8,
+            "8": 1.2,
+            "9": 1.4,
+            "10": 1.3,
+            "18": 1.1,
+            "_default": 0.9
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "0": 0.7,
+            "6": 0.75,
             "_default": 1.0
           }
         }
       },
       {
+        "name": "symptom_onset_time",
+        "type": "datetime",
+        "format": "iso",
+        "mode": "uniform"
+      },
+      {
         "name": "city",
         "type": "category",
         "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
+          { "value": "Bengaluru", "weight": 3 },
+          { "value": "Chennai", "weight": 2 },
+          { "value": "Mumbai", "weight": 4 },
+          { "value": "Delhi", "weight": 3 },
+          { "value": "Hyderabad", "weight": 1 }
         ]
       },
       {
-        "name": "hospital",
+        "name": "facility_type",
         "type": "category",
         "choices": [
-          "Govt_GH",
-          "City_Med",
-          "Metro_Care",
-          "AIIMS_Unit"
-        ]
-      },
-      {
-        "name": "department",
-        "type": "category",
-        "choices": [
-          "Cardiology",
-          "General",
-          "Ortho",
-          "Oncology",
-          "ICU"
+          "Community_Clinic",
+          "Primary_Health_Center",
+          "District_Hospital",
+          "Private_Hospital",
+          "Mobile_Testing_Unit"
         ]
       },
       {
@@ -86,50 +70,119 @@
         "type": "int",
         "min": 0,
         "max": 100,
+        "skew": 1.05
+      },
+      {
+        "name": "pathogen_type",
+        "type": "category",
+        "choices": [
+          { "value": "Influenza_A", "weight": 2.5 },
+          { "value": "Influenza_B", "weight": 1.5 },
+          { "value": "SARS_CoV_2", "weight": 3 },
+          { "value": "RSV", "weight": 1 },
+          { "value": "Unknown", "weight": 0.5 }
+        ]
+      },
+      {
+        "name": "test_result",
+        "type": "category",
+        "choices": [
+          { "value": "Positive", "weight": 3 },
+          { "value": "Negative", "weight": 1.8 },
+          { "value": "Inconclusive", "weight": 0.4 }
+        ]
+      },
+      {
+        "name": "cycle_threshold_value",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 27,
+        "stddev": 6
+      },
+      {
+        "name": "symptom_severity",
+        "type": "category",
+        "choices": [
+          { "value": "Asymptomatic", "weight": 0.8 },
+          { "value": "Mild", "weight": 3.5 },
+          { "value": "Moderate", "weight": 2 },
+          { "value": "Severe", "weight": 0.9 },
+          { "value": "Critical", "weight": 0.2 }
+        ]
+      },
+      {
+        "name": "transmission_source",
+        "type": "category",
+        "choices": [
+          "Household",
+          "Community",
+          "Healthcare",
+          "Travel",
+          "Unknown"
+        ]
+      },
+      {
+        "name": "contact_traced_count",
+        "type": "int",
+        "min": 0,
+        "max": 25,
+        "skew": 1.3
+      },
+      {
+        "name": "vaccination_status",
+        "type": "category",
+        "choices": [
+          "Unvaccinated",
+          "Partially_Vaccinated",
+          "Fully_Vaccinated",
+          "Booster_Received"
+        ]
+      },
+      {
+        "name": "geo_location",
+        "type": "geo",
+        "bbox": [11.5, 76.5, 13.5, 78.5],
+        "precision": 5,
+        "as_object": true
+      },
+      {
+        "name": "cluster_flag",
+        "type": "bool",
+        "p_true": 0.28
+      },
+      {
+        "name": "days_since_first_local_case",
+        "type": "int",
+        "min": 0,
+        "max": 180,
         "skew": 1.1
       },
       {
-        "name": "is_emergency",
-        "type": "bool",
-        "p_true": 0.15
+        "name": "public_health_action",
+        "type": "category",
+        "choices": [
+          "Monitoring",
+          "Isolation",
+          "Hospitalization",
+          "Community_Screening",
+          "Travel_Advisory"
+        ]
       },
       {
-        "name": "bed_occupancy",
-        "type": "int",
-        "min": 0,
-        "max": 500,
-        "skew": 1.2
-      },
-      {
-        "name": "icu_required",
-        "type": "bool",
-        "p_true": 0.1
-      },
-      {
-        "name": "heart_rate",
-        "type": "float",
-        "distribution": "normal",
-        "mean": 78,
-        "stddev": 12
-      },
-      {
-        "name": "spo2",
-        "type": "float",
-        "distribution": "normal",
-        "mean": 97,
-        "stddev": 2
-      },
-      {
-        "name": "adverse_reaction",
-        "type": "bool",
-        "p_true": 0.02
+        "name": "case_status",
+        "type": "category",
+        "choices": [
+          { "value": "Active", "weight": 2.8 },
+          { "value": "Recovered", "weight": 2.2 },
+          { "value": "Deceased", "weight": 0.15 }
+        ]
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "hospital",
-          "department"
+          "case_id",
+          "report_time"
         ],
         "sep": "|"
       }

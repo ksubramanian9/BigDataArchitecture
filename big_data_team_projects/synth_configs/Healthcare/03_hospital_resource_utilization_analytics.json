@@ -1,9 +1,9 @@
 {
-  "seed": 45,
-  "entity_count": 200000,
+  "seed": 77,
+  "entity_count": 120000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2024-12-01T00:00:00",
+    "end": "2025-03-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -11,53 +11,41 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
+        "name": "snapshot_id",
         "type": "uuid"
       },
       {
-        "name": "event_time",
+        "name": "report_time",
         "type": "datetime",
         "format": "iso",
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
+            "0": 0.5,
+            "6": 0.9,
+            "7": 1.2,
             "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
+            "16": 1.4,
+            "17": 1.3,
+            "23": 0.6,
             "_default": 1.0
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "5": 0.85,
+            "6": 0.8,
             "_default": 1.0
           }
         }
       },
       {
-        "name": "city",
+        "name": "facility_city",
         "type": "category",
         "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
+          { "value": "Bengaluru", "weight": 3 },
+          { "value": "Chennai", "weight": 2 },
+          { "value": "Mumbai", "weight": 3 },
+          { "value": "Delhi", "weight": 2 },
+          { "value": "Hyderabad", "weight": 1 }
         ]
       },
       {
@@ -67,69 +55,136 @@
           "Govt_GH",
           "City_Med",
           "Metro_Care",
-          "AIIMS_Unit"
+          "AIIMS_Unit",
+          "Sunrise_Health"
         ]
       },
       {
         "name": "department",
         "type": "category",
         "choices": [
-          "Cardiology",
-          "General",
-          "Ortho",
-          "Oncology",
-          "ICU"
+          "Emergency",
+          "ICU",
+          "Surgery",
+          "General_Ward",
+          "Pediatrics",
+          "Cardiology"
         ]
       },
       {
-        "name": "patient_age",
+        "name": "total_bed_capacity",
         "type": "int",
-        "min": 0,
-        "max": 100,
-        "skew": 1.1
+        "min": 20,
+        "max": 800,
+        "skew": 1.05
       },
       {
-        "name": "is_emergency",
-        "type": "bool",
-        "p_true": 0.15
-      },
-      {
-        "name": "bed_occupancy",
+        "name": "beds_occupied",
         "type": "int",
-        "min": 0,
-        "max": 500,
+        "min": 5,
+        "max": 800,
         "skew": 1.2
       },
       {
-        "name": "icu_required",
-        "type": "bool",
-        "p_true": 0.1
+        "name": "icu_beds_available",
+        "type": "int",
+        "min": 0,
+        "max": 60,
+        "skew": 1.3
       },
       {
-        "name": "heart_rate",
+        "name": "ventilators_in_use",
+        "type": "int",
+        "min": 0,
+        "max": 70,
+        "skew": 1.25
+      },
+      {
+        "name": "surgery_backlog_cases",
+        "type": "int",
+        "min": 0,
+        "max": 120,
+        "skew": 1.4
+      },
+      {
+        "name": "ed_wait_time_minutes",
+        "type": "int",
+        "min": 5,
+        "max": 720,
+        "skew": 1.1
+      },
+      {
+        "name": "avg_length_of_stay_days",
         "type": "float",
         "distribution": "normal",
-        "mean": 78,
-        "stddev": 12
+        "mean": 4.5,
+        "stddev": 1.8
       },
       {
-        "name": "spo2",
+        "name": "on_duty_physicians",
+        "type": "int",
+        "min": 2,
+        "max": 80,
+        "skew": 1.15
+      },
+      {
+        "name": "on_duty_nurses",
+        "type": "int",
+        "min": 5,
+        "max": 200,
+        "skew": 1.1
+      },
+      {
+        "name": "critical_supply_status",
+        "type": "category",
+        "choices": [
+          { "value": "Green", "weight": 3 },
+          { "value": "Amber", "weight": 1.5 },
+          { "value": "Red", "weight": 0.5 }
+        ]
+      },
+      {
+        "name": "ppe_days_on_hand",
+        "type": "int",
+        "min": 0,
+        "max": 45,
+        "skew": 1.2
+      },
+      {
+        "name": "oxygen_consumption_rate_lpm",
         "type": "float",
         "distribution": "normal",
-        "mean": 97,
-        "stddev": 2
+        "mean": 280,
+        "stddev": 75
       },
       {
-        "name": "adverse_reaction",
-        "type": "bool",
-        "p_true": 0.02
+        "name": "ambulance_queue_length",
+        "type": "int",
+        "min": 0,
+        "max": 25,
+        "skew": 1.35
+      },
+      {
+        "name": "elective_cases_scheduled",
+        "type": "int",
+        "min": 0,
+        "max": 90,
+        "skew": 1.2
+      },
+      {
+        "name": "occupancy_rate",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.78,
+        "stddev": 0.12
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
           "hospital",
-          "department"
+          "department",
+          "report_time"
         ],
         "sep": "|"
       }
