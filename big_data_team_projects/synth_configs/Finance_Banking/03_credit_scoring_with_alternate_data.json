@@ -1,9 +1,9 @@
 {
   "seed": 45,
-  "entity_count": 200000,
+  "entity_count": 180000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2025-01-01T00:00:00",
+    "end": "2025-06-30T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -11,125 +11,152 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
-        "type": "uuid"
+        "name": "application_id",
+        "type": "string",
+        "pattern": "APP-{000000-999999}"
       },
       {
-        "name": "event_time",
+        "name": "application_time",
         "type": "datetime",
         "format": "iso",
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
+            "9": 1.2,
+            "10": 1.3,
+            "11": 1.3,
+            "14": 1.2,
+            "_default": 0.9
           },
           "day_of_week": {
-            "5": 0.8,
+            "0": 0.6,
             "6": 0.7,
             "_default": 1.0
           }
         }
       },
       {
-        "name": "city",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "channel",
-        "type": "category",
-        "choices": [
-          {
-            "value": "POS",
-            "weight": 3
-          },
-          {
-            "value": "ECom",
-            "weight": 5
-          },
-          {
-            "value": "ATM",
-            "weight": 2
-          }
-        ]
-      },
-      {
-        "name": "merchant_cat",
-        "type": "category",
-        "choices": [
-          "Grocery",
-          "Fuel",
-          "Electronics",
-          "Dining",
-          "Travel",
-          "BillPay"
-        ]
-      },
-      {
-        "name": "card_id",
+        "name": "customer_id",
         "type": "string",
-        "pattern": "CARD-{00000000-99999999}"
+        "pattern": "CUST-{000000-999999}"
       },
       {
-        "name": "amount",
+        "name": "age",
+        "type": "int",
+        "min": 21,
+        "max": 70,
+        "skew": 0.3
+      },
+      {
+        "name": "employment_status",
+        "type": "category",
+        "choices": [
+          { "value": "Salaried", "weight": 5 },
+          { "value": "Self_Employed", "weight": 2 },
+          { "value": "Gig_Worker", "weight": 1 },
+          { "value": "Student", "weight": 0.5 },
+          { "value": "Retired", "weight": 0.5 }
+        ]
+      },
+      {
+        "name": "monthly_income_inr",
         "type": "float",
         "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.0
+        "mean": 10.2,
+        "stddev": 0.45
       },
       {
-        "name": "is_international",
+        "name": "credit_history_length_years",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 6.5,
+        "stddev": 2.0
+      },
+      {
+        "name": "current_credit_score",
+        "type": "int",
+        "min": 300,
+        "max": 900,
+        "skew": 0.4
+      },
+      {
+        "name": "utility_payment_consistency_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.82,
+        "stddev": 0.08
+      },
+      {
+        "name": "mobile_topup_frequency_monthly",
+        "type": "int",
+        "min": 0,
+        "max": 30,
+        "skew": 0.5
+      },
+      {
+        "name": "rent_payment_timeliness_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.88,
+        "stddev": 0.06
+      },
+      {
+        "name": "ecommerce_purchase_consistency_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.74,
+        "stddev": 0.1
+      },
+      {
+        "name": "social_media_trust_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.1,
+        "stddev": 0.35
+      },
+      {
+        "name": "has_prior_defaults",
         "type": "bool",
         "p_true": 0.08
       },
       {
-        "name": "is_chip",
-        "type": "bool",
-        "p_true": 0.7
+        "name": "loan_amount_requested_inr",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 13.0,
+        "stddev": 0.5
       },
       {
-        "name": "is_contactless",
-        "type": "bool",
-        "p_true": 0.4
+        "name": "loan_purpose",
+        "type": "category",
+        "choices": [
+          { "value": "Personal", "weight": 3 },
+          { "value": "Home", "weight": 2 },
+          { "value": "Auto", "weight": 1.5 },
+          { "value": "Education", "weight": 1 },
+          { "value": "Business", "weight": 1.5 },
+          { "value": "Credit_Card", "weight": 1 }
+        ]
       },
       {
-        "name": "label_fraud",
+        "name": "debt_to_income_ratio",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.38,
+        "stddev": 0.12
+      },
+      {
+        "name": "default_label",
         "type": "bool",
-        "p_true": 0.01
+        "p_true": 0.11
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "city",
-          "merchant_cat",
-          "channel",
-          "card_id"
+          "application_id",
+          "customer_id",
+          "loan_purpose"
         ],
         "sep": "|"
       }

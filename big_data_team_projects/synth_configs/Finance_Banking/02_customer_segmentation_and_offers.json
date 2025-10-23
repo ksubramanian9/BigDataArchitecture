@@ -1,9 +1,9 @@
 {
   "seed": 44,
-  "entity_count": 200000,
+  "entity_count": 120000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2025-01-01T00:00:00",
+    "end": "2025-12-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -11,125 +11,153 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
-        "type": "uuid"
+        "name": "customer_id",
+        "type": "string",
+        "pattern": "CUST-{000000-999999}"
       },
       {
-        "name": "event_time",
+        "name": "profile_date",
         "type": "datetime",
         "format": "iso",
-        "mode": "seasonality",
-        "profile": {
-          "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
-          },
-          "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
-            "_default": 1.0
-          }
-        }
+        "mode": "uniform"
       },
       {
         "name": "city",
         "type": "category",
         "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
+          { "value": "Bengaluru", "weight": 3 },
+          { "value": "Chennai", "weight": 2 },
+          { "value": "Mumbai", "weight": 2 },
+          { "value": "Delhi", "weight": 2 },
+          { "value": "Hyderabad", "weight": 1 },
+          { "value": "Pune", "weight": 1 }
         ]
       },
       {
-        "name": "channel",
+        "name": "age",
+        "type": "int",
+        "min": 18,
+        "max": 75,
+        "skew": 0.2
+      },
+      {
+        "name": "gender",
         "type": "category",
         "choices": [
-          {
-            "value": "POS",
-            "weight": 3
-          },
-          {
-            "value": "ECom",
-            "weight": 5
-          },
-          {
-            "value": "ATM",
-            "weight": 2
-          }
+          { "value": "Female", "weight": 48 },
+          { "value": "Male", "weight": 50 },
+          { "value": "Non-Binary", "weight": 2 }
         ]
       },
       {
-        "name": "merchant_cat",
+        "name": "income_band",
         "type": "category",
         "choices": [
-          "Grocery",
-          "Fuel",
-          "Electronics",
-          "Dining",
-          "Travel",
-          "BillPay"
+          { "value": "Below_3_Lakh", "weight": 1 },
+          { "value": "3_to_7_Lakh", "weight": 3 },
+          { "value": "7_to_15_Lakh", "weight": 4 },
+          { "value": "Above_15_Lakh", "weight": 2 }
         ]
       },
       {
-        "name": "card_id",
-        "type": "string",
-        "pattern": "CARD-{00000000-99999999}"
+        "name": "lifecycle_stage",
+        "type": "category",
+        "choices": [
+          { "value": "Young_Prospect", "weight": 2 },
+          { "value": "Mass_Affluent", "weight": 3 },
+          { "value": "Emerging_Affluent", "weight": 2 },
+          { "value": "Established_Family", "weight": 2 },
+          { "value": "Pre_Retiree", "weight": 1 }
+        ]
       },
       {
-        "name": "amount",
+        "name": "preferred_channel",
+        "type": "category",
+        "choices": [
+          { "value": "Mobile_App", "weight": 4 },
+          { "value": "Web_Online", "weight": 3 },
+          { "value": "Branch", "weight": 2 },
+          { "value": "Relationship_Manager", "weight": 1 },
+          { "value": "Contact_Center", "weight": 1 }
+        ]
+      },
+      {
+        "name": "avg_monthly_transactions",
+        "type": "int",
+        "min": 1,
+        "max": 120,
+        "skew": 0.6
+      },
+      {
+        "name": "avg_monthly_spend",
         "type": "float",
         "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.0
+        "mean": 7.5,
+        "stddev": 0.6
       },
       {
-        "name": "is_international",
-        "type": "bool",
-        "p_true": 0.08
+        "name": "digital_engagement_score",
+        "type": "int",
+        "min": 0,
+        "max": 100,
+        "skew": 0.3
       },
       {
-        "name": "is_chip",
-        "type": "bool",
-        "p_true": 0.7
+        "name": "products_held",
+        "type": "int",
+        "min": 1,
+        "max": 6,
+        "skew": 0.4
       },
       {
-        "name": "is_contactless",
-        "type": "bool",
-        "p_true": 0.4
+        "name": "loyalty_tier",
+        "type": "category",
+        "choices": [
+          { "value": "Standard", "weight": 5 },
+          { "value": "Silver", "weight": 3 },
+          { "value": "Gold", "weight": 1.5 },
+          { "value": "Platinum", "weight": 0.5 }
+        ]
       },
       {
-        "name": "label_fraud",
+        "name": "offer_response_last_campaign",
         "type": "bool",
-        "p_true": 0.01
+        "p_true": 0.27
+      },
+      {
+        "name": "preferred_offer_type",
+        "type": "category",
+        "choices": [
+          { "value": "Cashback", "weight": 4 },
+          { "value": "Travel_Miles", "weight": 2 },
+          { "value": "Lifestyle_Vouchers", "weight": 2 },
+          { "value": "Fee_Waiver", "weight": 1 },
+          { "value": "Insurance_Addon", "weight": 1 }
+        ]
+      },
+      {
+        "name": "next_best_action_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.55,
+        "stddev": 0.18
+      },
+      {
+        "name": "churn_risk_segment",
+        "type": "category",
+        "choices": [
+          { "value": "Low", "weight": 6 },
+          { "value": "Medium", "weight": 3 },
+          { "value": "High", "weight": 1 }
+        ]
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "city",
-          "merchant_cat",
-          "channel",
-          "card_id"
+          "customer_id",
+          "lifecycle_stage",
+          "loyalty_tier"
         ],
         "sep": "|"
       }
