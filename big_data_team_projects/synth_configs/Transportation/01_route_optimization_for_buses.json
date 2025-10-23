@@ -21,15 +21,18 @@
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
+            "6": 1.2,
+            "7": 1.5,
+            "8": 1.6,
+            "9": 1.4,
+            "17": 1.4,
+            "18": 1.6,
             "19": 1.5,
-            "_default": 1.0
+            "_default": 0.9
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "0": 0.8,
+            "6": 0.85,
             "_default": 1.0
           }
         }
@@ -61,72 +64,152 @@
         ]
       },
       {
-        "name": "mode",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bus",
-            "weight": 5
-          },
-          {
-            "value": "Metro",
-            "weight": 2
-          },
-          {
-            "value": "Rail",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "route_id",
-        "type": "string",
-        "pattern": "R{000-999}"
-      },
-      {
-        "name": "vehicle_id",
-        "type": "string",
-        "pattern": "V{0000-9999}"
-      },
-      {
-        "name": "stop_id",
+        "name": "depot_id",
         "type": "category",
         "conditional_on": "city",
         "conditional_table": {
           "Bengaluru": [
-            "Majestic",
-            "BTM",
-            "SilkBoard",
-            "Whitefield"
+            "DEP_MAJ",
+            "DEP_SWD",
+            "DEP_KRM"
           ],
           "Chennai": [
-            "CMBT",
-            "T_Nagar",
-            "Tambaram",
-            "Velachery"
+            "DEP_CMBT",
+            "DEP_TMB",
+            "DEP_VLC"
           ],
           "Mumbai": [
-            "Andheri",
-            "Dadar",
-            "Bandra",
-            "Ghatkopar"
+            "DEP_AND",
+            "DEP_DAD",
+            "DEP_BND"
           ],
           "Delhi": [
-            "AIIMS",
-            "Kashmere_Gate",
-            "RK_Ashram",
-            "Saket"
+            "DEP_RKA",
+            "DEP_SJP",
+            "DEP_DWL"
           ],
           "Hyderabad": [
-            "Ameerpet",
-            "LB_Nagar",
-            "Miyapur",
-            "Kukatpally"
+            "DEP_AMR",
+            "DEP_LBN",
+            "DEP_HIT"
           ],
           "_default": [
-            "Central"
+            "DEP_MAIN"
           ]
         }
+      },
+      {
+        "name": "route_id",
+        "type": "string",
+        "pattern": "B{000-999}"
+      },
+      {
+        "name": "trip_id",
+        "type": "string",
+        "pattern": "TRIP{000000-999999}"
+      },
+      {
+        "name": "direction",
+        "type": "category",
+        "choices": [
+          "Outbound",
+          "Inbound"
+        ]
+      },
+      {
+        "name": "segment_index",
+        "type": "int",
+        "min": 1,
+        "max": 40,
+        "skew": 1.1
+      },
+      {
+        "name": "segment_distance_km",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 0.35,
+        "stddev": 0.45
+      },
+      {
+        "name": "scheduled_run_minutes",
+        "type": "int",
+        "min": 2,
+        "max": 25,
+        "skew": 1.2
+      },
+      {
+        "name": "actual_run_minutes",
+        "type": "int",
+        "min": 2,
+        "max": 35,
+        "skew": 1.4
+      },
+      {
+        "name": "scheduled_headway_minutes",
+        "type": "int",
+        "min": 5,
+        "max": 20,
+        "skew": 1.3
+      },
+      {
+        "name": "actual_headway_minutes",
+        "type": "int",
+        "min": 4,
+        "max": 30,
+        "skew": 1.5
+      },
+      {
+        "name": "passenger_count",
+        "type": "int",
+        "min": 5,
+        "max": 120,
+        "skew": 1.6
+      },
+      {
+        "name": "occupancy_rate_pct",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 68,
+        "stddev": 18
+      },
+      {
+        "name": "dwell_time_seconds",
+        "type": "int",
+        "min": 10,
+        "max": 180,
+        "skew": 1.4
+      },
+      {
+        "name": "fuel_consumed_liters",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 0.2,
+        "stddev": 0.35
+      },
+      {
+        "name": "gps_variance_m",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": -1.0,
+        "stddev": 0.6
+      },
+      {
+        "name": "on_time_performance",
+        "type": "category",
+        "choices": [
+          {
+            "value": "Early",
+            "weight": 1
+          },
+          {
+            "value": "On_Time",
+            "weight": 6
+          },
+          {
+            "value": "Late",
+            "weight": 3
+          }
+        ]
       },
       {
         "name": "geo",
@@ -140,29 +223,12 @@
         "as_object": true
       },
       {
-        "name": "delay_min",
-        "type": "int",
-        "min": 0,
-        "max": 90,
-        "skew": 1.8
-      },
-      {
-        "name": "breakdown",
-        "type": "bool",
-        "p_true": 0.01
-      },
-      {
-        "name": "ticket_revenue_leak",
-        "type": "bool",
-        "p_true": 0.02
-      },
-      {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "mode",
           "route_id",
-          "stop_id"
+          "trip_id",
+          "segment_index"
         ],
         "sep": "|"
       }

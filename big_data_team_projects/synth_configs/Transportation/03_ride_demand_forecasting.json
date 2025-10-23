@@ -2,8 +2,8 @@
   "seed": 45,
   "entity_count": 200000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2025-01-01T00:00:00",
+    "end": "2025-03-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -21,15 +21,19 @@
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
+            "6": 1.1,
+            "7": 1.3,
+            "8": 1.6,
             "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
+            "17": 1.4,
+            "18": 1.7,
+            "19": 1.6,
+            "22": 1.2,
+            "_default": 0.8
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "5": 0.95,
+            "6": 1.05,
             "_default": 1.0
           }
         }
@@ -48,7 +52,7 @@
           },
           {
             "value": "Mumbai",
-            "weight": 2
+            "weight": 3
           },
           {
             "value": "Delhi",
@@ -61,72 +65,113 @@
         ]
       },
       {
-        "name": "mode",
+        "name": "service_zone",
+        "type": "category",
+        "choices": [
+          "CBD",
+          "Airport",
+          "Residential",
+          "Business_Park",
+          "Tourist_District"
+        ]
+      },
+      {
+        "name": "platform",
+        "type": "category",
+        "choices": [
+          "RideShare",
+          "BikeTaxi",
+          "Auto",
+          "Shuttle"
+        ]
+      },
+      {
+        "name": "hourly_requests",
+        "type": "int",
+        "min": 5,
+        "max": 1200,
+        "skew": 1.5
+      },
+      {
+        "name": "fulfilled_rides",
+        "type": "int",
+        "min": 0,
+        "max": 1100,
+        "skew": 1.4
+      },
+      {
+        "name": "cancelled_requests",
+        "type": "int",
+        "min": 0,
+        "max": 300,
+        "skew": 1.5
+      },
+      {
+        "name": "avg_wait_time_minutes",
+        "type": "int",
+        "min": 1,
+        "max": 25,
+        "skew": 1.6
+      },
+      {
+        "name": "available_drivers",
+        "type": "int",
+        "min": 5,
+        "max": 800,
+        "skew": 1.4
+      },
+      {
+        "name": "surge_multiplier",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": -0.05,
+        "stddev": 0.35
+      },
+      {
+        "name": "average_trip_distance_km",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 0.45,
+        "stddev": 0.5
+      },
+      {
+        "name": "weather_condition",
         "type": "category",
         "choices": [
           {
-            "value": "Bus",
+            "value": "Clear",
             "weight": 5
           },
           {
-            "value": "Metro",
+            "value": "Cloudy",
+            "weight": 3
+          },
+          {
+            "value": "Rain",
             "weight": 2
           },
           {
-            "value": "Rail",
+            "value": "Thunderstorm",
             "weight": 1
           }
         ]
       },
       {
-        "name": "route_id",
-        "type": "string",
-        "pattern": "R{000-999}"
+        "name": "temperature_c",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 28,
+        "stddev": 4
       },
       {
-        "name": "vehicle_id",
-        "type": "string",
-        "pattern": "V{0000-9999}"
+        "name": "major_event_flag",
+        "type": "bool",
+        "p_true": 0.08
       },
       {
-        "name": "stop_id",
-        "type": "category",
-        "conditional_on": "city",
-        "conditional_table": {
-          "Bengaluru": [
-            "Majestic",
-            "BTM",
-            "SilkBoard",
-            "Whitefield"
-          ],
-          "Chennai": [
-            "CMBT",
-            "T_Nagar",
-            "Tambaram",
-            "Velachery"
-          ],
-          "Mumbai": [
-            "Andheri",
-            "Dadar",
-            "Bandra",
-            "Ghatkopar"
-          ],
-          "Delhi": [
-            "AIIMS",
-            "Kashmere_Gate",
-            "RK_Ashram",
-            "Saket"
-          ],
-          "Hyderabad": [
-            "Ameerpet",
-            "LB_Nagar",
-            "Miyapur",
-            "Kukatpally"
-          ],
-          "_default": [
-            "Central"
-          ]
-        }
+        "name": "marketing_promo_active",
+        "type": "bool",
+        "p_true": 0.15
       },
       {
         "name": "geo",
@@ -140,29 +185,13 @@
         "as_object": true
       },
       {
-        "name": "delay_min",
-        "type": "int",
-        "min": 0,
-        "max": 90,
-        "skew": 1.8
-      },
-      {
-        "name": "breakdown",
-        "type": "bool",
-        "p_true": 0.01
-      },
-      {
-        "name": "ticket_revenue_leak",
-        "type": "bool",
-        "p_true": 0.02
-      },
-      {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "mode",
-          "route_id",
-          "stop_id"
+          "city",
+          "service_zone",
+          "platform",
+          "event_time"
         ],
         "sep": "|"
       }

@@ -21,15 +21,17 @@
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
+            "6": 1.2,
+            "7": 1.4,
+            "8": 1.6,
+            "9": 1.4,
+            "18": 1.6,
+            "19": 1.4,
+            "_default": 0.9
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "0": 0.8,
+            "6": 0.85,
             "_default": 1.0
           }
         }
@@ -89,44 +91,123 @@
         "pattern": "V{0000-9999}"
       },
       {
-        "name": "stop_id",
+        "name": "service_trip_id",
+        "type": "string",
+        "pattern": "SRV{000000-999999}"
+      },
+      {
+        "name": "scheduled_departure",
+        "type": "datetime",
+        "format": "iso"
+      },
+      {
+        "name": "actual_departure",
+        "type": "datetime",
+        "format": "iso"
+      },
+      {
+        "name": "delay_minutes",
+        "type": "int",
+        "min": 0,
+        "max": 180,
+        "skew": 1.8
+      },
+      {
+        "name": "breakdown_flag",
+        "type": "bool",
+        "p_true": 0.03
+      },
+      {
+        "name": "incident_type",
         "type": "category",
-        "conditional_on": "city",
-        "conditional_table": {
-          "Bengaluru": [
-            "Majestic",
-            "BTM",
-            "SilkBoard",
-            "Whitefield"
-          ],
-          "Chennai": [
-            "CMBT",
-            "T_Nagar",
-            "Tambaram",
-            "Velachery"
-          ],
-          "Mumbai": [
-            "Andheri",
-            "Dadar",
-            "Bandra",
-            "Ghatkopar"
-          ],
-          "Delhi": [
-            "AIIMS",
-            "Kashmere_Gate",
-            "RK_Ashram",
-            "Saket"
-          ],
-          "Hyderabad": [
-            "Ameerpet",
-            "LB_Nagar",
-            "Miyapur",
-            "Kukatpally"
-          ],
-          "_default": [
-            "Central"
-          ]
-        }
+        "choices": [
+          {
+            "value": "Mechanical_Failure",
+            "weight": 3
+          },
+          {
+            "value": "Traffic_Disruption",
+            "weight": 4
+          },
+          {
+            "value": "Weather",
+            "weight": 2
+          },
+          {
+            "value": "Staffing",
+            "weight": 1
+          },
+          {
+            "value": "Power_Signal",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "component_impacted",
+        "type": "category",
+        "choices": [
+          "Engine",
+          "Doors",
+          "Brakes",
+          "Signalling",
+          "Overhead_Wire",
+          "Control_System"
+        ]
+      },
+      {
+        "name": "detection_source",
+        "type": "category",
+        "choices": [
+          "Driver",
+          "Control_Center",
+          "Passenger_Report",
+          "IoT_Sensor"
+        ]
+      },
+      {
+        "name": "severity_level",
+        "type": "category",
+        "choices": [
+          {
+            "value": "Low",
+            "weight": 4
+          },
+          {
+            "value": "Medium",
+            "weight": 4
+          },
+          {
+            "value": "High",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "name": "service_disruption_minutes",
+        "type": "int",
+        "min": 0,
+        "max": 240,
+        "skew": 1.7
+      },
+      {
+        "name": "resolution_time_minutes",
+        "type": "int",
+        "min": 5,
+        "max": 480,
+        "skew": 1.6
+      },
+      {
+        "name": "passengers_impacted",
+        "type": "int",
+        "min": 0,
+        "max": 400,
+        "skew": 1.6
+      },
+      {
+        "name": "alternate_service_deployed",
+        "type": "bool",
+        "p_true": 0.25
       },
       {
         "name": "geo",
@@ -140,29 +221,12 @@
         "as_object": true
       },
       {
-        "name": "delay_min",
-        "type": "int",
-        "min": 0,
-        "max": 90,
-        "skew": 1.8
-      },
-      {
-        "name": "breakdown",
-        "type": "bool",
-        "p_true": 0.01
-      },
-      {
-        "name": "ticket_revenue_leak",
-        "type": "bool",
-        "p_true": 0.02
-      },
-      {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "mode",
           "route_id",
-          "stop_id"
+          "vehicle_id",
+          "service_trip_id"
         ],
         "sep": "|"
       }

@@ -1,9 +1,9 @@
 {
   "seed": 48,
-  "entity_count": 200000,
+  "entity_count": 180000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2025-02-01T00:00:00",
+    "end": "2025-04-30T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -21,15 +21,17 @@
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
+            "6": 1.1,
+            "7": 1.3,
+            "8": 1.4,
+            "17": 1.3,
             "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
+            "19": 1.4,
+            "_default": 0.9
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "0": 0.75,
+            "6": 0.85,
             "_default": 1.0
           }
         }
@@ -48,11 +50,11 @@
           },
           {
             "value": "Mumbai",
-            "weight": 2
+            "weight": 3
           },
           {
             "value": "Delhi",
-            "weight": 2
+            "weight": 3
           },
           {
             "value": "Hyderabad",
@@ -61,72 +63,94 @@
         ]
       },
       {
-        "name": "mode",
+        "name": "transfer_station_id",
+        "type": "string",
+        "pattern": "XFER{0000-9999}"
+      },
+      {
+        "name": "primary_mode",
         "type": "category",
         "choices": [
-          {
-            "value": "Bus",
-            "weight": 5
-          },
-          {
-            "value": "Metro",
-            "weight": 2
-          },
-          {
-            "value": "Rail",
-            "weight": 1
-          }
+          "Metro",
+          "Bus",
+          "Rail",
+          "Ferry"
         ]
       },
       {
-        "name": "route_id",
-        "type": "string",
-        "pattern": "R{000-999}"
-      },
-      {
-        "name": "vehicle_id",
-        "type": "string",
-        "pattern": "V{0000-9999}"
-      },
-      {
-        "name": "stop_id",
+        "name": "connecting_mode",
         "type": "category",
-        "conditional_on": "city",
-        "conditional_table": {
-          "Bengaluru": [
-            "Majestic",
-            "BTM",
-            "SilkBoard",
-            "Whitefield"
-          ],
-          "Chennai": [
-            "CMBT",
-            "T_Nagar",
-            "Tambaram",
-            "Velachery"
-          ],
-          "Mumbai": [
-            "Andheri",
-            "Dadar",
-            "Bandra",
-            "Ghatkopar"
-          ],
-          "Delhi": [
-            "AIIMS",
-            "Kashmere_Gate",
-            "RK_Ashram",
-            "Saket"
-          ],
-          "Hyderabad": [
-            "Ameerpet",
-            "LB_Nagar",
-            "Miyapur",
-            "Kukatpally"
-          ],
-          "_default": [
-            "Central"
-          ]
-        }
+        "choices": [
+          "Bus",
+          "Metro",
+          "RideShare",
+          "BikeShare",
+          "Auto",
+          "Walk"
+        ]
+      },
+      {
+        "name": "transfer_wait_time_minutes",
+        "type": "int",
+        "min": 1,
+        "max": 45,
+        "skew": 1.4
+      },
+      {
+        "name": "handoff_delay_minutes",
+        "type": "int",
+        "min": 0,
+        "max": 30,
+        "skew": 1.5
+      },
+      {
+        "name": "transfer_success",
+        "type": "bool",
+        "p_true": 0.92
+      },
+      {
+        "name": "linked_trip_id",
+        "type": "string",
+        "pattern": "LTP{000000-999999}"
+      },
+      {
+        "name": "passengers_transferred",
+        "type": "int",
+        "min": 1,
+        "max": 600,
+        "skew": 1.4
+      },
+      {
+        "name": "transfer_reason",
+        "type": "category",
+        "choices": [
+          "First_Mile",
+          "Last_Mile",
+          "Mode_Change",
+          "Feeder_Service",
+          "Event_Special"
+        ]
+      },
+      {
+        "name": "customer_satisfaction_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 4.0,
+        "stddev": 0.8
+      },
+      {
+        "name": "total_trip_cost",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 1.6,
+        "stddev": 0.45
+      },
+      {
+        "name": "feeder_punctuality_pct",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 82,
+        "stddev": 12
       },
       {
         "name": "geo",
@@ -140,29 +164,11 @@
         "as_object": true
       },
       {
-        "name": "delay_min",
-        "type": "int",
-        "min": 0,
-        "max": 90,
-        "skew": 1.8
-      },
-      {
-        "name": "breakdown",
-        "type": "bool",
-        "p_true": 0.01
-      },
-      {
-        "name": "ticket_revenue_leak",
-        "type": "bool",
-        "p_true": 0.02
-      },
-      {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "mode",
-          "route_id",
-          "stop_id"
+          "transfer_station_id",
+          "linked_trip_id"
         ],
         "sep": "|"
       }
