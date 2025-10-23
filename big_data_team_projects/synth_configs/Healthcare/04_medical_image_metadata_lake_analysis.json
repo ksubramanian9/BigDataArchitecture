@@ -1,9 +1,9 @@
 {
-  "seed": 46,
-  "entity_count": 200000,
+  "seed": 59,
+  "entity_count": 90000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2024-06-01T00:00:00",
+    "end": "2025-05-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -11,125 +11,163 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
-        "type": "uuid"
+        "name": "study_uid",
+        "type": "string",
+        "pattern": "1.2.840.{000000000000-999999999999}"
       },
       {
-        "name": "event_time",
+        "name": "accession_number",
+        "type": "string",
+        "pattern": "ACC-{000000-999999}"
+      },
+      {
+        "name": "patient_id",
+        "type": "string",
+        "pattern": "MRN-{0000000-9999999}"
+      },
+      {
+        "name": "study_datetime",
         "type": "datetime",
         "format": "iso",
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
+            "6": 0.6,
+            "7": 0.9,
+            "8": 1.4,
+            "9": 1.6,
+            "10": 1.5,
+            "20": 0.7,
+            "_default": 0.9
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "5": 0.85,
+            "6": 0.65,
             "_default": 1.0
           }
         }
       },
       {
-        "name": "city",
+        "name": "modality",
         "type": "category",
         "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
+          { "value": "CT", "weight": 2.2 },
+          { "value": "MR", "weight": 1.6 },
+          { "value": "XR", "weight": 2.8 },
+          { "value": "US", "weight": 1.2 },
+          { "value": "PET", "weight": 0.4 }
         ]
       },
       {
-        "name": "hospital",
+        "name": "body_region",
         "type": "category",
         "choices": [
-          "Govt_GH",
-          "City_Med",
-          "Metro_Care",
-          "AIIMS_Unit"
+          "Head",
+          "Chest",
+          "Abdomen",
+          "Pelvis",
+          "Extremity",
+          "Spine"
         ]
       },
       {
-        "name": "department",
+        "name": "procedure_code",
         "type": "category",
         "choices": [
-          "Cardiology",
-          "General",
-          "Ortho",
-          "Oncology",
-          "ICU"
+          "IMG_CT_HEAD_WO",
+          "IMG_MR_BRAIN_WW",
+          "IMG_XR_CHEST_PA",
+          "IMG_US_ABD_COMP",
+          "IMG_CT_CHEST_WW"
         ]
       },
       {
-        "name": "patient_age",
+        "name": "image_count",
         "type": "int",
-        "min": 0,
-        "max": 100,
+        "min": 1,
+        "max": 2000,
+        "skew": 1.25
+      },
+      {
+        "name": "avg_slice_thickness_mm",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 3.5,
+        "stddev": 1.8
+      },
+      {
+        "name": "pixel_spacing_mm",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.85,
+        "stddev": 0.25
+      },
+      {
+        "name": "image_resolution",
+        "type": "category",
+        "choices": [
+          "512x512",
+          "1024x1024",
+          "2048x2048",
+          "4096x4096"
+        ]
+      },
+      {
+        "name": "study_duration_seconds",
+        "type": "int",
+        "min": 60,
+        "max": 5400,
         "skew": 1.1
       },
       {
-        "name": "is_emergency",
+        "name": "file_size_mb",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 4.2,
+        "stddev": 0.8
+      },
+      {
+        "name": "contrast_used",
         "type": "bool",
-        "p_true": 0.15
+        "p_true": 0.32
       },
       {
-        "name": "bed_occupancy",
-        "type": "int",
-        "min": 0,
-        "max": 500,
-        "skew": 1.2
-      },
-      {
-        "name": "icu_required",
+        "name": "ai_pre_read_flag",
         "type": "bool",
-        "p_true": 0.1
+        "p_true": 0.22
       },
       {
-        "name": "heart_rate",
+        "name": "radiologist_id",
+        "type": "string",
+        "pattern": "RAD-{000-999}"
+      },
+      {
+        "name": "report_turnaround_hours",
         "type": "float",
         "distribution": "normal",
-        "mean": 78,
-        "stddev": 12
+        "mean": 7.5,
+        "stddev": 2.5
       },
       {
-        "name": "spo2",
-        "type": "float",
-        "distribution": "normal",
-        "mean": 97,
-        "stddev": 2
-      },
-      {
-        "name": "adverse_reaction",
+        "name": "follow_up_recommended",
         "type": "bool",
-        "p_true": 0.02
+        "p_true": 0.27
+      },
+      {
+        "name": "annotation_status",
+        "type": "category",
+        "choices": [
+          { "value": "Not_Annotated", "weight": 2.5 },
+          { "value": "In_Progress", "weight": 1.0 },
+          { "value": "Completed", "weight": 1.5 }
+        ]
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "hospital",
-          "department"
+          "study_uid",
+          "modality"
         ],
         "sep": "|"
       }
