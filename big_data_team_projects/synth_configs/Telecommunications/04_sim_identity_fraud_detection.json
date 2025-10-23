@@ -1,6 +1,6 @@
 {
   "seed": 46,
-  "entity_count": 200000,
+  "entity_count": 160000,
   "time_window": {
     "start": "2025-01-01T06:00:00",
     "end": "2025-02-28T23:59:59"
@@ -10,10 +10,7 @@
   },
   "schema": {
     "fields": [
-      {
-        "name": "event_id",
-        "type": "uuid"
-      },
+      { "name": "event_id", "type": "uuid" },
       {
         "name": "event_time",
         "type": "datetime",
@@ -21,15 +18,14 @@
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
+            "9": 1.2,
+            "10": 1.2,
+            "20": 1.4,
+            "_default": 0.85
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "5": 0.9,
+            "6": 1.1,
             "_default": 1.0
           }
         }
@@ -38,82 +34,136 @@
         "name": "city",
         "type": "category",
         "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "plan",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Prepaid",
-            "weight": 7
-          },
-          {
-            "value": "Postpaid",
-            "weight": 3
-          }
+          { "value": "Bengaluru", "weight": 3 },
+          { "value": "Chennai", "weight": 2 },
+          { "value": "Mumbai", "weight": 2 },
+          { "value": "Delhi", "weight": 2 },
+          { "value": "Hyderabad", "weight": 1 }
         ]
       },
       {
         "name": "subscriber_id",
         "type": "string",
-        "pattern": "S{00000000-99999999}"
+        "pattern": "SUB-{00000000-99999999}"
       },
       {
-        "name": "usage_mb",
+        "name": "sim_serial",
+        "type": "string",
+        "pattern": "SIM-{000000000000000-999999999999999}"
+      },
+      {
+        "name": "device_imei",
+        "type": "string",
+        "pattern": "IMEI-{000000000000000-999999999999999}"
+      },
+      {
+        "name": "activation_channel",
+        "type": "category",
+        "choices": [
+          { "value": "Retail", "weight": 4 },
+          { "value": "Online", "weight": 3 },
+          { "value": "Call Center", "weight": 2 },
+          { "value": "Field Agent", "weight": 1 }
+        ]
+      },
+      {
+        "name": "kyc_status",
+        "type": "category",
+        "choices": [
+          { "value": "Verified", "weight": 92 },
+          { "value": "Pending", "weight": 5 },
+          { "value": "Rejected", "weight": 3 }
+        ]
+      },
+      {
+        "name": "identity_document_type",
+        "type": "category",
+        "choices": [
+          { "value": "Passport", "weight": 2 },
+          { "value": "National ID", "weight": 6 },
+          { "value": "Driver License", "weight": 2 }
+        ]
+      },
+      {
+        "name": "identity_mismatch_flag",
+        "type": "bool",
+        "p_true": 0.04
+      },
+      {
+        "name": "location_variance_km",
         "type": "float",
         "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.2
+        "mean": 1.0,
+        "stddev": 0.7
       },
       {
-        "name": "voice_minutes",
+        "name": "failed_verification_attempts",
         "type": "int",
         "min": 0,
-        "max": 2000,
-        "skew": 1.2
+        "max": 6,
+        "skew": 2.5
       },
       {
-        "name": "call_drop",
-        "type": "bool",
-        "p_true": 0.03
+        "name": "recent_sim_swaps_30d",
+        "type": "int",
+        "min": 0,
+        "max": 4,
+        "skew": 2.2
       },
       {
-        "name": "sim_swap_flag",
-        "type": "bool",
-        "p_true": 0.003
+        "name": "account_age_days",
+        "type": "int",
+        "min": 0,
+        "max": 3650,
+        "skew": 0.6
       },
       {
-        "name": "churn_label",
+        "name": "high_risk_country_flag",
         "type": "bool",
         "p_true": 0.06
+      },
+      {
+        "name": "topup_amount_last_24h",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 2.8,
+        "stddev": 0.9
+      },
+      {
+        "name": "suspicious_transaction_flag",
+        "type": "bool",
+        "p_true": 0.05
+      },
+      {
+        "name": "fraud_alert_score",
+        "type": "float",
+        "distribution": "beta",
+        "alpha": 2.2,
+        "beta": 3.0
+      },
+      {
+        "name": "travel_pattern_score",
+        "type": "float",
+        "distribution": "beta",
+        "alpha": 3.5,
+        "beta": 2.5
+      },
+      {
+        "name": "blacklist_match_flag",
+        "type": "bool",
+        "p_true": 0.015
+      },
+      {
+        "name": "escalated_to_fraud_team",
+        "type": "bool",
+        "p_true": 0.02
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "plan",
-          "subscriber_id"
+          "subscriber_id",
+          "sim_serial"
         ],
         "sep": "|"
       }

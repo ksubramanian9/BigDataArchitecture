@@ -10,10 +10,7 @@
   },
   "schema": {
     "fields": [
-      {
-        "name": "event_id",
-        "type": "uuid"
-      },
+      { "name": "event_id", "type": "uuid" },
       {
         "name": "event_time",
         "type": "datetime",
@@ -21,11 +18,10 @@
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
+            "7": 1.2,
+            "8": 1.4,
+            "21": 1.3,
+            "_default": 0.9
           },
           "day_of_week": {
             "5": 0.8,
@@ -38,82 +34,160 @@
         "name": "city",
         "type": "category",
         "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "plan",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Prepaid",
-            "weight": 7
-          },
-          {
-            "value": "Postpaid",
-            "weight": 3
-          }
+          { "value": "Bengaluru", "weight": 3 },
+          { "value": "Chennai", "weight": 2 },
+          { "value": "Mumbai", "weight": 2 },
+          { "value": "Delhi", "weight": 2 },
+          { "value": "Hyderabad", "weight": 1 }
         ]
       },
       {
         "name": "subscriber_id",
         "type": "string",
-        "pattern": "S{00000000-99999999}"
+        "pattern": "SUB-{00000000-99999999}"
       },
       {
-        "name": "usage_mb",
-        "type": "float",
-        "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.2
+        "name": "plan_type",
+        "type": "category",
+        "choices": [
+          { "value": "Prepaid", "weight": 6 },
+          { "value": "Postpaid", "weight": 3 },
+          { "value": "Fiber Bundle", "weight": 1 }
+        ]
       },
       {
-        "name": "voice_minutes",
+        "name": "contract_type",
+        "type": "category",
+        "choices": [
+          { "value": "No Contract", "weight": 5 },
+          { "value": "12 Month", "weight": 3 },
+          { "value": "24 Month", "weight": 2 }
+        ]
+      },
+      {
+        "name": "tenure_months",
         "type": "int",
         "min": 0,
-        "max": 2000,
-        "skew": 1.2
+        "max": 120,
+        "skew": 1.4
       },
       {
-        "name": "call_drop",
-        "type": "bool",
-        "p_true": 0.03
+        "name": "monthly_bill_amount",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 4.2,
+        "stddev": 0.3
       },
       {
-        "name": "sim_swap_flag",
+        "name": "avg_data_usage_gb",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 1.2,
+        "stddev": 0.5
+      },
+      {
+        "name": "avg_voice_minutes",
+        "type": "int",
+        "min": 0,
+        "max": 1500,
+        "skew": 1.1
+      },
+      {
+        "name": "sms_count_monthly",
+        "type": "int",
+        "min": 0,
+        "max": 600,
+        "skew": 1.8
+      },
+      {
+        "name": "arpu",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 15.5,
+        "stddev": 4.0
+      },
+      {
+        "name": "on_time_payment_ratio",
+        "type": "float",
+        "distribution": "beta",
+        "alpha": 8,
+        "beta": 2
+      },
+      {
+        "name": "last_payment_status",
+        "type": "category",
+        "choices": [
+          { "value": "On Time", "weight": 75 },
+          { "value": "Late", "weight": 18 },
+          { "value": "Failed", "weight": 7 }
+        ]
+      },
+      {
+        "name": "autopay_enrolled",
         "type": "bool",
-        "p_true": 0.003
+        "p_true": 0.42
+      },
+      {
+        "name": "support_contacts_90d",
+        "type": "int",
+        "min": 0,
+        "max": 12,
+        "skew": 1.6
+      },
+      {
+        "name": "network_quality_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 3.8,
+        "stddev": 0.7
+      },
+      {
+        "name": "complaint_count_180d",
+        "type": "int",
+        "min": 0,
+        "max": 8,
+        "skew": 2.0
+      },
+      {
+        "name": "nps_score",
+        "type": "int",
+        "min": -100,
+        "max": 100,
+        "skew": 0.0
+      },
+      {
+        "name": "device_type",
+        "type": "category",
+        "choices": [
+          { "value": "Smartphone", "weight": 7 },
+          { "value": "Feature Phone", "weight": 1 },
+          { "value": "5G Router", "weight": 1 },
+          { "value": "Tablet", "weight": 1 }
+        ]
+      },
+      {
+        "name": "discount_offer_accepted",
+        "type": "bool",
+        "p_true": 0.18
+      },
+      {
+        "name": "family_bundle_size",
+        "type": "int",
+        "min": 1,
+        "max": 5,
+        "skew": 0.3
       },
       {
         "name": "churn_label",
         "type": "bool",
-        "p_true": 0.06
+        "p_true": 0.07
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "plan",
-          "subscriber_id"
+          "subscriber_id",
+          "plan_type"
         ],
         "sep": "|"
       }
