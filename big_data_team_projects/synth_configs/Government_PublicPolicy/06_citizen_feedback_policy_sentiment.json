@@ -1,9 +1,9 @@
 {
   "seed": 48,
-  "entity_count": 200000,
+  "entity_count": 160000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2024-01-01T00:00:00",
+    "end": "2024-12-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -11,26 +11,27 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
+        "name": "feedback_id",
         "type": "uuid"
       },
       {
-        "name": "event_time",
+        "name": "submission_time",
         "type": "datetime",
         "format": "iso",
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
+            "9": 1.4,
+            "10": 1.5,
+            "11": 1.6,
+            "18": 1.3,
+            "19": 1.2,
+            "_default": 0.8
           },
           "day_of_week": {
-            "5": 0.8,
+            "0": 0.6,
             "6": 0.7,
-            "_default": 1.0
+            "_default": 1.1
           }
         }
       },
@@ -47,11 +48,11 @@
             "weight": 2
           },
           {
-            "value": "Mumbai",
+            "value": "Delhi",
             "weight": 2
           },
           {
-            "value": "Delhi",
+            "value": "Mumbai",
             "weight": 2
           },
           {
@@ -61,69 +62,176 @@
         ]
       },
       {
-        "name": "sensor_type",
+        "name": "channel",
         "type": "category",
         "choices": [
           {
-            "value": "air_quality",
+            "value": "mobile_app",
             "weight": 4
           },
           {
-            "value": "traffic",
+            "value": "web_portal",
             "weight": 3
           },
           {
-            "value": "noise",
+            "value": "call_center",
             "weight": 2
           },
           {
-            "value": "water",
+            "value": "social_media",
             "weight": 1
           }
         ]
       },
       {
-        "name": "geo",
-        "type": "geo",
-        "bbox": [
-          12.8,
-          77.45,
-          13.1,
-          77.8
-        ],
-        "as_object": true
+        "name": "policy_topic",
+        "type": "category",
+        "choices": [
+          {
+            "value": "public_transport",
+            "weight": 3
+          },
+          {
+            "value": "solid_waste_management",
+            "weight": 2
+          },
+          {
+            "value": "health_services",
+            "weight": 2
+          },
+          {
+            "value": "education",
+            "weight": 1
+          },
+          {
+            "value": "digital_governance",
+            "weight": 1
+          }
+        ]
       },
       {
-        "name": "pm25",
+        "name": "language",
+        "type": "category",
+        "choices": [
+          {
+            "value": "English",
+            "weight": 4
+          },
+          {
+            "value": "Kannada",
+            "weight": 2
+          },
+          {
+            "value": "Hindi",
+            "weight": 2
+          },
+          {
+            "value": "Tamil",
+            "weight": 1
+          },
+          {
+            "value": "Telugu",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "feedback_length_words",
+        "type": "int",
+        "min": 10,
+        "max": 400,
+        "skew": 0.9
+      },
+      {
+        "name": "sentiment_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.1,
+        "stddev": 0.7,
+        "min": -1,
+        "max": 1
+      },
+      {
+        "name": "sentiment_label",
+        "type": "category",
+        "choices": [
+          {
+            "value": "positive",
+            "weight": 3
+          },
+          {
+            "value": "neutral",
+            "weight": 4
+          },
+          {
+            "value": "negative",
+            "weight": 3
+          }
+        ]
+      },
+      {
+        "name": "urgency_level",
+        "type": "category",
+        "choices": [
+          {
+            "value": "low",
+            "weight": 4
+          },
+          {
+            "value": "medium",
+            "weight": 4
+          },
+          {
+            "value": "high",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "name": "response_time_hours",
         "type": "float",
         "distribution": "lognormal",
-        "mean": 3.0,
+        "mean": 2.4,
         "stddev": 0.6
       },
       {
-        "name": "noise_db",
-        "type": "float",
-        "distribution": "normal",
-        "mean": 65,
-        "stddev": 10
+        "name": "resolution_status",
+        "type": "category",
+        "choices": [
+          {
+            "value": "resolved",
+            "weight": 5
+          },
+          {
+            "value": "in_progress",
+            "weight": 3
+          },
+          {
+            "value": "escalated",
+            "weight": 1
+          },
+          {
+            "value": "closed_unresolved",
+            "weight": 1
+          }
+        ]
       },
       {
-        "name": "traffic_flow",
-        "type": "int",
-        "min": 0,
-        "max": 5000,
-        "skew": 1.1
-      },
-      {
-        "name": "incident_flag",
+        "name": "escalated_flag",
         "type": "bool",
-        "p_true": 0.02
+        "p_true": 0.11
+      },
+      {
+        "name": "follow_up_required",
+        "type": "bool",
+        "p_true": 0.28
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "sensor_type",
+          "policy_topic",
+          "channel",
           "city"
         ],
         "sep": "|"

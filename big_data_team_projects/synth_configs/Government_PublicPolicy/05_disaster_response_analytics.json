@@ -1,9 +1,9 @@
 {
   "seed": 47,
-  "entity_count": 200000,
+  "entity_count": 120000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2024-06-01T00:00:00",
+    "end": "2025-05-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -15,116 +15,209 @@
         "type": "uuid"
       },
       {
-        "name": "event_time",
+        "name": "reported_time",
         "type": "datetime",
         "format": "iso",
-        "mode": "seasonality",
-        "profile": {
-          "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
-          },
-          "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
-            "_default": 1.0
-          }
-        }
+        "mode": "uniform"
       },
       {
-        "name": "city",
+        "name": "state",
         "type": "category",
         "choices": [
           {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
+            "value": "Kerala",
             "weight": 2
           },
           {
-            "value": "Mumbai",
+            "value": "Odisha",
             "weight": 2
           },
           {
-            "value": "Delhi",
+            "value": "Assam",
             "weight": 2
           },
           {
-            "value": "Hyderabad",
+            "value": "Maharashtra",
+            "weight": 1
+          },
+          {
+            "value": "Uttarakhand",
+            "weight": 1
+          },
+          {
+            "value": "Andhra Pradesh",
             "weight": 1
           }
         ]
       },
       {
-        "name": "sensor_type",
+        "name": "district",
         "type": "category",
         "choices": [
           {
-            "value": "air_quality",
+            "value": "Ernakulam",
+            "weight": 2
+          },
+          {
+            "value": "Cuttack",
+            "weight": 2
+          },
+          {
+            "value": "Guwahati",
+            "weight": 2
+          },
+          {
+            "value": "Raigad",
+            "weight": 1
+          },
+          {
+            "value": "Dehradun",
+            "weight": 1
+          },
+          {
+            "value": "Visakhapatnam",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "event_type",
+        "type": "category",
+        "choices": [
+          {
+            "value": "flood",
             "weight": 4
           },
           {
-            "value": "traffic",
+            "value": "cyclone",
             "weight": 3
           },
           {
-            "value": "noise",
-            "weight": 2
+            "value": "landslide",
+            "weight": 1
           },
           {
-            "value": "water",
+            "value": "heatwave",
+            "weight": 1
+          },
+          {
+            "value": "earthquake",
             "weight": 1
           }
         ]
       },
       {
-        "name": "geo",
+        "name": "severity_level",
+        "type": "int",
+        "min": 1,
+        "max": 5,
+        "skew": 1.0
+      },
+      {
+        "name": "geo_location",
         "type": "geo",
         "bbox": [
-          12.8,
-          77.45,
-          13.1,
-          77.8
+          8.0,
+          73.0,
+          28.5,
+          95.0
         ],
         "as_object": true
       },
       {
-        "name": "pm25",
-        "type": "float",
-        "distribution": "lognormal",
-        "mean": 3.0,
-        "stddev": 0.6
-      },
-      {
-        "name": "noise_db",
-        "type": "float",
-        "distribution": "normal",
-        "mean": 65,
-        "stddev": 10
-      },
-      {
-        "name": "traffic_flow",
+        "name": "affected_population",
         "type": "int",
         "min": 0,
-        "max": 5000,
+        "max": 500000,
+        "skew": 1.4
+      },
+      {
+        "name": "households_displaced",
+        "type": "int",
+        "min": 0,
+        "max": 90000,
+        "skew": 1.3
+      },
+      {
+        "name": "critical_infrastructure_damage_index",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.45,
+        "stddev": 0.25,
+        "min": 0,
+        "max": 1
+      },
+      {
+        "name": "shelters_activated",
+        "type": "int",
+        "min": 0,
+        "max": 250,
+        "skew": 0.8
+      },
+      {
+        "name": "response_team_count",
+        "type": "int",
+        "min": 0,
+        "max": 200,
+        "skew": 0.9
+      },
+      {
+        "name": "relief_kits_dispatched",
+        "type": "int",
+        "min": 0,
+        "max": 50000,
         "skew": 1.1
       },
       {
-        "name": "incident_flag",
-        "type": "bool",
-        "p_true": 0.02
+        "name": "average_response_time_hours",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 2.8,
+        "stddev": 0.5
+      },
+      {
+        "name": "casualties_reported",
+        "type": "int",
+        "min": 0,
+        "max": 2000,
+        "skew": 1.6
+      },
+      {
+        "name": "assistance_requests",
+        "type": "int",
+        "min": 0,
+        "max": 100000,
+        "skew": 1.3
+      },
+      {
+        "name": "relief_status",
+        "type": "category",
+        "choices": [
+          {
+            "value": "assessment",
+            "weight": 2
+          },
+          {
+            "value": "response_ongoing",
+            "weight": 4
+          },
+          {
+            "value": "stabilized",
+            "weight": 3
+          },
+          {
+            "value": "recovery",
+            "weight": 1
+          }
+        ]
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "sensor_type",
-          "city"
+          "state",
+          "district",
+          "event_type"
         ],
         "sep": "|"
       }
