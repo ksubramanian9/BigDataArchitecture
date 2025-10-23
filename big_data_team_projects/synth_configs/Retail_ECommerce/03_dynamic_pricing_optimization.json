@@ -1,9 +1,9 @@
 {
-  "seed": 45,
-  "entity_count": 200000,
+  "seed": 61,
+  "entity_count": 150000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2025-01-01T00:00:00",
+    "end": "2025-03-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -11,131 +11,222 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
+        "name": "price_event_id",
         "type": "uuid"
       },
       {
-        "name": "event_time",
+        "name": "timestamp",
         "type": "datetime",
         "format": "iso",
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
+            "7": 1.1,
+            "9": 1.2,
+            "12": 1.3,
+            "15": 1.1,
+            "18": 1.4,
             "_default": 1.0
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "0": 1.05,
+            "5": 1.15,
+            "6": 1.2,
             "_default": 1.0
           }
         }
       },
       {
+        "name": "sku",
+        "type": "string",
+        "pattern": "SKU-{000000-999999}"
+      },
+      {
+        "name": "product_category",
+        "type": "category",
+        "choices": [
+          "Electronics",
+          "Fashion",
+          "Home",
+          "Grocery",
+          "Beauty",
+          "Sports"
+        ]
+      },
+      {
         "name": "city",
         "type": "category",
         "choices": [
+          "Bengaluru",
+          "Chennai",
+          "Mumbai",
+          "Delhi",
+          "Hyderabad"
+        ]
+      },
+      {
+        "name": "current_price",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 3.8,
+        "stddev": 0.6
+      },
+      {
+        "name": "cost_price",
+        "type": "float",
+        "min": 50.0,
+        "max": 4500.0,
+        "precision": 2
+      },
+      {
+        "name": "competitor_price",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 3.85,
+        "stddev": 0.55
+      },
+      {
+        "name": "competitor_count",
+        "type": "int",
+        "min": 1,
+        "max": 12,
+        "skew": 1.1
+      },
+      {
+        "name": "inventory_level",
+        "type": "int",
+        "min": 0,
+        "max": 500,
+        "skew": 1.4
+      },
+      {
+        "name": "safety_stock",
+        "type": "int",
+        "min": 10,
+        "max": 120,
+        "skew": 1.2
+      },
+      {
+        "name": "demand_index",
+        "type": "float",
+        "min": 0.3,
+        "max": 2.5,
+        "precision": 2
+      },
+      {
+        "name": "seasonal_event",
+        "type": "category",
+        "choices": [
           {
-            "value": "Bengaluru",
-            "weight": 3
+            "value": "none",
+            "weight": 5
           },
           {
-            "value": "Chennai",
+            "value": "festive",
             "weight": 2
           },
           {
-            "value": "Mumbai",
-            "weight": 2
+            "value": "clearance",
+            "weight": 1
           },
           {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
+            "value": "flash_sale",
             "weight": 1
           }
         ]
       },
       {
-        "name": "event_type",
+        "name": "promotion_flag",
+        "type": "bool",
+        "p_true": 0.4
+      },
+      {
+        "name": "promotion_type",
         "type": "category",
         "choices": [
           {
-            "value": "view",
+            "value": "none",
             "weight": 6
           },
           {
-            "value": "add_to_cart",
+            "value": "percentage_discount",
             "weight": 2
           },
           {
-            "value": "purchase",
+            "value": "bogo",
             "weight": 1
           },
           {
-            "value": "wishlist",
+            "value": "cashback",
             "weight": 1
           }
         ]
       },
       {
-        "name": "category",
+        "name": "elasticity_band",
         "type": "category",
         "choices": [
-          "Fashion",
-          "Grocery",
-          "Electronics",
-          "Home",
-          "Beauty",
-          "Books"
+          "highly_elastic",
+          "moderately_elastic",
+          "inelastic"
         ]
       },
       {
-        "name": "user_id",
-        "type": "string",
-        "pattern": "U{000000-999999}"
+        "name": "weather_index",
+        "type": "float",
+        "min": -1.0,
+        "max": 1.0,
+        "precision": 3
       },
       {
-        "name": "product_id",
-        "type": "string",
-        "pattern": "P{000000-999999}"
+        "name": "traffic_sessions",
+        "type": "int",
+        "min": 10,
+        "max": 12000,
+        "skew": 1.3
       },
       {
-        "name": "price",
+        "name": "conversion_rate",
+        "type": "float",
+        "min": 0.001,
+        "max": 0.35,
+        "precision": 4
+      },
+      {
+        "name": "recommended_price",
         "type": "float",
         "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.0
+        "mean": 3.75,
+        "stddev": 0.6
       },
       {
-        "name": "qty",
-        "type": "int",
-        "min": 1,
-        "max": 5,
-        "skew": 1.5
+        "name": "target_margin_pct",
+        "type": "float",
+        "min": 0.05,
+        "max": 0.45,
+        "precision": 3
       },
       {
-        "name": "is_return",
-        "type": "bool",
-        "p_true": 0.05
-      },
-      {
-        "name": "is_prime_member",
-        "type": "bool",
-        "p_true": 0.35
-      },
-      {
-        "name": "key",
-        "type": "derived_concat",
-        "parts": [
-          "user_id",
-          "product_id"
-        ],
-        "sep": "|"
+        "name": "price_action",
+        "type": "category",
+        "choices": [
+          {
+            "value": "hold",
+            "weight": 3
+          },
+          {
+            "value": "increase",
+            "weight": 2
+          },
+          {
+            "value": "decrease",
+            "weight": 3
+          },
+          {
+            "value": "flash_sale",
+            "weight": 1
+          }
+        ]
       }
     ]
   }

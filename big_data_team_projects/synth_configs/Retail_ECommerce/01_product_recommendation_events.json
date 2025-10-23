@@ -21,18 +21,36 @@
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
+            "8": 1.6,
+            "9": 1.4,
+            "12": 1.2,
+            "18": 1.6,
+            "19": 1.6,
+            "21": 1.3,
             "_default": 1.0
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "5": 1.2,
+            "6": 1.3,
+            "0": 1.1,
             "_default": 1.0
           }
         }
+      },
+      {
+        "name": "session_id",
+        "type": "string",
+        "pattern": "S{00000000-99999999}"
+      },
+      {
+        "name": "user_id",
+        "type": "string",
+        "pattern": "U{000000-999999}"
+      },
+      {
+        "name": "is_prime_member",
+        "type": "bool",
+        "p_true": 0.35
       },
       {
         "name": "city",
@@ -61,6 +79,50 @@
         ]
       },
       {
+        "name": "device_type",
+        "type": "category",
+        "choices": [
+          {
+            "value": "mobile_app",
+            "weight": 5
+          },
+          {
+            "value": "mobile_web",
+            "weight": 2
+          },
+          {
+            "value": "desktop_web",
+            "weight": 3
+          }
+        ]
+      },
+      {
+        "name": "traffic_source",
+        "type": "category",
+        "choices": [
+          {
+            "value": "organic",
+            "weight": 4
+          },
+          {
+            "value": "email_campaign",
+            "weight": 2
+          },
+          {
+            "value": "push_notification",
+            "weight": 1
+          },
+          {
+            "value": "paid_social",
+            "weight": 1
+          },
+          {
+            "value": "affiliate",
+            "weight": 1
+          }
+        ]
+      },
+      {
         "name": "event_type",
         "type": "category",
         "choices": [
@@ -83,7 +145,12 @@
         ]
       },
       {
-        "name": "category",
+        "name": "product_id",
+        "type": "string",
+        "pattern": "P{000000-999999}"
+      },
+      {
+        "name": "product_category",
         "type": "category",
         "choices": [
           "Fashion",
@@ -95,14 +162,28 @@
         ]
       },
       {
-        "name": "user_id",
-        "type": "string",
-        "pattern": "U{000000-999999}"
+        "name": "recommendation_algorithm",
+        "type": "category",
+        "choices": [
+          "collaborative_filtering",
+          "content_based",
+          "trending_now",
+          "new_arrivals"
+        ]
       },
       {
-        "name": "product_id",
-        "type": "string",
-        "pattern": "P{000000-999999}"
+        "name": "recommendation_rank",
+        "type": "int",
+        "min": 1,
+        "max": 20,
+        "skew": 1.2
+      },
+      {
+        "name": "personalization_score",
+        "type": "float",
+        "min": 0.0,
+        "max": 1.0,
+        "precision": 3
       },
       {
         "name": "price",
@@ -112,6 +193,13 @@
         "stddev": 1.0
       },
       {
+        "name": "discount_pct",
+        "type": "float",
+        "min": 0.0,
+        "max": 0.6,
+        "precision": 2
+      },
+      {
         "name": "qty",
         "type": "int",
         "min": 1,
@@ -119,21 +207,37 @@
         "skew": 1.5
       },
       {
-        "name": "is_return",
-        "type": "bool",
-        "p_true": 0.05
+        "name": "position_in_carousel",
+        "type": "int",
+        "min": 1,
+        "max": 10,
+        "skew": 1.1
       },
       {
-        "name": "is_prime_member",
-        "type": "bool",
-        "p_true": 0.35
+        "name": "experiment_bucket",
+        "type": "category",
+        "choices": [
+          {
+            "value": "control",
+            "weight": 1
+          },
+          {
+            "value": "variant_a",
+            "weight": 1
+          },
+          {
+            "value": "variant_b",
+            "weight": 1
+          }
+        ]
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
           "user_id",
-          "product_id"
+          "product_id",
+          "session_id"
         ],
         "sep": "|"
       }

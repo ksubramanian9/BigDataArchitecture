@@ -1,6 +1,6 @@
 {
-  "seed": 44,
-  "entity_count": 200000,
+  "seed": 52,
+  "entity_count": 120000,
   "time_window": {
     "start": "2025-01-01T06:00:00",
     "end": "2025-02-28T23:59:59"
@@ -11,88 +11,15 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
-        "type": "uuid"
+        "name": "basket_id",
+        "type": "string",
+        "pattern": "B{00000000-99999999}"
       },
       {
-        "name": "event_time",
-        "type": "datetime",
-        "format": "iso",
-        "mode": "seasonality",
-        "profile": {
-          "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
-          },
-          "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
-            "_default": 1.0
-          }
-        }
-      },
-      {
-        "name": "city",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "event_type",
-        "type": "category",
-        "choices": [
-          {
-            "value": "view",
-            "weight": 6
-          },
-          {
-            "value": "add_to_cart",
-            "weight": 2
-          },
-          {
-            "value": "purchase",
-            "weight": 1
-          },
-          {
-            "value": "wishlist",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "category",
-        "type": "category",
-        "choices": [
-          "Fashion",
-          "Grocery",
-          "Electronics",
-          "Home",
-          "Beauty",
-          "Books"
-        ]
+        "name": "order_id",
+        "type": "string",
+        "pattern": "O{00000000-99999999}",
+        "null_prob": 0.35
       },
       {
         "name": "user_id",
@@ -100,42 +27,182 @@
         "pattern": "U{000000-999999}"
       },
       {
-        "name": "product_id",
+        "name": "household_id",
         "type": "string",
-        "pattern": "P{000000-999999}"
+        "pattern": "H{000000-999999}",
+        "null_prob": 0.2
       },
       {
-        "name": "price",
-        "type": "float",
-        "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.0
+        "name": "customer_segment",
+        "type": "category",
+        "choices": [
+          {
+            "value": "value_seeker",
+            "weight": 3
+          },
+          {
+            "value": "premium_loyalist",
+            "weight": 2
+          },
+          {
+            "value": "occasional_shopper",
+            "weight": 4
+          },
+          {
+            "value": "new_customer",
+            "weight": 1
+          }
+        ]
       },
       {
-        "name": "qty",
+        "name": "channel",
+        "type": "category",
+        "choices": [
+          {
+            "value": "mobile_app",
+            "weight": 5
+          },
+          {
+            "value": "desktop_web",
+            "weight": 3
+          },
+          {
+            "value": "in_store_kiosk",
+            "weight": 1
+          },
+          {
+            "value": "voice_assistant",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "basket_open_time",
+        "type": "datetime",
+        "format": "iso",
+        "mode": "seasonality",
+        "profile": {
+          "hour_of_day": {
+            "7": 1.2,
+            "8": 1.3,
+            "12": 1.4,
+            "19": 1.5,
+            "21": 1.2,
+            "_default": 1.0
+          },
+          "day_of_week": {
+            "5": 1.2,
+            "6": 1.3,
+            "0": 1.1,
+            "_default": 1.0
+          }
+        }
+      },
+      {
+        "name": "checkout_time_offset_minutes",
+        "type": "int",
+        "min": 3,
+        "max": 720,
+        "skew": 1.3
+      },
+      {
+        "name": "basket_size_items",
         "type": "int",
         "min": 1,
-        "max": 5,
+        "max": 25,
         "skew": 1.5
       },
       {
-        "name": "is_return",
-        "type": "bool",
-        "p_true": 0.05
+        "name": "distinct_categories",
+        "type": "int",
+        "min": 1,
+        "max": 8,
+        "skew": 1.4
       },
       {
-        "name": "is_prime_member",
-        "type": "bool",
-        "p_true": 0.35
+        "name": "basket_value",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 4.2,
+        "stddev": 0.5
       },
       {
-        "name": "key",
-        "type": "derived_concat",
-        "parts": [
-          "user_id",
-          "product_id"
-        ],
-        "sep": "|"
+        "name": "discount_pct",
+        "type": "float",
+        "min": 0.0,
+        "max": 0.55,
+        "precision": 2
+      },
+      {
+        "name": "coupon_used",
+        "type": "bool",
+        "p_true": 0.42
+      },
+      {
+        "name": "loyalty_points_redeemed",
+        "type": "int",
+        "min": 0,
+        "max": 400,
+        "skew": 1.8
+      },
+      {
+        "name": "basket_margin_pct",
+        "type": "float",
+        "min": 0.05,
+        "max": 0.45,
+        "precision": 3
+      },
+      {
+        "name": "payment_method",
+        "type": "category",
+        "choices": [
+          {
+            "value": "upi",
+            "weight": 4
+          },
+          {
+            "value": "credit_card",
+            "weight": 3
+          },
+          {
+            "value": "debit_card",
+            "weight": 2
+          },
+          {
+            "value": "cod",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "fulfillment_type",
+        "type": "category",
+        "choices": [
+          {
+            "value": "ship_to_home",
+            "weight": 5
+          },
+          {
+            "value": "store_pickup",
+            "weight": 2
+          },
+          {
+            "value": "quick_commerce",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "purchase_intent_score",
+        "type": "float",
+        "min": 0.0,
+        "max": 1.0,
+        "precision": 3
+      },
+      {
+        "name": "abandoned_basket_flag",
+        "type": "bool",
+        "p_true": 0.28
       }
     ]
   }
