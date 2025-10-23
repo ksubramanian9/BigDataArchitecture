@@ -1,9 +1,9 @@
 {
   "seed": 46,
-  "entity_count": 200000,
+  "entity_count": 250000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2025-01-01T00:00:00",
+    "end": "2025-03-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -21,115 +21,130 @@
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
+            "0": 0.7,
+            "1": 0.6,
+            "10": 1.3,
+            "11": 1.4,
+            "20": 1.4,
+            "21": 1.3,
             "_default": 1.0
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "5": 1.1,
+            "6": 1.2,
             "_default": 1.0
           }
         }
       },
       {
-        "name": "city",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
+        "name": "account_id",
+        "type": "string",
+        "pattern": "ACCT-{00000000-99999999}"
       },
       {
         "name": "channel",
         "type": "category",
         "choices": [
-          {
-            "value": "POS",
-            "weight": 3
-          },
-          {
-            "value": "ECom",
-            "weight": 5
-          },
-          {
-            "value": "ATM",
-            "weight": 2
-          }
+          { "value": "Mobile_App", "weight": 4 },
+          { "value": "Web_Online", "weight": 3 },
+          { "value": "POS", "weight": 2 },
+          { "value": "ATM", "weight": 1 },
+          { "value": "Open_API", "weight": 1 }
         ]
       },
       {
-        "name": "merchant_cat",
+        "name": "transaction_amount",
+        "type": "float",
+        "distribution": "lognormal",
+        "mean": 7.1,
+        "stddev": 0.75
+      },
+      {
+        "name": "merchant_category",
         "type": "category",
         "choices": [
           "Grocery",
           "Fuel",
           "Electronics",
-          "Dining",
           "Travel",
-          "BillPay"
+          "Dining",
+          "Digital_Goods",
+          "Subscription"
         ]
       },
       {
-        "name": "card_id",
+        "name": "device_id",
         "type": "string",
-        "pattern": "CARD-{00000000-99999999}"
+        "pattern": "DEV-{000000-999999}"
       },
       {
-        "name": "amount",
+        "name": "device_trust_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.68,
+        "stddev": 0.18
+      },
+      {
+        "name": "ip_risk_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.42,
+        "stddev": 0.22
+      },
+      {
+        "name": "txn_velocity_1h",
+        "type": "int",
+        "min": 0,
+        "max": 40,
+        "skew": 0.7
+      },
+      {
+        "name": "txn_velocity_24h_amount",
         "type": "float",
         "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.0
+        "mean": 8.5,
+        "stddev": 0.7
       },
       {
-        "name": "is_international",
-        "type": "bool",
-        "p_true": 0.08
+        "name": "geo_latitude",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 21.5,
+        "stddev": 4.5
       },
       {
-        "name": "is_chip",
-        "type": "bool",
-        "p_true": 0.7
+        "name": "geo_longitude",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 78.0,
+        "stddev": 4.8
       },
       {
-        "name": "is_contactless",
-        "type": "bool",
-        "p_true": 0.4
+        "name": "risk_score_streaming",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.35,
+        "stddev": 0.25
       },
       {
-        "name": "label_fraud",
+        "name": "model_anomaly_probability",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.08,
+        "stddev": 0.12
+      },
+      {
+        "name": "alert_triggered",
         "type": "bool",
-        "p_true": 0.01
+        "p_true": 0.03
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "city",
-          "merchant_cat",
+          "account_id",
           "channel",
-          "card_id"
+          "device_id"
         ],
         "sep": "|"
       }
