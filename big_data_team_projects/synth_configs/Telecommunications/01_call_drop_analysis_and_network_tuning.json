@@ -10,10 +10,7 @@
   },
   "schema": {
     "fields": [
-      {
-        "name": "event_id",
-        "type": "uuid"
-      },
+      { "name": "event_id", "type": "uuid" },
       {
         "name": "event_time",
         "type": "datetime",
@@ -21,15 +18,15 @@
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
+            "7": 1.3,
+            "8": 1.6,
+            "18": 1.4,
             "19": 1.5,
-            "_default": 1.0
+            "_default": 0.95
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "5": 0.85,
+            "6": 0.75,
             "_default": 1.0
           }
         }
@@ -38,82 +35,151 @@
         "name": "city",
         "type": "category",
         "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
+          { "value": "Bengaluru", "weight": 3 },
+          { "value": "Chennai", "weight": 2 },
+          { "value": "Mumbai", "weight": 2 },
+          { "value": "Delhi", "weight": 2 },
+          { "value": "Hyderabad", "weight": 1 }
         ]
       },
       {
-        "name": "plan",
+        "name": "cell_id",
+        "type": "string",
+        "pattern": "CELL-{00000-99999}"
+      },
+      {
+        "name": "sector_id",
         "type": "category",
         "choices": [
-          {
-            "value": "Prepaid",
-            "weight": 7
-          },
-          {
-            "value": "Postpaid",
-            "weight": 3
-          }
+          { "value": "A", "weight": 1 },
+          { "value": "B", "weight": 1 },
+          { "value": "C", "weight": 1 }
         ]
       },
       {
-        "name": "subscriber_id",
+        "name": "frequency_band_mhz",
+        "type": "category",
+        "choices": [
+          { "value": "850", "weight": 2 },
+          { "value": "1800", "weight": 4 },
+          { "value": "2100", "weight": 2 },
+          { "value": "2300", "weight": 2 }
+        ]
+      },
+      {
+        "name": "device_vendor",
+        "type": "category",
+        "choices": [
+          { "value": "Samsung", "weight": 3 },
+          { "value": "Apple", "weight": 2 },
+          { "value": "Xiaomi", "weight": 2 },
+          { "value": "OnePlus", "weight": 1 },
+          { "value": "Vivo", "weight": 1 },
+          { "value": "Oppo", "weight": 1 }
+        ]
+      },
+      {
+        "name": "device_model",
         "type": "string",
-        "pattern": "S{00000000-99999999}"
+        "pattern": "MODEL-{0000-9999}"
       },
       {
-        "name": "usage_mb",
+        "name": "ue_category",
+        "type": "category",
+        "choices": [
+          { "value": "Cat4", "weight": 2 },
+          { "value": "Cat6", "weight": 3 },
+          { "value": "Cat12", "weight": 3 },
+          { "value": "Cat18", "weight": 2 }
+        ]
+      },
+      {
+        "name": "rsrp_dbm",
         "type": "float",
-        "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.2
+        "distribution": "normal",
+        "mean": -96,
+        "stddev": 7
       },
       {
-        "name": "voice_minutes",
+        "name": "sinr_db",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 16,
+        "stddev": 5
+      },
+      {
+        "name": "rssi_dbm",
+        "type": "float",
+        "distribution": "normal",
+        "mean": -74,
+        "stddev": 6
+      },
+      {
+        "name": "downlink_throughput_mbps",
         "type": "int",
         "min": 0,
-        "max": 2000,
-        "skew": 1.2
+        "max": 250,
+        "skew": 0.9
       },
       {
-        "name": "call_drop",
-        "type": "bool",
-        "p_true": 0.03
+        "name": "uplink_throughput_mbps",
+        "type": "int",
+        "min": 0,
+        "max": 80,
+        "skew": 0.9
       },
       {
-        "name": "sim_swap_flag",
+        "name": "call_drop_flag",
         "type": "bool",
-        "p_true": 0.003
+        "p_true": 0.025
       },
       {
-        "name": "churn_label",
+        "name": "call_drop_reason",
+        "type": "category",
+        "choices": [
+          { "value": "None", "weight": 92 },
+          { "value": "Low Signal", "weight": 3 },
+          { "value": "Interference", "weight": 2 },
+          { "value": "Backhaul Congestion", "weight": 1 },
+          { "value": "Hardware Fault", "weight": 1 },
+          { "value": "Power Failure", "weight": 1 }
+        ]
+      },
+      {
+        "name": "handover_success_rate",
+        "type": "float",
+        "distribution": "beta",
+        "alpha": 18,
+        "beta": 2
+      },
+      {
+        "name": "neighbor_cell_load",
+        "type": "float",
+        "distribution": "beta",
+        "alpha": 3.5,
+        "beta": 2.2
+      },
+      {
+        "name": "ticket_opened",
         "type": "bool",
-        "p_true": 0.06
+        "p_true": 0.08
+      },
+      {
+        "name": "alarm_severity",
+        "type": "category",
+        "choices": [
+          { "value": "None", "weight": 80 },
+          { "value": "Minor", "weight": 10 },
+          { "value": "Major", "weight": 6 },
+          { "value": "Critical", "weight": 4 }
+        ]
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "plan",
-          "subscriber_id"
+          "cell_id",
+          "sector_id"
         ],
         "sep": "|"
       }
