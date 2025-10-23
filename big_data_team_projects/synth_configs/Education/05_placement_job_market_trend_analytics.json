@@ -1,9 +1,9 @@
 {
   "seed": 47,
-  "entity_count": 200000,
+  "entity_count": 120000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2024-07-01T00:00:00",
+    "end": "2025-06-30T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -11,76 +11,14 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
+        "name": "placement_record_id",
         "type": "uuid"
       },
       {
-        "name": "event_time",
+        "name": "record_date",
         "type": "datetime",
         "format": "iso",
-        "mode": "seasonality",
-        "profile": {
-          "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
-          },
-          "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
-            "_default": 1.0
-          }
-        }
-      },
-      {
-        "name": "city",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "event_type",
-        "type": "category",
-        "choices": [
-          {
-            "value": "video_play",
-            "weight": 5
-          },
-          {
-            "value": "quiz_submit",
-            "weight": 1
-          },
-          {
-            "value": "forum_post",
-            "weight": 1
-          },
-          {
-            "value": "assignment_upload",
-            "weight": 1
-          }
-        ]
+        "mode": "uniform"
       },
       {
         "name": "student_id",
@@ -88,33 +26,292 @@
         "pattern": "STU{000000-999999}"
       },
       {
-        "name": "course_id",
-        "type": "string",
-        "pattern": "COURSE{000-999}"
+        "name": "graduation_year",
+        "type": "integer",
+        "distribution": "categorical",
+        "choices": [
+          {
+            "value": 2024,
+            "weight": 3
+          },
+          {
+            "value": 2025,
+            "weight": 4
+          },
+          {
+            "value": 2026,
+            "weight": 2
+          }
+        ]
       },
       {
-        "name": "session_seconds",
+        "name": "degree_program",
+        "type": "category",
+        "choices": [
+          {
+            "value": "bachelors",
+            "weight": 4
+          },
+          {
+            "value": "masters",
+            "weight": 3
+          },
+          {
+            "value": "postgraduate_diploma",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "specialization",
+        "type": "category",
+        "choices": [
+          {
+            "value": "data_science",
+            "weight": 3
+          },
+          {
+            "value": "ai_ml",
+            "weight": 2
+          },
+          {
+            "value": "business_analytics",
+            "weight": 2
+          },
+          {
+            "value": "finance",
+            "weight": 1
+          },
+          {
+            "value": "marketing",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "company_name",
+        "type": "category",
+        "choices": [
+          {
+            "value": "InnovaTech",
+            "weight": 2
+          },
+          {
+            "value": "DataBridge",
+            "weight": 2
+          },
+          {
+            "value": "NextGen Analytics",
+            "weight": 1
+          },
+          {
+            "value": "FinAxis",
+            "weight": 1
+          },
+          {
+            "value": "MarketSense",
+            "weight": 1
+          },
+          {
+            "value": "HealthSphere",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "industry_sector",
+        "type": "category",
+        "choices": [
+          {
+            "value": "technology",
+            "weight": 4
+          },
+          {
+            "value": "finance",
+            "weight": 2
+          },
+          {
+            "value": "consulting",
+            "weight": 2
+          },
+          {
+            "value": "healthcare",
+            "weight": 1
+          },
+          {
+            "value": "retail",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "job_role",
+        "type": "category",
+        "choices": [
+          {
+            "value": "data_analyst",
+            "weight": 3
+          },
+          {
+            "value": "ml_engineer",
+            "weight": 2
+          },
+          {
+            "value": "business_analyst",
+            "weight": 2
+          },
+          {
+            "value": "financial_analyst",
+            "weight": 1
+          },
+          {
+            "value": "product_analyst",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "job_location_city",
+        "type": "category",
+        "choices": [
+          {
+            "value": "Bengaluru",
+            "weight": 3
+          },
+          {
+            "value": "Hyderabad",
+            "weight": 2
+          },
+          {
+            "value": "Mumbai",
+            "weight": 2
+          },
+          {
+            "value": "Pune",
+            "weight": 1
+          },
+          {
+            "value": "Delhi NCR",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "name": "compensation_currency",
+        "type": "category",
+        "choices": [
+          {
+            "value": "INR",
+            "weight": 7
+          },
+          {
+            "value": "USD",
+            "weight": 1
+          },
+          {
+            "value": "EUR",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "annual_salary_lakhs",
         "type": "float",
-        "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.0
+        "distribution": "normal",
+        "mean": 9.5,
+        "stddev": 3.0,
+        "min": 3.5,
+        "max": 28.0
       },
       {
-        "name": "late_submission",
-        "type": "bool",
-        "p_true": 0.08
+        "name": "offer_status",
+        "type": "category",
+        "choices": [
+          {
+            "value": "offered",
+            "weight": 5
+          },
+          {
+            "value": "accepted",
+            "weight": 3
+          },
+          {
+            "value": "declined",
+            "weight": 1
+          },
+          {
+            "value": "on_hold",
+            "weight": 1
+          }
+        ]
       },
       {
-        "name": "at_risk_label",
+        "name": "application_stage",
+        "type": "category",
+        "choices": [
+          {
+            "value": "applied",
+            "weight": 2
+          },
+          {
+            "value": "interviewing",
+            "weight": 3
+          },
+          {
+            "value": "offer",
+            "weight": 2
+          },
+          {
+            "value": "accepted",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "interviews_completed",
+        "type": "integer",
+        "distribution": "poisson",
+        "lambda": 2.4
+      },
+      {
+        "name": "internship_experience",
         "type": "bool",
-        "p_true": 0.12
+        "p_true": 0.58
+      },
+      {
+        "name": "placement_type",
+        "type": "category",
+        "choices": [
+          {
+            "value": "full_time",
+            "weight": 6
+          },
+          {
+            "value": "internship",
+            "weight": 3
+          },
+          {
+            "value": "contract",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "offer_acceptance_probability",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.62,
+        "stddev": 0.18,
+        "min": 0.0,
+        "max": 1.0
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
           "student_id",
-          "course_id"
+          "company_name",
+          "job_role"
         ],
         "sep": "|"
       }

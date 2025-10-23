@@ -1,9 +1,9 @@
 {
   "seed": 48,
-  "entity_count": 200000,
+  "entity_count": 180000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2025-01-01T00:00:00",
+    "end": "2025-06-30T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -11,110 +11,229 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
+        "name": "allocation_record_id",
         "type": "uuid"
       },
       {
-        "name": "event_time",
+        "name": "record_timestamp",
         "type": "datetime",
         "format": "iso",
         "mode": "seasonality",
         "profile": {
           "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
+            "7": 1.2,
+            "8": 1.3,
+            "12": 1.1,
+            "17": 1.2,
             "_default": 1.0
           },
           "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
+            "5": 0.7,
+            "6": 0.4,
             "_default": 1.0
           }
         }
       },
       {
-        "name": "city",
+        "name": "campus_location",
         "type": "category",
         "choices": [
           {
-            "value": "Bengaluru",
+            "value": "main_campus",
+            "weight": 4
+          },
+          {
+            "value": "city_center",
+            "weight": 2
+          },
+          {
+            "value": "north_annex",
+            "weight": 1
+          },
+          {
+            "value": "online",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "department",
+        "type": "category",
+        "choices": [
+          {
+            "value": "engineering",
             "weight": 3
           },
           {
-            "value": "Chennai",
+            "value": "business",
             "weight": 2
           },
           {
-            "value": "Mumbai",
+            "value": "sciences",
             "weight": 2
           },
           {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
+            "value": "humanities",
             "weight": 1
           }
         ]
       },
       {
-        "name": "event_type",
+        "name": "resource_type",
         "type": "category",
         "choices": [
           {
-            "value": "video_play",
-            "weight": 5
+            "value": "classroom",
+            "weight": 4
           },
           {
-            "value": "quiz_submit",
-            "weight": 1
+            "value": "laboratory",
+            "weight": 2
           },
           {
-            "value": "forum_post",
-            "weight": 1
+            "value": "faculty_hours",
+            "weight": 3
           },
           {
-            "value": "assignment_upload",
+            "value": "equipment",
             "weight": 1
           }
         ]
       },
       {
-        "name": "student_id",
+        "name": "resource_id",
         "type": "string",
-        "pattern": "STU{000000-999999}"
+        "pattern": "RES{00000-99999}"
       },
       {
-        "name": "course_id",
-        "type": "string",
-        "pattern": "COURSE{000-999}"
+        "name": "scheduled_block",
+        "type": "category",
+        "choices": [
+          {
+            "value": "morning",
+            "weight": 3
+          },
+          {
+            "value": "afternoon",
+            "weight": 3
+          },
+          {
+            "value": "evening",
+            "weight": 2
+          },
+          {
+            "value": "weekend",
+            "weight": 1
+          }
+        ]
       },
       {
-        "name": "session_seconds",
+        "name": "capacity_units",
+        "type": "integer",
+        "distribution": "normal",
+        "mean": 80,
+        "stddev": 20,
+        "min": 10,
+        "max": 180
+      },
+      {
+        "name": "utilized_units",
+        "type": "integer",
+        "distribution": "normal",
+        "mean": 62,
+        "stddev": 18,
+        "min": 0,
+        "max": 180
+      },
+      {
+        "name": "utilization_rate",
         "type": "float",
-        "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.0
+        "distribution": "normal",
+        "mean": 0.74,
+        "stddev": 0.16,
+        "min": 0.0,
+        "max": 1.2
       },
       {
-        "name": "late_submission",
-        "type": "bool",
-        "p_true": 0.08
+        "name": "forecasted_demand_units",
+        "type": "integer",
+        "distribution": "normal",
+        "mean": 70,
+        "stddev": 22,
+        "min": 0,
+        "max": 200
       },
       {
-        "name": "at_risk_label",
+        "name": "priority_weight",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.5,
+        "stddev": 0.2,
+        "min": 0.0,
+        "max": 1.0
+      },
+      {
+        "name": "operational_cost_per_unit",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 1250.0,
+        "stddev": 350.0,
+        "min": 400.0,
+        "max": 2500.0
+      },
+      {
+        "name": "staffing_hours_committed",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 14.0,
+        "stddev": 6.0,
+        "min": 0.0,
+        "max": 40.0
+      },
+      {
+        "name": "service_level_target",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.9,
+        "stddev": 0.08,
+        "min": 0.5,
+        "max": 1.0
+      },
+      {
+        "name": "constraint_flag",
+        "type": "category",
+        "choices": [
+          {
+            "value": "none",
+            "weight": 5
+          },
+          {
+            "value": "capacity_cap",
+            "weight": 2
+          },
+          {
+            "value": "cost_ceiling",
+            "weight": 1
+          },
+          {
+            "value": "faculty_availability",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "name": "is_peak_load",
         "type": "bool",
-        "p_true": 0.12
+        "p_true": 0.27
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
-          "student_id",
-          "course_id"
+          "campus_location",
+          "department",
+          "resource_id",
+          "scheduled_block"
         ],
         "sep": "|"
       }

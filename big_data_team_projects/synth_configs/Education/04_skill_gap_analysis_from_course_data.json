@@ -1,9 +1,9 @@
 {
   "seed": 46,
-  "entity_count": 200000,
+  "entity_count": 150000,
   "time_window": {
-    "start": "2025-01-01T06:00:00",
-    "end": "2025-02-28T23:59:59"
+    "start": "2024-09-01T00:00:00",
+    "end": "2025-05-31T23:59:59"
   },
   "output": {
     "format": "csv"
@@ -11,76 +11,14 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
+        "name": "skill_gap_record_id",
         "type": "uuid"
       },
       {
-        "name": "event_time",
+        "name": "snapshot_date",
         "type": "datetime",
         "format": "iso",
-        "mode": "seasonality",
-        "profile": {
-          "hour_of_day": {
-            "8": 1.5,
-            "9": 1.5,
-            "18": 1.5,
-            "19": 1.5,
-            "_default": 1.0
-          },
-          "day_of_week": {
-            "5": 0.8,
-            "6": 0.7,
-            "_default": 1.0
-          }
-        }
-      },
-      {
-        "name": "city",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "event_type",
-        "type": "category",
-        "choices": [
-          {
-            "value": "video_play",
-            "weight": 5
-          },
-          {
-            "value": "quiz_submit",
-            "weight": 1
-          },
-          {
-            "value": "forum_post",
-            "weight": 1
-          },
-          {
-            "value": "assignment_upload",
-            "weight": 1
-          }
-        ]
+        "mode": "uniform"
       },
       {
         "name": "student_id",
@@ -88,33 +26,199 @@
         "pattern": "STU{000000-999999}"
       },
       {
+        "name": "program_id",
+        "type": "string",
+        "pattern": "PROG{000-999}"
+      },
+      {
         "name": "course_id",
         "type": "string",
         "pattern": "COURSE{000-999}"
       },
       {
-        "name": "session_seconds",
+        "name": "skill_id",
+        "type": "string",
+        "pattern": "SKILL{0000-9999}"
+      },
+      {
+        "name": "skill_domain",
+        "type": "category",
+        "choices": [
+          {
+            "value": "data_literacy",
+            "weight": 2
+          },
+          {
+            "value": "communication",
+            "weight": 2
+          },
+          {
+            "value": "critical_thinking",
+            "weight": 2
+          },
+          {
+            "value": "technical_programming",
+            "weight": 3
+          },
+          {
+            "value": "project_management",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "skill_proficiency_score",
         "type": "float",
-        "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.0
+        "distribution": "normal",
+        "mean": 0.58,
+        "stddev": 0.18,
+        "min": 0.0,
+        "max": 1.0
       },
       {
-        "name": "late_submission",
-        "type": "bool",
-        "p_true": 0.08
+        "name": "target_proficiency_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.75,
+        "stddev": 0.1,
+        "min": 0.4,
+        "max": 1.0
       },
       {
-        "name": "at_risk_label",
-        "type": "bool",
-        "p_true": 0.12
+        "name": "gap_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.17,
+        "stddev": 0.08,
+        "min": 0.0,
+        "max": 0.6
+      },
+      {
+        "name": "assessment_type",
+        "type": "category",
+        "choices": [
+          {
+            "value": "formative_quiz",
+            "weight": 3
+          },
+          {
+            "value": "project_rubric",
+            "weight": 2
+          },
+          {
+            "value": "capstone_assessment",
+            "weight": 1
+          },
+          {
+            "value": "external_certification",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "job_role_target",
+        "type": "category",
+        "choices": [
+          {
+            "value": "data_analyst",
+            "weight": 3
+          },
+          {
+            "value": "business_analyst",
+            "weight": 2
+          },
+          {
+            "value": "project_manager",
+            "weight": 1
+          },
+          {
+            "value": "software_engineer",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "name": "competency_level",
+        "type": "category",
+        "choices": [
+          {
+            "value": "novice",
+            "weight": 2
+          },
+          {
+            "value": "developing",
+            "weight": 4
+          },
+          {
+            "value": "proficient",
+            "weight": 3
+          },
+          {
+            "value": "advanced",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "recommended_intervention_type",
+        "type": "category",
+        "choices": [
+          {
+            "value": "supplemental_course",
+            "weight": 3
+          },
+          {
+            "value": "mentorship_session",
+            "weight": 2
+          },
+          {
+            "value": "peer_study_group",
+            "weight": 1
+          },
+          {
+            "value": "industry_project",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "recommended_course_id",
+        "type": "string",
+        "pattern": "REC{0000-9999}"
+      },
+      {
+        "name": "completion_probability",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.66,
+        "stddev": 0.14,
+        "min": 0.0,
+        "max": 1.0
+      },
+      {
+        "name": "priority_level",
+        "type": "category",
+        "choices": [
+          {
+            "value": "low",
+            "weight": 2
+          },
+          {
+            "value": "medium",
+            "weight": 5
+          },
+          {
+            "value": "high",
+            "weight": 3
+          }
+        ]
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
           "student_id",
-          "course_id"
+          "skill_id"
         ],
         "sep": "|"
       }

@@ -11,7 +11,7 @@
   "schema": {
     "fields": [
       {
-        "name": "event_id",
+        "name": "recommendation_event_id",
         "type": "uuid"
       },
       {
@@ -35,54 +35,6 @@
         }
       },
       {
-        "name": "city",
-        "type": "category",
-        "choices": [
-          {
-            "value": "Bengaluru",
-            "weight": 3
-          },
-          {
-            "value": "Chennai",
-            "weight": 2
-          },
-          {
-            "value": "Mumbai",
-            "weight": 2
-          },
-          {
-            "value": "Delhi",
-            "weight": 2
-          },
-          {
-            "value": "Hyderabad",
-            "weight": 1
-          }
-        ]
-      },
-      {
-        "name": "event_type",
-        "type": "category",
-        "choices": [
-          {
-            "value": "video_play",
-            "weight": 5
-          },
-          {
-            "value": "quiz_submit",
-            "weight": 1
-          },
-          {
-            "value": "forum_post",
-            "weight": 1
-          },
-          {
-            "value": "assignment_upload",
-            "weight": 1
-          }
-        ]
-      },
-      {
         "name": "student_id",
         "type": "string",
         "pattern": "STU{000000-999999}"
@@ -93,28 +45,174 @@
         "pattern": "COURSE{000-999}"
       },
       {
-        "name": "session_seconds",
+        "name": "module_id",
+        "type": "string",
+        "pattern": "MOD{000-999}"
+      },
+      {
+        "name": "current_mastery_score",
         "type": "float",
-        "distribution": "lognormal",
-        "mean": 0.0,
-        "stddev": 1.0
+        "distribution": "normal",
+        "mean": 0.68,
+        "stddev": 0.15,
+        "min": 0.0,
+        "max": 1.0
       },
       {
-        "name": "late_submission",
-        "type": "bool",
-        "p_true": 0.08
+        "name": "recommended_content_id",
+        "type": "string",
+        "pattern": "CONTENT{0000-9999}"
       },
       {
-        "name": "at_risk_label",
+        "name": "recommendation_type",
+        "type": "category",
+        "choices": [
+          {
+            "value": "remediation",
+            "weight": 4
+          },
+          {
+            "value": "enrichment",
+            "weight": 2
+          },
+          {
+            "value": "practice",
+            "weight": 3
+          },
+          {
+            "value": "assessment_prep",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "predicted_mastery_gain",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.08,
+        "stddev": 0.03,
+        "min": 0.0,
+        "max": 0.35
+      },
+      {
+        "name": "confidence_score",
+        "type": "float",
+        "distribution": "normal",
+        "mean": 0.82,
+        "stddev": 0.1,
+        "min": 0.0,
+        "max": 1.0
+      },
+      {
+        "name": "difficulty_level",
+        "type": "category",
+        "choices": [
+          {
+            "value": "beginner",
+            "weight": 3
+          },
+          {
+            "value": "intermediate",
+            "weight": 5
+          },
+          {
+            "value": "advanced",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "name": "learning_objective_tag",
+        "type": "category",
+        "choices": [
+          {
+            "value": "conceptual_understanding",
+            "weight": 3
+          },
+          {
+            "value": "procedural_fluency",
+            "weight": 3
+          },
+          {
+            "value": "problem_solving",
+            "weight": 2
+          },
+          {
+            "value": "exam_preparation",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "name": "prior_performance_band",
+        "type": "category",
+        "choices": [
+          {
+            "value": "low",
+            "weight": 2
+          },
+          {
+            "value": "medium",
+            "weight": 5
+          },
+          {
+            "value": "high",
+            "weight": 3
+          }
+        ]
+      },
+      {
+        "name": "recommendation_reason",
+        "type": "category",
+        "choices": [
+          {
+            "value": "struggling_on_objective",
+            "weight": 3
+          },
+          {
+            "value": "review_before_assessment",
+            "weight": 2
+          },
+          {
+            "value": "accelerated_pathway",
+            "weight": 1
+          },
+          {
+            "value": "practice_gap",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "name": "acceptance_status",
+        "type": "category",
+        "choices": [
+          {
+            "value": "accepted",
+            "weight": 6
+          },
+          {
+            "value": "deferred",
+            "weight": 2
+          },
+          {
+            "value": "dismissed",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "name": "follow_up_engagement",
         "type": "bool",
-        "p_true": 0.12
+        "p_true": 0.64
       },
       {
         "name": "key",
         "type": "derived_concat",
         "parts": [
           "student_id",
-          "course_id"
+          "course_id",
+          "module_id"
         ],
         "sep": "|"
       }
